@@ -1,0 +1,6 @@
+{
+    "signal": "SIGHUP",
+    "ext": "ts",
+    "exec": "npm run serve",
+    "watch": ["src"]
+  }
