@@ -1,0 +1,36 @@
+body, html{     
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;  
+    background: #FEBF54;
+}
+
+#mapid { height: 180px; }
+
+@media (prefers-color-scheme: dark) {
+    /* CSS Code wenn Dark Mode aktiv */ 
+    body {
+        background: #222639;
+    }
+  }
+
+
+
+.spin {
+    animation-name: spin;
+    animation-duration: 1000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear; 
+  }
+  
+  @keyframes spin {
+      from {
+          transform:rotate(0deg);
+      }
+      to {
+          transform:rotate(360deg);
+      }
+  }

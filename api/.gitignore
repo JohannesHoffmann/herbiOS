@@ -1,0 +1,8 @@
+node_modules
+dist
+.vscode
+data/*.json
+data/*.sqlite
+package-lock.json
+
+.DS_Store
