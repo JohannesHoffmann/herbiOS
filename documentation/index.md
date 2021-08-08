@@ -8,19 +8,19 @@ This software is split into different parts with different purposes:
 
 The api is the core and the backend of herbiOS. It contains all the smartness and knows how to communicate with the each element of the van.
 
-[Go to the API Section](../api/Readme.md)
+[Go to the API Section](../api/README.md)
 
 ### UI
 
 The interface you can see on your screen or smartphone enables you to interact with all components.
 
-[Go to the UI Section](../ui/Readme.md)
+[Go to the UI Section](../ui/README.md)
 
 ### groundcontrol
 
 A small server that running 24/7 somewhere. The api is sending telemetry or receives commands from ground control. If you are not at the van the ui requests the data from ground control.
 
-[Go to the Ground Control Section](../groundcontrol/Readme.md)
+[Go to the Ground Control Section](../groundcontrol/README.md)
 
 ### sensorer
 
