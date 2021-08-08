@@ -2,6 +2,8 @@
 
 herbiOS is a software to control different electric parts of a van in a modern and smart way.
 
+![mobile van control](./assets/mobile_webapp.jpg)
+
 
 > The project is under heavy development and the focus is currently on our own hardware implementation in our van. The documentation is also not quite good yet. If you want to build herbiOS for your own van feel free to contact me to get some help. Together we can improve the documentation and missing parts a lot.
 
@@ -11,13 +13,13 @@ herbiOS is a software to control different electric parts of a van in a modern a
 
 Control up to five light circuits.
 
-![touch light control for a van](./assets/lights.gif);
+![touch light control for a van](./assets/lights.gif)
 
 ### Audio
 
 Play our music in the van via AirPlay, Bluetooth or start a spotify playlist or run a classic radio station.
 
-![control audio content](./assets/audio.gif);
+![control audio content](./assets/audio.gif)
 
 ### Heater
 
