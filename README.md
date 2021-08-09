@@ -1,11 +1,19 @@
 # herbiOS
 
+[![Discord](https://img.shields.io/discord/874259677230272542.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/Fpb8b8UE)
+
 herbiOS is a software to control different electric parts of a van in a modern and smart way.
 
 ![mobile van control](./assets/mobile_webapp.jpg)
 
 
 > The project is under heavy development and the focus is currently on our own hardware implementation in our van. The documentation is also not quite good yet. If you want to build herbiOS for your own van feel free to contact me to get some help. Together we can improve the documentation and missing parts a lot.
+
+## Community
+
+The community around this project is open for everyone. It is worth [to join us on discord](https://discord.gg/Fpb8b8UE) to discuss or ask questions if you want to use herbiOS or just things about van conversions.
+
+[![Discord](https://img.shields.io/discord/874259677230272542.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/Fpb8b8UE)
 
 ## Features
 
@@ -31,6 +39,7 @@ Set the power of the heater manually or set a temperature and the van is holding
 ## Documentation
 
 Read the [Documentation](./documentation/index.md) to get all information of the project and code.
+
 
 ## Licence
 
