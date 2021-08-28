@@ -1,6 +1,6 @@
 # herbiOS
 
-[![Discord](https://img.shields.io/discord/874259677230272542.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/Fpb8b8UE)
+[![Discord](https://img.shields.io/discord/874259677230272542.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/PeVz8ZG264)
 
 herbiOS is a software to control different electric parts of a van in a modern and smart way.
 
@@ -11,9 +11,9 @@ herbiOS is a software to control different electric parts of a van in a modern a
 
 ## Community
 
-The community around this project is open for everyone. It is worth [to join us on discord](https://discord.gg/Fpb8b8UE) to discuss or ask questions if you want to use herbiOS or just things about van conversions.
+The community around this project is open for everyone. It is worth [to join us on discord](https://discord.gg/PeVz8ZG264) to discuss or ask questions if you want to use herbiOS or just things about van conversions.
 
-[![Discord](https://img.shields.io/discord/874259677230272542.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/Fpb8b8UE)
+[![Discord](https://img.shields.io/discord/874259677230272542.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/PeVz8ZG264)
 
 ## Features
 
