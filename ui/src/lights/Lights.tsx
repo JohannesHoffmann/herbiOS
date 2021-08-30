@@ -12,14 +12,14 @@ export default function Lights() {
     const max: number = 100;
     const min: number = 0;
     const theme: any = useTheme();
-    const [light, setLight] = React.useState<string>("light1");
-    const [lights, getLights] = useWebSocket<{[keys: string]: {name: string, id: string, level: number}},string>("lights", "/lights");
-    const [, changeLight] = useWebSocket<null, {name: string, value: number}>("light:change", "/lights");
-    const percent: number = lights && lights.hasOwnProperty(light) ? lights[light].level : 0;
+    const [activeLight, setActiveLight] = React.useState<number>(0);
+    const [lights, getLights] = useWebSocket<Array<{name: string, id: number, level: number}>,string>("lights", "/lights");
+    const [, changeLight] = useWebSocket<null, {lightId: number, value: number}>("light:change", "/lights");
+    const percent: number = lights && lights.hasOwnProperty(activeLight) ? lights[activeLight].level : 0;
     const dragValueStart = React.useRef(percent);
 
-    const changeValue = (name: string, percent: number) => {
-        changeLight({name, value: percent});
+    const changeValue = (lightId: number, percent: number) => {
+        changeLight({lightId, value: percent});
     };
 
     const bind = useDrag(({ event, movement: [, my], first, direction }) => {
@@ -36,11 +36,11 @@ export default function Lights() {
         const newVal = max / window.innerHeight * 2 * my * -1;
 
         if (dragValueStart.current + newVal > max) {
-            changeValue(light, max);
+            changeValue(activeLight, max);
         } else if (dragValueStart.current + newVal < min) {
-            changeValue(light, min);
+            changeValue(activeLight, min);
         } else {
-            changeValue(light, Math.round(dragValueStart.current + newVal));
+            changeValue(activeLight, Math.round(dragValueStart.current + newVal));
         }
     });
 
@@ -52,36 +52,36 @@ export default function Lights() {
 
     const nextStep = () => {
         if (percent + step > max) {
-            changeValue(light, min);
+            changeValue(activeLight, min);
         } else {
-            changeValue(light, Math.round((percent + step) / 10) * 10);
+            changeValue(activeLight, Math.round((percent + step) / 10) * 10);
         }
     }
 
     const lastStep= () => {
         if (percent - step < min) {
-            changeValue(light, max);
+            changeValue(activeLight, max);
         } else {
-            changeValue(light, Math.round((percent - step) / 10) * 10);
+            changeValue(activeLight, Math.round((percent - step) / 10) * 10);
         }
     }
 
-    const lightButtonClick = React.useCallback((name: string) => {
-        if (lights && lights[name]) {
-            setLight(name);
-            changeValue(name, lights[name].level);
+    const lightButtonClick = React.useCallback((lightId: number) => {
+        if (lights && lights[lightId]) {
+            setActiveLight(lightId);
+            changeValue(lightId, lights[lightId].level);
         }
     }, [lights]);
 
-    const lightButtonDoubleClick = (name: string) => {
-        if (lights && lights[name]) {
+    const lightButtonDoubleClick = (lightId: number) => {
+        if (lights && lights[lightId]) {
             
-            if (lights[name].level > min) {
-                changeValue(name, min);
+            if (lights[lightId].level > min) {
+                changeValue(lightId, min);
             }
-            if (lights[name].level === min) {
-                changeValue(name, 80);
-                setLight(name);
+            if (lights[lightId].level === min) {
+                changeValue(lightId, 80);
+                setActiveLight(lightId);
             }
         }
     }
@@ -173,12 +173,12 @@ export default function Lights() {
             justifyContent="center"
         >
 
-            {Object.entries(lights).map(([key, value]) => (
+            {lights.map((value) => (
                 <LightTab
-                    key={key}
+                    key={value.id}
                     name={value.name}
                     value={value.level}
-                    active={light === value.id}
+                    active={activeLight === value.id}
                     onSingleClick={(e) => {e.preventDefault(); lightButtonClick(value.id); console.log("Ok", value)}}
                     onDoubleClick={(e) => {e.preventDefault(); lightButtonDoubleClick(value.id)}}
                 />
