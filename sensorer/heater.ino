@@ -9,12 +9,17 @@ String command = "";
 byte commandHeaterStart [] = { 0xAA, 0x03, 0x04, 0x00, 0x23, 0xFF, 0xFF, 0x08, 0xFF };
 
 void heaterSetup() {
+  Serial2.begin(9600);
   heaterCommand = cli.addCommand("heater", heaterStartCallback);
   heaterCommand.addArgument("do");
+
+  #if debug
+    Serial.println("Heater enabled");
+  #endif
 }
 
 
-void heater() {
+void heaterLoop() {
   unsigned long currentMillis = millis();
   char sendCommand;
 
@@ -101,9 +106,9 @@ void heaterPing() {
 }
 
 void heaterStatus() {
-   #if debug
-      Serial.println("Heater Status");
-   #endif
+  //  #if debug
+  //     Serial.println("Heater Status");
+  //  #endif
       byte command [] = { 0xAA, 0x03, 0x00, 0x00, 0x0F, 0x58, 0x7c };
       Serial2.write (command, sizeof command);
 
@@ -137,6 +142,10 @@ void heaterFanOn() {
 
 
 void heaterFanOff() {
+      if (!Serial2.available()) {
+        Serial.println("Heater fan off");
+        return;
+      }
       Serial.println("Heater fan off");
       byte command [] = { 0xAA, 0x03, 0x00, 0x00, 0x03, 0x5D, 0x7C };
       Serial2.write (command, sizeof command);
