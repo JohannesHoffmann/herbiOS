@@ -3,6 +3,7 @@ import ConfigService from "../ConfigService";
 import AudioPlayer from "./AudioPlayer";
 import ShairportReader from "shairport-sync-reader";
 import AudioService from "./AudioService";
+import Fs from "fs";
 
 class Airplay extends AudioPlayer {
 
@@ -10,7 +11,14 @@ class Airplay extends AudioPlayer {
 
     constructor() {
         super("airplay", "airplay", "green");
-        this._airplay = new ShairportReader({ path: ConfigService.getInstance().getConfig().airPlay});
+        const shairportMetadata = ConfigService.getInstance().getConfig().airPlay;
+
+        if (!Fs.existsSync(shairportMetadata)) {
+            console.log(`Could not load shairport feature. The path ${shairportMetadata} is not available`);
+            return;
+        }
+
+        this._airplay = new ShairportReader({ path: shairportMetadata});
         this._airplay.addListener("meta", (data) => {
             console.log("Airplay meta:", data)
             AudioService.getInstance().startPlayback("airplay");
@@ -36,6 +44,7 @@ class Airplay extends AudioPlayer {
         this._airplay.addListener("prgr", (data) => console.log("Airplay prgr", data))
         this._airplay.addListener("pvol", (data) => console.log("Airplay pvol", data))
         this._airplay.addListener("error", (data) => console.log("Airplay error", data))
+        
     }
 
     public play() {
