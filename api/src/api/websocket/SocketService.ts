@@ -9,6 +9,7 @@ import GeoSocket from "../../geo/GeoSocket";
 import NetworkingSocket from "../../networking/NetworkingSocket";
 import PowerSocket from "../../power/PowerSocket";
 import AroundMeSocket from "../../aroundMe/AroundMeSocket";
+import SwitchesSocket from "../../switches/SwitchesSocket";
 
 export interface IUser  {name: string, type: string, iat: number, exp: number,};
 
@@ -28,6 +29,7 @@ interface INamespaces {
     networking: NetworkingSocket;
     power: PowerSocket;
     aroundMe: AroundMeSocket;
+    switches: SwitchesSocket;
 }
 
 /**
@@ -74,6 +76,7 @@ class SocketService {
             networking: new NetworkingSocket(this._io),
             power: new PowerSocket(this._io),
             aroundMe: new AroundMeSocket(this._io),
+            switches: new SwitchesSocket(this._io),
         };
     }
 
