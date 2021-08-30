@@ -1,65 +1,70 @@
-Command switchesCommand;
+#if useSwitches
+Command switchesSetCommand;
 
-int SWITCH_PV2 = 6;
-int SWITCH_PV1 = 5;
-int SWITCH_230V = 4;
-int SWITCH_WATER = 3;
-
+int NUMBER_SWITCHES = 6;
+int SWITCHES_PIN[6] = {1,2,3,4,5,6};
+boolean SWITCHES_ON[6] = {false, false, false, true, false, false}; // Default state
 
 void switchesSetup() {
-  pinMode(SWITCH_PV1, OUTPUT);
-  pinMode(SWITCH_PV2, OUTPUT);
-  pinMode(SWITCH_230V, OUTPUT);
-  pinMode(SWITCH_WATER, OUTPUT);
-
-  digitalWrite(SWITCH_PV1, HIGH);
-  digitalWrite(SWITCH_PV2, HIGH);
-  digitalWrite(SWITCH_230V, HIGH);
-  digitalWrite(SWITCH_WATER , LOW);
-
-  lightsCommand = cli.addCommand("setSwitch", switchCallback);
-  lightsCommand.addArgument("name");
-  lightsCommand.addArgument("mode");
-}
-
-void switchCallback(cmd* c) {
-    Command cmd(c); // Create wrapper object
-    Argument nameArg = cmd.getArgument("name");
-    Argument modeArg = cmd.getArgument("mode");
-
-    String switchName = nameArg.getValue();
-    String switchMode = modeArg.getValue();
-    
-    if (switchName == "pv") {
-      if (switchMode == "off") {
-        digitalWrite(SWITCH_PV2, LOW);
-        delay(500);
-        digitalWrite(SWITCH_PV1, HIGH);
-      } else if (switchMode == "parallel") {
-        digitalWrite(SWITCH_PV2, HIGH);
-        delay(500);
-        digitalWrite(SWITCH_PV1, HIGH);
-      } else if (switchMode == "serial") {
-        digitalWrite(SWITCH_PV2, LOW);
-        delay(500);
-        digitalWrite(SWITCH_PV1, LOW);
-      }
-    } else if (switchName == "230V") {
-      if (switchMode == "on") {
-        digitalWrite(SWITCH_230V, LOW);
-      } else {
-        digitalWrite(SWITCH_230V, HIGH);
-      }
-    } else if (switchName == "water") {
-      if (switchMode == "on") {
-        digitalWrite(SWITCH_WATER, LOW);
-      } else {
-        digitalWrite(SWITCH_WATER, HIGH);
-      }
+  for (int i = 0; i < NUMBER_SWITCHES; i++) {
+    pinMode(SWITCHES_PIN[i], OUTPUT);
+    if (SWITCHES_ON[i]) {
+      digitalWrite(SWITCHES_PIN[i], HIGH);
+      continue;
     }
 
-    Serial.print("Switch: ");
-    Serial.print(switchName);
-    Serial.print("set to: ");
-    Serial.println(switchMode);
+    digitalWrite(SWITCHES_PIN[i], LOW);
+  }
+
+  switchesSetCommand = cli.addCommand("setSwitch", switchSetCallback);
+  switchesSetCommand.addArgument("switch");
+  switchesSetCommand.addArgument("state");
+  
+  switchesSetCommand = cli.addCommand("getSwitches", switchGetCallback);
+
+  #if debug
+    Serial.println("Switches enabled");
+  #endif
 }
+
+void switchGetCallback(cmd* c) {
+  Serial.print("switches");
+  for (int i = 0; i < NUMBER_SWITCHES; i++) {
+    Serial.print(",switch");
+    Serial.print(i);
+    Serial.print(":");
+    Serial.print(SWITCHES_ON[i]);
+  }  
+  Serial.println("");
+}
+
+  
+void switchSetCallback(cmd* c) {
+    Command cmd(c); // Create wrapper object
+    Argument switchArg = cmd.getArgument("switch");
+    Argument stateArg = cmd.getArgument("state");
+
+    int switchNumber = switchArg.getValue().toInt();
+    String switchState = stateArg.getValue();
+    
+    if (switchNumber >= NUMBER_SWITCHES) {
+      return;      
+    }
+
+    if (switchState == "on") {
+      digitalWrite(SWITCHES_PIN[switchNumber], HIGH);
+      SWITCHES_ON[switchNumber] = true;
+      
+    } else {
+      digitalWrite(SWITCHES_PIN[switchNumber], LOW);
+      SWITCHES_ON[switchNumber] = false;
+    }
+
+    #if debug
+      Serial.print("Switch: ");
+      Serial.print(switchNumber);
+      Serial.print(" set to: ");
+      Serial.println(switchState);
+    #endif
+}
+#endif
