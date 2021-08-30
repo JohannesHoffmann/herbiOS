@@ -1,5 +1,6 @@
 import * as Path from 'path';
 import * as Fs from 'fs';
+import ConfigService from '../../ConfigService';
 
 
 export default abstract class JsonConfig<T> {
@@ -7,8 +8,10 @@ export default abstract class JsonConfig<T> {
     private path;
     protected _content: T;
 
+    private _configPath: string = ConfigService.getInstance().getConfig().configurationDirectory;
+
     constructor(path: string) {
-        this.path = Path.join(__dirname, `../../../data`, path);
+        this.path = Path.join(__dirname, `../../../`, this._configPath, path);
     }
 
     public load() {
