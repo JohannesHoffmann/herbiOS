@@ -2,31 +2,41 @@
 #include <SimpleCLI.h>
 #define debug false
 
+// Enable or disable different Components of this module
+#define useFans true
+#define useHeater true
+#define useGps true
+#define useLights true
+#define useSwitches true
+
 // Defining simple CLI Instance
 SimpleCLI cli;
-
-
-
 String readString;
-
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(500000);    // Serieller Monitor
+  Serial.begin(115200);    // Serieller Monitor
   Serial.setTimeout(10);
 
-  Serial2.begin(9600); // heater
-  Serial3.begin(9600);
+  #if useLights
+    lightsSetup();
+  #endif
 
-  lightsSetup();
-  GPSsetup();
-  heaterSetup();
-  switchesSetup();
-  fanSetup();
+  #if useGps
+    GPSsetup();
+  #endif
 
-  #if debug
-    Serial.println("Did boot");
-   #endif
+  #if useHeater
+    heaterSetup();
+  #endif
+  
+  #if useSwitches
+    switchesSetup();
+  #endif
+  
+  #if useFans
+    fanSetup();
+  #endif
 }
 
 void loop() {
@@ -41,13 +51,19 @@ void loop() {
            Serial.println(input);
         #endif;
 
-
         // Parse the user input into the CLI
         cli.parse(input);
     }
 
-    heater();
+    #if useHeater
+      heaterLoop();
+    #endif
 
-    GPSloop();
-    FanLoop();
+    #if useGps
+      GPSloop(); 
+    #endif
+
+    #if useFans
+      FanLoop();
+    #endif
 }
