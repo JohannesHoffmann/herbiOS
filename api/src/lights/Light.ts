@@ -35,7 +35,7 @@ class Light {
         let id = Number(this.id[this.id.length - 1]) - 1;
 
         // do serialport stuff here to send light level
-        SerialService.send("setLight -light " + id + " -level " + Math.round(255/100 * this.level));
+        SerialService.sendFastCommand("setLight -light " + this.id + " -level " + Math.round(255/100 * this.level));
         
         return this.level;
     }
