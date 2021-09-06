@@ -1,4 +1,5 @@
 import React from 'react';
+import { Text } from 'rebass';
 
 export default function Clock () {
 
@@ -16,7 +17,7 @@ export default function Clock () {
         return("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
     }
 
-    return <h1>
+    return <Text fontSize={[5, 6]}>
         {humanTime(time)}
-    </h1>
+    </Text>
 }
