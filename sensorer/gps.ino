@@ -44,8 +44,8 @@ static void GPSloop()
 } 
 
 static void GPSsetup() {
-  Serial3.begin(9600);
-  gpsPort.begin( 9600 );
+  
+  gpsPort.begin(9600);
   gpsCommand = cli.addCommand("getPosition", gpsCallback);
 
   #if debug
@@ -58,6 +58,5 @@ void gpsCallback(cmd* c) {
     Command cmd(c); // Create wrapper object
 
     trace_all(Serial, gps, fix );
-    Serial.println("");
 }
 #endif
