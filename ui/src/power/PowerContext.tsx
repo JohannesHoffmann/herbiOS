@@ -1,16 +1,12 @@
 import React from 'react';
 import { createContainer } from 'react-tracked';
-import { socketSend, useWebSocket } from '../utils/useWebSocket';
+import { useWebSocket } from '../utils/useWebSocket';
 import { IPowerConfig, SolarMode } from './IPower';
 import { cloneDeep } from "lodash";
 
 type Actions = {
     type: "SET";
     config: Partial<IPowerState>;
-} | {
-    type: "SWITCH_SET";
-    name: keyof IPowerState["switches"];
-    on: boolean;
 };
 
 export interface IPowerState extends IPowerConfig {
@@ -20,11 +16,6 @@ export interface IPowerState extends IPowerConfig {
 let powerState: IPowerState = {
     solar: SolarMode.parallel,
     batteryVolt: 130,
-    switches: {
-        inverter: false,
-        water: true,
-        chiller: true,
-    },
     settings: {
         batteryVoltMax: 138,
         batteryVoltMin: 105,
@@ -47,11 +38,6 @@ const reducer = (state: IPowerState , action: Actions) => {
                 ...newState,
                 ...action.config,
             }
-            break;
-
-        case "SWITCH_SET":
-            newState.switches[action.name] = action.on;
-            socketSend("switch:set", "/power")(action);
             break;
     }
 

@@ -15,11 +15,6 @@ export interface IPowerSolarLog {
 export interface IPowerConfig {
     solar: SolarMode;
     batteryVolt: number;
-    switches: {
-        inverter: boolean;
-        water: boolean;
-        chiller: boolean;
-    };
     settings: {
         batteryVoltMax: number;
         batteryVoltMin: number;
