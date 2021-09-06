@@ -1,5 +1,6 @@
 
 export default {
+    name: "light",
     breakpoints: ['1024px'],
     fontSizes: [
       12, 14, 16, 20, 24, 32, 48, 64
@@ -20,7 +21,7 @@ export default {
       0, 4, 8, 16, 32, 64, 128, 256
     ],
     fonts: {
-      body: 'system-ui, sans-serif',
+      body: 'Work Sans, system-ui, sans-serif',
       heading: 'inherit',
       monospace: 'Menlo, monospace',
     },
@@ -40,7 +41,7 @@ export default {
     variants: {
         tile: {
             borderRadius: "default",
-            backgroundColor: "backgroundLight"
+            backgroundColor: "backgroundLight",
         }
     },
     text: {
@@ -56,7 +57,7 @@ export default {
     heading: {
         fontWeight: "normal",
         color: "green",
-        fontSize: [5, 4],
+        fontSize: [4, 3],
     },
 
     
