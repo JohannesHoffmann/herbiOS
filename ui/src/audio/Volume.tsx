@@ -23,7 +23,7 @@ function Volume() {
         <Slider
             id='percent'
             name='percent'
-            defaultValue={volume}
+            value={volume}
             onChange={(e) => setLevel(Number(e.currentTarget.value))}
             sx={{
                 height: 5,

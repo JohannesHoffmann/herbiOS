@@ -5,21 +5,25 @@ import { useDrag } from "react-use-gesture";
 import { useWebSocket } from "../utils/useWebSocket";
 import useDoubleClick from 'use-double-click';
 
+interface ILight {
+    name: string, 
+    id: number, 
+    level: number
+}
 
 export default function Lights() {
     const height: number = 271;
-    const step: number = 20;
     const max: number = 100;
     const min: number = 0;
     const theme: any = useTheme();
-    const [light, setLight] = React.useState<string>("light1");
-    const [lights, getLights] = useWebSocket<{[keys: string]: {name: string, id: string, level: number}},string>("lights", "/lights");
-    const [, changeLight] = useWebSocket<null, {name: string, value: number}>("light:change", "/lights");
-    const percent: number = lights && lights.hasOwnProperty(light) ? lights[light].level : 0;
-    const dragValueStart = React.useRef(percent);
+    const [activeLight, setActiveLight] = React.useState<ILight>({name: "Light", id: 0, level: 0});
+    const [lights, getLights] = useWebSocket<Array<ILight>,string>("lights", "/lights");
+    const [, changeLight] = useWebSocket<null, {lightId: number, value: number}>("light:change", "/lights");
 
-    const changeValue = (name: string, percent: number) => {
-        changeLight({name, value: percent});
+    const dragValueStart = React.useRef(activeLight.level);
+
+    const changeValue = (light: ILight, value: number) => {
+        changeLight({lightId: light.id, value});
     };
 
     const bind = useDrag(({ event, movement: [, my], first, direction }) => {
@@ -27,7 +31,7 @@ export default function Lights() {
         event?.stopPropagation();
 
         if (first) {
-            dragValueStart.current = percent;
+            dragValueStart.current = activeLight.level;
         }
         if (direction[0] > 0.5 || direction[0] < -0.5) {
             return;
@@ -36,70 +40,60 @@ export default function Lights() {
         const newVal = max / window.innerHeight * 2 * my * -1;
 
         if (dragValueStart.current + newVal > max) {
-            changeValue(light, max);
+            changeValue(activeLight, max);
         } else if (dragValueStart.current + newVal < min) {
-            changeValue(light, min);
+            changeValue(activeLight, min);
         } else {
-            changeValue(light, Math.round(dragValueStart.current + newVal));
+            changeValue(activeLight, Math.round(dragValueStart.current + newVal));
         }
     });
 
+    // Request lights if not available
     React.useEffect(() => {
         if (!lights) {
             getLights("");
         }
     }, [lights, getLights]);
 
-    const nextStep = () => {
-        if (percent + step > max) {
-            changeValue(light, min);
-        } else {
-            changeValue(light, Math.round((percent + step) / 10) * 10);
+    // Set default light
+    React.useEffect(() => {
+        if (!lights || !activeLight) {
+            return;
         }
+
+        const index = lights.findIndex(light => light.id === activeLight.id);
+        if (index >= 0) {
+            setActiveLight(lights[index]);
+        }
+        
+    }, [lights, activeLight, setActiveLight]);
+
+    const lightButtonClick = (light: ILight) => {
+        setActiveLight(light);
+        changeValue(light, light.level);
     }
 
-    const lastStep= () => {
-        if (percent - step < min) {
-            changeValue(light, max);
-        } else {
-            changeValue(light, Math.round((percent - step) / 10) * 10);
-        }
-    }
-
-    const lightButtonClick = React.useCallback((name: string) => {
-        if (lights && lights[name]) {
-            setLight(name);
-            changeValue(name, lights[name].level);
-        }
-    }, [lights]);
-
-    const lightButtonDoubleClick = (name: string) => {
-        if (lights && lights[name]) {
-            
-            if (lights[name].level > min) {
-                changeValue(name, min);
+    const lightButtonDoubleClick = (light: ILight) => {
+            if (light.level > min) {
+                changeValue(light, min);
             }
-            if (lights[name].level === min) {
-                changeValue(name, 80);
-                setLight(name);
+            if (light.level === min) {
+                changeValue(light, 80);
+                setActiveLight(light);
             }
         }
-    }
+
+
     return <>
         <Heading>Licht</Heading>
         <Flex alignItems="center"  justifyContent="center">
-            <Box sx={{width: ["20px", "30px"]}} onClick={lastStep}>
-                <svg width="100%" viewBox="0 0 26 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20.7286 13.7881C18.6686 13.4854 10.693 13.5324 10.137 13.3865C9.58101 13.2407 3.08655 14.2111 1.15425 12.5157C-0.778056 10.8202 2.84828 8.70113 5.59799 8.03585C9.76203 7.64257 18.9506 7.2006 22.3923 8.57893C26.6945 10.3019 23.3036 14.1665 20.7286 13.7881Z" fill={theme.colors.grey}/>
-                </svg>
-            </Box>
             <Box
                 {...bind()}
                 flexGrow={1}
                 pl={[2, 4]}
                 pr={[2, 4]}
                 sx={{
-                    maxWidth: 350,
+                    maxWidth: 450,
                     touchAction: "none",
                 }}
             >
@@ -124,7 +118,7 @@ export default function Lights() {
                     
                     <use href="#fill" clipPath={"url(#sun)"} />
 
-                    <g transform={"translate(0 " + ((height - 32)/100 * percent - height + 32) * -1 + ")"}  id="dragHandle" >
+                    <g transform={"translate(0 " + ((height - 32)/100 * activeLight.level - height + 32) * -1 + ")"}  id="dragHandle" >
                         <path d="M100.63,25c-4.82,0 -8.727,-3.907 -8.727,-8.727l0,-6.273c0,-5.523 4.478,-10 10,-10l20,0c5.523,0 10,4.477 10,10l0,7.326c0,4.238 -3.435,7.674 -7.673,7.674l-1.5,0c-2.168,0 -4.127,1.296 -4.976,3.292c-1.865,4.389 -8.086,4.389 -9.951,0c-0.849,-1.996 -2.808,-3.292 -4.976,-3.292l-2.197,0Z" style={{fill: "#febf54", fillRule: "nonzero"}}/>
                         <path d="M101.903,16.5c0,-1.38 1.121,-2.5 2.5,-2.5c1.38,0 2.5,1.12 2.5,2.5c0,1.38 -1.12,2.5 -2.5,2.5c-1.379,0 -2.5,-1.12 -2.5,-2.5Z" style={{fill: theme.colors.background}}/>
                         <path d="M109.903,16.5c0,-1.38 1.121,-2.5 2.5,-2.5c1.38,0 2.5,1.12 2.5,2.5c0,1.38 -1.12,2.5 -2.5,2.5c-1.379,0 -2.5,-1.12 -2.5,-2.5Z" style={{fill: theme.colors.background}}/>
@@ -134,10 +128,10 @@ export default function Lights() {
                         <path d="M117.903,8.5c0,-1.38 1.121,-2.5 2.5,-2.5c1.38,0 2.5,1.12 2.5,2.5c0,1.38 -1.12,2.5 -2.5,2.5c-1.379,0 -2.5,-1.12 -2.5,-2.5Z" style={{fill: theme.colors.background}}/>
                     </g>
                     
-                    <text x="185.737px" y="162.389px" style={{fontFamily:"'Roboto-Regular', 'Roboto'", fontSize: "30.634px", fill: theme.colors.green}}>{percent}%</text>
+                    <text x="185.737px" y="162.389px" style={{fontFamily:"'Roboto-Regular', 'Roboto'", fontSize: "30.634px", fill: theme.colors.green}}>{activeLight.level}%</text>
 
                     <defs>
-                        <path transform={"translate(0 " + ((height - 32)/100 * percent - height + 32) * -1 + ")"} id="fill" d="M260,55.485c-102.606,-31.682 -190.023,-33.173 -260,-0l0,215.515l260,-0l0,-215.515Z" style={{fill: theme.colors.primary}} />
+                        <path transform={"translate(0 " + ((height - 32)/100 * activeLight.level - height + 32) * -1 + ")"} id="fill" d="M260,55.485c-102.606,-31.682 -190.023,-33.173 -260,-0l0,215.515l260,-0l0,-215.515Z" style={{fill: theme.colors.primary}} />
 
                         <clipPath id="sun">
                             <path d="M139.416,49.478c1.301,-1.626 5.284,-8.536 5.69,-8.942c0.407,-0.407 2.846,-6.504 5.284,-7.317c2.439,-0.813 2.439,3.388 1.626,6.097c-1.761,3.794 -6.015,11.95 -8.942,14.226c-3.658,2.846 -5.284,-2.032 -3.658,-4.064Z" style={{fill: "#febf54"}}/>
@@ -160,27 +154,20 @@ export default function Lights() {
 
                 </svg>
             </Box>
-            <Box sx={{width: ["20px", "30px"]}} onClick={nextStep}>
-                <svg width="100%" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20.7286 15.7881C18.6686 15.4854 10.693 15.5324 10.137 15.3865C9.58101 15.2407 3.08655 16.2111 1.15425 14.5157C-0.778056 12.8202 2.84828 10.7011 5.59799 10.0359C9.76203 9.64257 18.9506 9.2006 22.3923 10.5789C26.6945 12.3019 23.3036 16.1665 20.7286 15.7881Z" fill={theme.colors.grey} />
-                    <path d="M15.1902 5.23125C14.8767 7.28961 14.8819 15.2654 14.7332 15.8206C14.5844 16.3758 15.5208 22.8753 13.8152 24.7987C12.1097 26.7221 10.0096 23.0847 9.35877 20.3315C8.98732 16.1655 8.59349 6.97476 9.98984 3.54027C11.7353 -0.752833 15.5821 2.65831 15.1902 5.23125Z" fill={theme.colors.grey}/>
-                </svg>
-
-            </Box>
         </Flex>
 
         {lights && <Flex
             justifyContent="center"
         >
 
-            {Object.entries(lights).map(([key, value]) => (
+            {lights.map((value, key) => (
                 <LightTab
-                    key={key}
+                    key={value.id}
                     name={value.name}
                     value={value.level}
-                    active={light === value.id}
-                    onSingleClick={(e) => {e.preventDefault(); lightButtonClick(value.id); console.log("Ok", value)}}
-                    onDoubleClick={(e) => {e.preventDefault(); lightButtonDoubleClick(value.id)}}
+                    active={activeLight.id === value.id}
+                    onSingleClick={(e) => {e.preventDefault(); lightButtonClick(value);}}
+                    onDoubleClick={(e) => {e.preventDefault(); lightButtonDoubleClick(value)}}
                 />
             ))}
             

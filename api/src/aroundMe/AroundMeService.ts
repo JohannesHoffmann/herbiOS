@@ -4,6 +4,7 @@ import OpenWeatherMap from 'openweathermap-ts';
 import GeoService from "../geo/GeoService";
 import AroundMeSocket from "./AroundMeSocket";
 import { CronJob } from "cron";
+import ConfigService from "../ConfigService";
 
 class AroundMeService {
 
@@ -12,7 +13,7 @@ class AroundMeService {
     private _weather: OpenWeatherMap;
     private _socket: AroundMeSocket;
     private _cronJob: CronJob;
-    private _cronJobInterval: string = "0 */5 * * * *"; // updates the arround me data every 30 minutes
+    private _cronJobInterval: string = "0 */5 * * * *"; // updates the around me data every 30 minutes
 
     public static getInstance(): AroundMeService {
         if (!AroundMeService.instance) {
@@ -24,9 +25,9 @@ class AroundMeService {
     private constructor() {
         this._config = new AroundMeConfig();
         this._socket = SocketService.getInstance().getNamespace("aroundMe");
-
+        const apiKey = ConfigService.getInstance().getConfig().openWeatherApiKey;
         this._weather = new OpenWeatherMap({
-            apiKey: 'myOpenWeatherApiKey',
+            apiKey,
             units: "metric",
             language: "de",
           });
@@ -43,7 +44,6 @@ class AroundMeService {
     }
     
     public async updateAroundMeData() {
-        console.log("Update Around Me Data")
         await this.fetchWeather();
     }
 
@@ -57,9 +57,10 @@ class AroundMeService {
         try {
             const cords = GeoService.getInstance().getLastPosition();
             const currentWeather = await this._weather.getCurrentWeatherByGeoCoordinates(cords.lat, cords.lon);
-            console.log("Current Weather in ", cords);
+            const forecastWeather = await this._weather.getThreeHourForecastByGeoCoordinates(cords.lat, cords.lon);
             this._config.set({
                 currentWeather,
+                forecastWeather,
             });
             this._config.save();
             this._update();

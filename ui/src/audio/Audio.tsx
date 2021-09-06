@@ -41,7 +41,8 @@ export default function Audio () {
         </Flex>
 
         <Box
-            p={4}
+            pl={3}
+            pr={3}
             sx={{
                 zIndex: 10,
                 position: "relative",

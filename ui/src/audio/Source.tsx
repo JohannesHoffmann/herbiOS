@@ -10,11 +10,11 @@ export default function Source () {
 
     return <Box>
             <Flex mb={3} mt={3}>
-                <Flex flexDirection="row" alignItems="center" mr={3} sx={{color: playback.type === "airplay" ? "primary" : "grey", fontSize: 2}}>
-                    <IconAirPlay color={playback.type === "airplay" ? "primary" : "grey"} /> AirPlay
+                <Flex flexDirection="row" alignItems="center" mr={3} sx={{color: playback.type === "airplay" ? "primary" : "darkGrey", fontSize: 2}}>
+                    <IconAirPlay color={playback.type === "airplay" ? "primary" : "darkGrey"} /> AirPlay
                 </Flex>
-                <Flex flexDirection="row" alignItems="center" mr={3} sx={{color: playback.type === "radio" ? "primary" : "grey", fontSize: 2}}>
-                    <IconSignal color={playback.type === "radio" ? "primary" : "grey"} /> Radio
+                <Flex flexDirection="row" alignItems="center" mr={3} sx={{color: playback.type === "radio" ? "primary" : "darkGrey", fontSize: 2}}>
+                    <IconSignal color={playback.type === "radio" ? "primary" : "darkGrey"} /> Radio
                 </Flex>
             </Flex>
         </Box>

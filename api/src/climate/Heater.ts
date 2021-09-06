@@ -26,13 +26,13 @@ export default class Heater {
 
         switch (mode) {
             case "off":
-                SerialService.send("heater -do stop");
+                SerialService.sendFastCommand("heater -do stop");
                 break;
             case "fan":
-                SerialService.send("heater -do fan" + this._strength);
+                SerialService.sendFastCommand("heater -do fan" + this._strength);
                 break;
             case "heat":
-                SerialService.send("heater -do heat" + this._strength);
+                SerialService.sendFastCommand("heater -do heat" + this._strength);
                 break;
         }
     }

@@ -7,10 +7,14 @@ SimpleCLI cli;
 
 String readString;
 
-Command fanCommand;
+Command fanSetCommand;
+Command fanGetCommand;
 
-int FAN_OUT = 10;
-int FAN_IN = 11;
+const int FAN_OUT = 10;
+const int FAN_IN = 11;
+
+String FAN_DIRECTION = "blow";
+int FAN_LEVEL = 0;
 
 
 void setup() {
@@ -20,9 +24,11 @@ void setup() {
   pinMode(FAN_OUT, OUTPUT);
   pinMode(FAN_IN, OUTPUT);
   
-  fanCommand = cli.addCommand("setFan", fanCallback);
-  fanCommand.addArgument("direction");
-  fanCommand.addArgument("level");
+  fanSetCommand = cli.addCommand("setFan", fanSetCallback);
+  fanSetCommand.addArgument("direction");
+  fanSetCommand.addArgument("level");
+  
+  fanSetCommand = cli.addCommand("getFan", fanGetCallback);
 
   #if debug
     Serial.println("Did boot");
@@ -48,7 +54,15 @@ void loop() {
 }
 
 
-void fanCallback(cmd* c) {
+void fanGetCallback(cmd* c) {
+  Serial.print("fanOverhead:");
+  Serial.print("level=");
+  Serial.print(FAN_LEVEL);
+  Serial.print(";direction=");
+  Serial.print(FAN_DIRECTION);
+}
+
+void fanSetCallback(cmd* c) {
     Command cmd(c); // Create wrapper object
     Argument directionArg = cmd.getArgument("direction");
     Argument levelArg = cmd.getArgument("level");

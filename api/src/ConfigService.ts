@@ -4,14 +4,9 @@ import * as Fs from 'fs';
 
 export interface IConfig {
     env: string,
-    dataStorage: {
-        vitals: string,
-        geo: string,
-        controls: string;
-        config: string;
-    },
     airPlay: string;
     database: string;
+    configurationDirectory: string;
     serial: {
         path: string;
         baud: number;
@@ -33,7 +28,8 @@ export interface IConfig {
     authentication: {
         secret: string;
         expiration: string;
-    }
+    },
+    openWeatherApiKey: string;
 }
 
 class ConfigService {
@@ -49,19 +45,17 @@ class ConfigService {
 
     config: IConfig = {
         env: "development",
-        dataStorage: {
-            vitals: "data/vitals.json",
-            geo: "data/gps.json",
-            controls: "data/controls.json",
-            config: "data/config.json",
-        },
+        configurationDirectory: "data/",
         airPlay: "/tmp/shairport-sync-metadata",
         database: "sqlite:./data/db.sqlite",
         serial: {
             path: "/dev/ttyACM0",
-            baud: 500000,
+            baud: 115200,
         },
         rest: {
+            port: 5555,
+        },
+        webSocket: {
             port: 5555,
         },
         groundControl: {
@@ -81,17 +75,15 @@ class ConfigService {
                 cron: "0 * */6 * * *",
             },
         ],
-        webSocket: {
-            port: 5555,
-        },
         authentication: {
             secret: "defaultSalt",
             expiration: "30d",
-        }
+        },
+        openWeatherApiKey: "Get your key on https://openweathermap.org/appid"
     };
 
     private constructor() {
-        const configPath = Path.join(__dirname, `../`, this.config.dataStorage.config);
+        const configPath = Path.join(__dirname, `../`, this.config.configurationDirectory+ "config.json");
         if (Fs.existsSync(configPath)) {
             const loadedConfig = Fs.readFileSync(configPath, {encoding: "utf-8"});
             this.config = {...{}, ...this.config, ...JSON.parse(loadedConfig)};

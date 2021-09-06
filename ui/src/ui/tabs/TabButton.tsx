@@ -21,16 +21,16 @@ export default function TabButton (props: Props) {
 
 
 
-    return <Flex flexDirection="column" alignItems="center" mr={2} ml={2}>
+    return <Flex flexDirection="column" alignItems="center" mr={3} ml={0}>
         <Button
             sx={{
                 backgroundColor: active ? "primary" : "background",
             }}
-            p={1}
+            p={0}
             onClick={onClick}
         >
             {React.cloneElement(children, {color: active ? "background" : "grey"})}
         </Button>
-        {label && <Text mt={2} sx={{color: active ? "primary" : "background"}}>{label}</Text>}
+        {label && <Text mt={1} sx={{color: active ? "primary" : "background"}}>{label}</Text>}
     </Flex>
 }

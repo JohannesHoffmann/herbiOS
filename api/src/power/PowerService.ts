@@ -37,11 +37,11 @@ class PowerService {
     public setSwitch(name: keyof IPowerConfig["switches"], on: boolean) {
         switch (name) {
             case "inverter":
-                SerialService.send("setSwitch -name 230V -mode " + (on ? "on" : "off"));
+                SerialService.sendFastCommand("setSwitch -name 230V -mode " + (on ? "on" : "off"));
                 break;
                 
             default:
-                SerialService.send("setSwitch -name " + name + " -mode " + (on ? "on" : "off"));
+                SerialService.sendFastCommand("setSwitch -name " + name + " -mode " + (on ? "on" : "off"));
                 break;
         }
 

@@ -28,21 +28,21 @@ export default class Fan {
 
         switch (mode) {
             case FanMode.off:
-                SerialService.send("setFan -fan overhead -direction off -level 0");
+                SerialService.sendFastCommand("setFan -fan overhead -direction off -level 0");
                 if (this._job) {
                     this._job.stop();
                     console.log("fan cron stop");
                 }
                 break;
             case FanMode.in:
-                SerialService.send("setFan -fan overhead -direction in -level " + this._strength);
+                SerialService.sendFastCommand("setFan -fan overhead -direction in -level " + this._strength);
                 if (this._job) {
                     this._job.stop();
                     console.log("fan cron stop");
                 }
                 break;
             case FanMode.out:
-                SerialService.send("setFan -fan overhead -direction out -level " + this._strength);
+                SerialService.sendFastCommand("setFan -fan overhead -direction out -level " + this._strength);
                 if (this._job) {
                     this._job.stop();
                     console.log("fan cron stop");
@@ -52,10 +52,10 @@ export default class Fan {
                 this._job = new CronJob("0 */2 * * * *", async () => {
                     if (this._modeInOut === FanMode.in) {
                         this._modeInOut = FanMode.out;
-                        SerialService.send("setFan -fan overhead -direction out -level " + this._strength);
+                        SerialService.sendFastCommand("setFan -fan overhead -direction out -level " + this._strength);
                     } else {
                         this._modeInOut = FanMode.in;
-                        SerialService.send("setFan -fan overhead -direction in -level " + this._strength);
+                        SerialService.sendFastCommand("setFan -fan overhead -direction in -level " + this._strength);
                     }
                 });
                 this._job.start();

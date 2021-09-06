@@ -1,4 +1,4 @@
-
+#if useGps
 #include <NMEAGPS.h>
 #include <GPSport.h> // Settings of the used Serial Port are here
 
@@ -44,8 +44,13 @@ static void GPSloop()
 } 
 
 static void GPSsetup() {
-  gpsPort.begin( 9600 );
+  
+  gpsPort.begin(9600);
   gpsCommand = cli.addCommand("getPosition", gpsCallback);
+
+  #if debug
+    Serial.println("GPS enabled");
+  #endif
 }
 
 
@@ -54,3 +59,4 @@ void gpsCallback(cmd* c) {
 
     trace_all(Serial, gps, fix );
 }
+#endif

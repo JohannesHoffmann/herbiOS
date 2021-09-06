@@ -2,6 +2,7 @@ import theme from "./theme";
 
 export default {
     ...theme,
+    name: "dark",
     colors: {
         text: '#FFFFFF',
         background: '#222639',

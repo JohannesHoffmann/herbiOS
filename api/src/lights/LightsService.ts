@@ -1,3 +1,4 @@
+import SerialService from "../SerialService";
 import Light from "./Light";
 import LightsConfig from "./LightsConfig";
 
@@ -13,39 +14,43 @@ class LightsService {
         return LightsService.instance;
     }
 
-    lights: {[key: string]: Light} = {};
+    lights: Array<Light> = [];
 
     private constructor() {
         // register all available lights
-        for (const [lightId, lightConfiguration]of Object.entries(this.config.get().lights)) {
-            this.lights[lightId] = new Light(lightId, lightConfiguration.label);
-            this.setLightLevel(lightId, lightConfiguration.level);
+        for (const lightConfiguration of this.config.get().lights) {
+            this.lights.push(new Light(lightConfiguration.lightNumber, lightConfiguration.label));
+        }
+
+        this.init();
+    }
+
+    private async init() {
+        const lightsData = (await SerialService.send("getLights")).split(",");
+        if (lightsData[0] === "lights") {
+            const lights = lightsData.slice(1, -1);
+            lights.forEach((light, id) => {
+                const level = light.split(":")[1];
+                this.setLightLevel(id, Number(level));
+            });
         }
     }
 
-    setLightLevel(lightId: string, dim: number): Light {
-        if (this.lights.hasOwnProperty(lightId)) {
-            // send new dim value to device
-            this.lights[lightId].dim(dim);
-
-            const config = this.config.get();
+    setLightLevel(lightId: number, dim: number): Light {
+        // send new dim value to device
+        const config = this.config.get();
+        const index = config.lights.findIndex(light => light.lightNumber === lightId);
+        if (index !== -1) {
+            this.lights[index].dim(dim);
+            config.lights[index].level = dim;
 
             // Save into configs
-            this.config.set({
-                lights: {
-                    ...config.lights,
-                    [lightId]: {
-                        ...config.lights[lightId] ? config.lights[lightId] : { label: lightId},
-                        level: dim
-                    },
-                }
-            });
+            this.config.set(config);
             this.config.save();
-
-            return this.lights[lightId];
-        } else {
-            console.log("Light", lightId, " is not available");
-        }
+            return this.lights[index];
+        } 
+            
+        console.log("Light", lightId, " is not available");
     }
 }
 

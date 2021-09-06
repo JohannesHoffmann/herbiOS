@@ -18,7 +18,9 @@ export default function Climate () {
         mt={4}
     >
         <Box
-            p={4}
+            p={3}
+            pr={3}
+            pl={3}
             sx={{
                 zIndex: 10,
                 position: "relative",

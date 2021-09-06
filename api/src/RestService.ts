@@ -119,19 +119,19 @@ class RestService {
         // LIGHTS
         this.server.route({
             method: 'GET',
-            url: '/light/:name/:dim',
+            url: '/light/:number/:dim',
             schema: {
                 params: {
-                name: { type: 'string' },
+                number: { type: 'number' },
                 dim: { type: 'integer' }
                 },
                 response: 200,
             },
             handler: async function (request, reply) {
-                const params = request.params as {name: string, dim: number};
+                const params = request.params as {number: number, dim: number};
         
                 try {
-                    const result = LightsService.getInstance().setLightLevel(params.name, params.dim);
+                    const result = LightsService.getInstance().setLightLevel(params.number, params.dim);
                     reply.status(200).send(result);
                 } catch (e) {
                     reply.status(500).send(e);

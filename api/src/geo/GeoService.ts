@@ -37,7 +37,7 @@ class GeoService {
 
 
     async _renewGeo() {
-        const position = await SerialService.sendAndRead("getPosition");
+        const position = await SerialService.send("getPosition");
         console.log("GEO: got geo position from arduino", position);
         const dataArray = position.split(",");
         if (dataArray.length >= 4 && Number(dataArray[2]) < 10000000 && Number(dataArray[3]) < 10000000) {

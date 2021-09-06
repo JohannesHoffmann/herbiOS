@@ -1,18 +1,17 @@
 import NamespaceSocket from "../api/websocket/NamespaceSocket";
 import { Socket, Server} from "socket.io";
-import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import LightsService from "./LightsService";
 import Light from "./Light";
 
  type  LightsEventsListen = {
-     ["light:change"]: ({name: string, value: number}) => void,
-     ["light"]: ({name: string}) => Light,
+     ["light:change"]: (message: {lightId: number; value: number}) => void,
+     ["light"]: (message: {lightId: number}) => Light,
      ["lights"]: () => void,
     }
     
     type  LightsEventsEmit = {
-     ["lights"]: (lights: {[key: string]: Light}) => void,
-     ["light"]: (lights: {[key: string]: Light}) => void,
+     ["lights"]: (lights: Array<Light>) => void,
+     ["light"]: (lights: Array<Light>) => void,
  }
 
 /**
@@ -38,7 +37,7 @@ export default class LightsSocket extends NamespaceSocket {
 
         // Request lights
         socket.on("light:change", (message) => {
-            LightsService.getInstance().setLightLevel(message.name, message.value);
+            LightsService.getInstance().setLightLevel(message.lightId, message.value);
             this._ws.emit("lights", LightsService.getInstance().lights);
         });
     }
