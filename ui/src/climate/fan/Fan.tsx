@@ -1,41 +1,74 @@
 import React from "react";
-import { Button, Flex } from "rebass";
+import { Box, Button, Flex, Heading, SxStyleProp, Text } from "rebass";
+import IconArrowDouble from "../../ui/icons/IconArrowDouble";
+import IconArrowLeft from "../../ui/icons/IconArrowLeft";
+import IconArrowRight from "../../ui/icons/IconArrowRight";
 import { useClimateDispatch, useClimateState } from "../ClimateContext";
+import { FanMode } from "../IClimate";
 
 export default function Fan () {
-    const {strength, mode} = useClimateState().heater;
+    const {mode} = useClimateState().fan;
     const dispatch = useClimateDispatch();
+    const buttonStyle: SxStyleProp = {
+        marginRight: 2,
+        padding: 3,
+        width: "28%",
+        backgroundColor: "background",
+        color: "lightGrey",
 
-    return <>
-        <Flex>
+    }
+
+    const buttonStyleActive: SxStyleProp = {
+        ...buttonStyle,
+        backgroundColor: "primary",
+        color: "white"
+    }
+
+    const setMode = (newMode: FanMode) => {
+        if (mode === newMode) {
+            dispatch({type: "FAN", mode: "off"});
+            return;
+        }
+
+        dispatch({type: "FAN", mode: newMode, strength: 255});
+    }
+
+    return <Box mt={4}>
+        <Heading mb={3}>Lüfter</Heading>
+        <Flex justifyContent="space-between">
             <Button 
-                onClick={() => {
-                    dispatch({type: "FAN", mode: "in", strength: 255});
+                sx={{    
+                    ...mode === FanMode.in ? buttonStyleActive : buttonStyle,
                 }}
+                onClick={() => { setMode(FanMode.in); }}
             >
-                In
+                <IconArrowRight width={30}  color={mode === FanMode.in ? "white" : "lightGrey"} />
+                <Text>
+                    Ein
+                </Text>
             </Button>
             <Button
-                onClick={() => {
-                    dispatch({type: "FAN", mode: "out", strength: 255});
+                sx={{    
+                    ...mode === FanMode.out ? buttonStyleActive : buttonStyle,
                 }}
+                onClick={() => { setMode(FanMode.out); }}
             >
-                Out
+                <IconArrowLeft width={30}  color={mode === FanMode.out ? "white" : "lightGrey"} />
+                <Text>
+                    Aus
+                </Text>
             </Button>
             <Button
-                onClick={() => {
-                    dispatch({type: "FAN", mode: "inOut", strength: 255});
+                sx={{    
+                    ...mode === FanMode.inOut ? buttonStyleActive : buttonStyle,
                 }}
+                onClick={() => { setMode(FanMode.inOut); }}
             >
-                In  Out
-            </Button>
-            <Button
-                onClick={() => {
-                    dispatch({type: "FAN", mode: "off"});
-                }}
-            >
-                Off
+                <IconArrowDouble width={30} color={mode === FanMode.inOut ? "white" : "lightGrey"} />
+                <Text>
+                    Ein Aus
+                </Text>
             </Button>
         </Flex>
-    </>
+    </Box>
 }

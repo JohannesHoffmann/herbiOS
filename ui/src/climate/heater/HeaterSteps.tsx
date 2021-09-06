@@ -1,10 +1,10 @@
 import React from "react";
 import { useClimateDispatch, useClimateState } from "../ClimateContext";
-import LevelButton from "../../ui/LevelButton";
 import { Box } from "rebass";
 import { useDrag } from "react-use-gesture";
 import theme from "../../theme";
 import { HeaterMode } from "../IClimate";
+import { useEffect } from "react";
 
 
 function HeaterStepButton() {
@@ -17,10 +17,32 @@ function HeaterStepButton() {
     const dragValueStart = React.useRef(sliderX);
 
     const max: number = 10;
-    const min: number = 0;
     const [value, setValue]= React.useState<number>(strength);
 
-    const bind = useDrag(({ event, elapsedTime, movement: [mx, my], first, last, direction }) => {
+    // update sliderX when strength gets update from server
+    useEffect(() => {
+        if (mode === "off") {
+            setSliderX(0);
+            dragValueStart.current = 0;
+            setValue(0);
+            return;
+        }   
+        const strengthInValue = strength + 1;
+        const posOfStrengthMin = sliderMax / max * strengthInValue;
+        const posOfStrengthMax =  sliderMax / max - 1 * (strengthInValue + 1);
+
+        setValue(strengthInValue);
+
+        if (sliderX >= posOfStrengthMin && sliderX <= posOfStrengthMax) {
+            return;
+        }
+
+        const newXPosition =  (strengthInValue) / max * sliderMax;
+        setSliderX(newXPosition);
+        dragValueStart.current = newXPosition;
+    }, [strength, setSliderX, mode]);
+
+    const bind = useDrag(({ movement: [mx], first, last, direction }) => {
         if (first) {
             dragValueStart.current = sliderX;
         }
@@ -50,19 +72,23 @@ function HeaterStepButton() {
     }, [setSliderX]);
 
     const setHeater = () => {
+        console.log("Set Heater", strength, value - 1, mode);
         if (value === 0 && mode !== HeaterMode.off) {
+            console.log("Dispatch off");
             dispatch({type: "HEATER", mode: "off"});
             return;
         }
         if (value > 0  && mode === HeaterMode.off) {
+            console.log("Dispatch heat");
             dispatch({type: "HEATER", mode: "heat"})
         }
         if (value > 0 && strength !== value - 1) {
+            console.log("Dispatch strength", value - 1);
             dispatch({type: "HEATER", strength: value - 1});
         }
     }
 
-    return <Box {...bind()}>
+    return <Box {...bind()} mr={-3} ml={-3} mt={2}>
         <svg
         xmlns="http://www.w3.org/2000/svg"
         fillRule="evenodd"
