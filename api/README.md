@@ -10,6 +10,8 @@ This code is written in Typescript. To start the development server you has to i
 
  ````
 npm install
+npm install -g nodemon
+npm install -g ts-node
 ````
 
 **Start development server**
