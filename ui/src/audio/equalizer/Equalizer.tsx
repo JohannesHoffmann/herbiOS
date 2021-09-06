@@ -36,7 +36,7 @@ function EqualizerBar (props: BarProps) {
             getRandomIntInclusive(1, numberOfElements),
             getRandomIntInclusive(1, numberOfElements),
         ].sort((a, b) => a - b)
-    }, [props.play]);
+    }, [props.play, numberOfElements]);
 
    
 

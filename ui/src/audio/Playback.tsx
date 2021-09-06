@@ -4,9 +4,6 @@ import { FaPlay, FaPause } from "react-icons/fa";
 import Config from '../Config';
 import { useAudioDispatch, useAudioState } from './AudioContext';
 import { AudioPlayerStatus } from './IAudio';
-import IconAirPlay from '../ui/icons/IconAirPlay';
-import IconSignal from '../ui/icons/IconSignal';
-
 
 export default function Playback () {
     const { playback } = useAudioState();
