@@ -21,6 +21,9 @@ export interface IWeatherCurrent {
         speed: number;
         deg: number;
     };
+    rain?: {
+        "1h": number;
+    };
     clouds: {
         all: number;
     };
@@ -41,4 +44,7 @@ export interface IWeatherCurrent {
 
 export interface IAroundMeConfig {
     currentWeather?: IWeatherCurrent;
+    forecastWeather?: {
+        list: Array<IWeatherCurrent>;
+    };
 }
