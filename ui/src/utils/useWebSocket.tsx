@@ -78,9 +78,10 @@ export function useWebSocket<T, M = T>(type: string, namespace?: string): [T | u
         }
     })
 
+    const defaultNamespace = namespaces[namespace ? namespace : "/"];
     const sendMessage = useCallback((message: M) => {
-        namespaces[namespace ? namespace : "/"].emit(type, message);
-    }, [namespaces[namespace ? namespace : "/"]]);
+        defaultNamespace.emit(type, message);
+    }, [defaultNamespace , type, namespace]);
 
     return [message, sendMessage];
 }
