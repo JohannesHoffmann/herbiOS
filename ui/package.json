@@ -20,6 +20,7 @@
     "react-icons": "^4.1.0",
     "react-leaflet": "^3.1.0",
     "react-scripts": "3.4.3",
+    "react-spring": "^9.2.4",
     "react-tracked": "^1.7.0",
     "react-use-gesture": "^7.0.16",
     "react-use-websocket": "^2.4.0",
