@@ -8,6 +8,7 @@ import ClimateService from "./climate/ClimateService";
 import ConfigService from "./ConfigService";
 import SocketService from "./api/websocket/SocketService";
 import AroundMeService from "./aroundMe/AroundMeService";
+import TouringService from "./touring/TouringService";
 
 const start = async () => {
     ConfigService.getInstance();
@@ -19,6 +20,7 @@ const start = async () => {
     ClimateService.getInstance();
     AppService.getInstance();
     LightsService.getInstance();
+    await TouringService.getInstance().init();
     await GeoService.getInstance().init();
     AroundMeService.getInstance();
 }

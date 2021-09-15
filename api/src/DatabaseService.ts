@@ -1,6 +1,7 @@
 import { Model, Sequelize } from 'sequelize';
 import ConfigService from './ConfigService';
-import { initGeoModel } from './geo/GeoModel';
+import GeoLog, { initGeoModel } from './geo/GeoModel';
+import TourModel, { initTourModel } from './touring/TourModel';
 
 class DatabaseService {
 
@@ -26,7 +27,14 @@ class DatabaseService {
             await this._connection.authenticate();
 
             // Register models
-            initGeoModel();
+            await initGeoModel();
+            await initTourModel();
+
+            const update = false;
+            if (update) {
+                await TourModel.sync({ alter: true });
+                await GeoLog.sync({alter: true});
+            }
 
             // Syncing table structure
             this._connection.sync();

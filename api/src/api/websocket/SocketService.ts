@@ -10,6 +10,7 @@ import NetworkingSocket from "../../networking/NetworkingSocket";
 import PowerSocket from "../../power/PowerSocket";
 import AroundMeSocket from "../../aroundMe/AroundMeSocket";
 import SwitchesSocket from "../../switches/SwitchesSocket";
+import TouringSocket from "../../touring/TouringSocket";
 
 export interface IUser  {name: string, type: string, iat: number, exp: number,};
 
@@ -30,6 +31,7 @@ interface INamespaces {
     power: PowerSocket;
     aroundMe: AroundMeSocket;
     switches: SwitchesSocket;
+    touring: TouringSocket;
 }
 
 /**
@@ -77,6 +79,7 @@ class SocketService {
             power: new PowerSocket(this._io),
             aroundMe: new AroundMeSocket(this._io),
             switches: new SwitchesSocket(this._io),
+            touring: new TouringSocket(this._io),
         };
     }
 

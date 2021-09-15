@@ -2,6 +2,7 @@ import { getDistance } from "geolib";
 import SocketService from "../api/websocket/SocketService";
 import DatabaseService from "../DatabaseService";
 import SerialService from "../SerialService";
+import TouringService from "../touring/TouringService";
 import GeoConfig, { IGeo, IGeoConfig } from "./GeoConfig";
 import GeoLog from "./GeoModel";
 import GeoSocket from "./GeoSocket";
@@ -38,6 +39,9 @@ class GeoService {
 
     async _renewGeo() {
         const position = await SerialService.send("getPosition");
+        if (!position) {
+            return;
+        }
         console.log("GEO: got geo position from arduino", position);
         const dataArray = position.split(",");
         if (dataArray.length >= 4 && Number(dataArray[2]) < 10000000 && Number(dataArray[3]) < 10000000) {
@@ -66,14 +70,17 @@ class GeoService {
         const saveGeo = async () => {
             this._geo = newGeo;
 
+            const activeTour = TouringService.getInstance().getActiveTour();
             const newEntry = this._modelGeoLog.build({
                 lon: this._geo.lon,
                 lat: this._geo.lat,
                 speed: this._geo.speed,
                 headingDeviation: this._geo.headingDeviation,
                 altitude: this._geo.altitude,
+                tourId: activeTour ? activeTour.id : null,
             });
             await newEntry.save();
+            console.log("save Geo to db");
         }
 
         if (!this._geo) {
@@ -84,6 +91,7 @@ class GeoService {
             latitude: newGeo.lat, longitude: newGeo.lon},
             { latitude: this._geo.lat, longitude: this._geo.lon });
         
+        console.log("Distnce", distance, "to", this._geoDistanceMin);
         if (distance > this._geoDistanceMin) {
             saveGeo();
         }

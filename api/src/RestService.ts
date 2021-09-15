@@ -9,6 +9,7 @@ import ClimateService from './climate/ClimateService';
 import LightsService from './lights/LightsService';
 import AppService from './app/AppService';
 import NetworkingService from './networking/NetworkingService';
+import registerTouringEndpoints from './touring/TouringRestApi';
 
 class RestService {
 
@@ -68,6 +69,8 @@ class RestService {
     }
 
     routes() {
+
+        registerTouringEndpoints(this.server);
 
         // ASSETS
         this.server.register(require('fastify-static'), {
