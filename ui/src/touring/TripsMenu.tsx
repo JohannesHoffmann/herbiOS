@@ -60,7 +60,7 @@ export default function TripsMenu (props: Props) {
         label={"Tour"}
         subSlider={true}
     >
-        <TourForm tourId={selectedTour} />
+        <TourForm tourId={selectedTour} propsMap={{variant: "slider"}} />
     </Slider>
 </List>
 

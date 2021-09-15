@@ -50,6 +50,7 @@ export default function TourForm(props: Props) {
                     startTime: new Date(),
                 },
                 route: [],
+                pois: [],
             });
         }
 
@@ -60,7 +61,7 @@ export default function TourForm(props: Props) {
 
     const changeTour = async (tourUpdate: Partial<ITour>) => {
         setTour({
-            ...tour ? tour : {route: []},
+            ...tour ? tour : {route: [], pois: [],},
             tour: {
                 ...tour?.tour ? tour.tour : {
                     id: -1,
@@ -139,7 +140,6 @@ export default function TourForm(props: Props) {
             </Flex>
 
             <Box mt={4}>
-                {console.log("tour", tour)}
                 <MultiLineEdit
                     value={tour?.tour.description}
                     addText="Tourenbeschreibung hinzufügen +"
@@ -149,11 +149,11 @@ export default function TourForm(props: Props) {
             </Box>
         </Box>
 
-        <Box mb={2}>
-            <PoiList />
-        </Box>
+        {tour?.pois && <Box mb={2}>
+            <PoiList pois={tour.pois} />
+        </Box>}
 
-        <TourMap {...propsMap} route={tour?.route} />
+        <TourMap {...propsMap} route={tour?.route} pois={tour?.pois} />
 
         <Flex
             sx={{

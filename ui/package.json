@@ -20,6 +20,7 @@
     "react-dom": "^16.13.1",
     "react-icons": "^4.1.0",
     "react-leaflet": "^3.1.0",
+    "react-leaflet-cluster": "^1.0.3",
     "react-scripts": "3.4.3",
     "react-spring": "^9.2.4",
     "react-tracked": "^1.7.0",

@@ -108,6 +108,7 @@ export default function Modal(props: Props) {
             left: 0,
             right: 0,
             top: "100vh",
+            zIndex: 1100,
         }}
     >
 
@@ -118,6 +119,7 @@ export default function Modal(props: Props) {
             backgroundColor: "black",
             width: "100%",
             height: "100vh",
+           
         }} 
         onClick={() => {console.log("Called on close"); onClose()}}
         />

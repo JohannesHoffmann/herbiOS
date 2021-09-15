@@ -1,4 +1,5 @@
 import { IGeo } from "../geo/IGeo";
+import { IPoi } from "./pois/IPoi";
 
 export interface ITour {
     id: number;
@@ -11,4 +12,5 @@ export interface ITour {
 export interface ITourPackage {
     tour: ITour,
     route: Array<IGeo>;
+    pois: Array<IPoi>;
 }
