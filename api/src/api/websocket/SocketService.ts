@@ -11,6 +11,7 @@ import PowerSocket from "../../power/PowerSocket";
 import AroundMeSocket from "../../aroundMe/AroundMeSocket";
 import SwitchesSocket from "../../switches/SwitchesSocket";
 import TouringSocket from "../../touring/TouringSocket";
+import PoiSocket from "../../poi/PoiSocket";
 
 export interface IUser  {name: string, type: string, iat: number, exp: number,};
 
@@ -32,6 +33,7 @@ interface INamespaces {
     aroundMe: AroundMeSocket;
     switches: SwitchesSocket;
     touring: TouringSocket;
+    pois: PoiSocket;
 }
 
 /**
@@ -80,6 +82,7 @@ class SocketService {
             aroundMe: new AroundMeSocket(this._io),
             switches: new SwitchesSocket(this._io),
             touring: new TouringSocket(this._io),
+            pois: new PoiSocket(this._io),
         };
     }
 

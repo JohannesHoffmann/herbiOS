@@ -16,11 +16,12 @@ class GeoLog extends Model<{
 const initGeoModel = async () => {
     GeoLog.init({
         lon: {
-        type: DataTypes.FLOAT,
-        allowNull: false
+            type: DataTypes.FLOAT,
+            allowNull: false
         },
         lat: {
-        type: DataTypes.FLOAT,
+            type: DataTypes.FLOAT,
+            allowNull: false
         },
         speed: {
             type: DataTypes.INTEGER,

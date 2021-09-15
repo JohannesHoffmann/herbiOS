@@ -41,6 +41,7 @@ export default function registerTouringEndpoints(server: FastifyInstance) {
             response.status(200).send({
                 tour: tour.get(),
                 route: await tour.getGeoLogs(),
+                pois: await tour.getPois(),
             });
         }
     
@@ -65,6 +66,7 @@ export default function registerTouringEndpoints(server: FastifyInstance) {
             response.status(200).send({
                 tour: tour.get(),
                 route: await tour.getGeoLogs(),
+                pois: await tour.getPois(),
             });
         }
     });
@@ -86,6 +88,7 @@ export default function registerTouringEndpoints(server: FastifyInstance) {
             response.status(200).send({
                 tour: tour.get(),
                 route: await tour.getGeoLogs(),
+                pois: await tour.getPois(),
             });
         }
     });

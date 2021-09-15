@@ -24,7 +24,9 @@ export interface IClimateConfig {
     fan: {
         mode: FanMode;
         strength: number;
-    }
+    },
+    // setFan -fan fan1 -level 255 <-- cabin
+    // setFan -fan fan2 -level 255 <-- electric
 }
 
 export default class ClimateConfig extends JsonConfig<IClimateConfig> {

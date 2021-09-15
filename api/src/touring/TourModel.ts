@@ -1,6 +1,7 @@
 import { Association, DataTypes, HasManyAddAssociationMixin, HasManyCountAssociationsMixin, HasManyCreateAssociationMixin, HasManyGetAssociationsMixin, HasManyHasAssociationMixin, Model } from "sequelize";
 import DatabaseService from "../DatabaseService";
 import GeoLog from "../geo/GeoModel";
+import PoiModel from "../poi/PoiModel";
 
 export interface ITour {
     id: number;
@@ -11,16 +12,21 @@ export interface ITour {
 }
 
 class TourModel extends Model<ITour, Omit<ITour, "id">>{
-
-
-    public getGeoLogs!: HasManyGetAssociationsMixin<GeoLog>; // Note the null assertions!
+    public getGeoLogs!: HasManyGetAssociationsMixin<GeoLog>;
     public addGeoLog!: HasManyAddAssociationMixin<GeoLog, number>;
     public hasGeoLog!: HasManyHasAssociationMixin<GeoLog, number>;
     public countGeoLogs!: HasManyCountAssociationsMixin;
     public createGeoLog!: HasManyCreateAssociationMixin<GeoLog>;
 
+    public getPois!: HasManyGetAssociationsMixin<PoiModel>;
+    public addPoi!: HasManyAddAssociationMixin<PoiModel, number>;
+    public hasPoi!: HasManyHasAssociationMixin<PoiModel, number>;
+    public countPois!: HasManyCountAssociationsMixin;
+    public createPoi!: HasManyCreateAssociationMixin<PoiModel>;
+
     public static associations: {
-        projects: Association<TourModel, GeoLog>;
+        route: Association<TourModel, GeoLog>;
+        pois: Association<TourModel, PoiModel>;
     };
 }
 
@@ -54,6 +60,11 @@ const initTourModel = async () => {
         sourceKey: "id",
         foreignKey: "tourId",
         as: "geoLogs", // this determines the name in `associations`!
+      });
+    TourModel.hasMany(PoiModel, {
+        sourceKey: "id",
+        foreignKey: "tourId",
+        as: "pois", // this determines the name in `associations`!
       });
 }
 

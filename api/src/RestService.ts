@@ -10,6 +10,7 @@ import LightsService from './lights/LightsService';
 import AppService from './app/AppService';
 import NetworkingService from './networking/NetworkingService';
 import registerTouringEndpoints from './touring/TouringRestApi';
+import registerPoiEndpoints from './poi/PoisRestApi';
 
 class RestService {
 
@@ -71,6 +72,7 @@ class RestService {
     routes() {
 
         registerTouringEndpoints(this.server);
+        registerPoiEndpoints(this.server);
 
         // ASSETS
         this.server.register(require('fastify-static'), {
