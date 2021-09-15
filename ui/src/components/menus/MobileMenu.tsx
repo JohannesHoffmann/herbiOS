@@ -1,7 +1,7 @@
 import { useTheme } from "emotion-theming";
 import React from "react";
 import { Box, Flex } from "rebass";
-import IconBusStart from "../../ui/icons/IconBusStart";
+import TourButtonMobile from "../../touring/TourButtonMobile";
 import IconDashboard from "../../ui/icons/IconDashboard";
 import IconSettings from "../../ui/icons/IconSettings";
 import { useTabsDispatch, useTabsState } from "../../ui/tabs/TabsContext";
@@ -52,20 +52,7 @@ export default function MobileMenu () {
                     />
                 </Box>
 
-                <Flex
-                    sx={{
-                        borderRadius: "50% 50%",
-                        backgroundColor: "primary",
-                        width: 80,
-                        height: 80,
-                    }}
-                    p={2}
-                    mt={-32}
-                    justifyContent="center"
-                    alignItems="center"
-                >
-                    <IconBusStart color="white" secondary="primary" width={60} />
-                </Flex>
+                <TourButtonMobile />
 
                 <Box
                     onClick={() => { tabActive("dashboard") }}

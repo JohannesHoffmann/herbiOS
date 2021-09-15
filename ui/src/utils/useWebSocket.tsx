@@ -81,6 +81,7 @@ export function useWebSocket<T, M = T>(type: string, namespace?: string): [T | u
     const defaultNamespace = namespaces[namespace ? namespace : "/"];
     const sendMessage = useCallback((message: M) => {
         defaultNamespace.emit(type, message);
+        // eslint-disable-next-line
     }, [defaultNamespace , type, namespace]);
 
     return [message, sendMessage];

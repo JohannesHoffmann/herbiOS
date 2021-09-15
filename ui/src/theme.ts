@@ -42,6 +42,13 @@ export default {
         tile: {
             borderRadius: "default",
             backgroundColor: "backgroundLight",
+        },
+        card: {
+            borderRadius: "default",
+            boxShadow: "2px 2px 8px rgba(212, 214, 213, 0.25), -2px -2px 8px rgba(212, 214, 213, 0.25)",
+            backgroundColor: "background",
+            padding: 3,
+            marginBottom: 3,
         }
     },
     text: {

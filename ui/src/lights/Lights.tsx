@@ -198,9 +198,10 @@ function LightTab (props: LightTabProps) {
       });
 
     return <Button
-        p={4}
+        p={0}
         paddingY={3}
         mr={2}
+        flexGrow={1}
         sx={{
             backgroundColor: active ? "primary" : "transparent",
             border: "1px solid",
@@ -214,9 +215,17 @@ function LightTab (props: LightTabProps) {
         ref={buttonRef}
         onDoubleClick={(e) => e.preventDefault()}
     >
-        {name}
-        <span><br />
-            {value}%
-        </span>
+        <Flex
+            flexDirection="column"
+            alignItems="center"
+            sx={{
+                width: "100%"
+            }}
+        >
+            {name}
+            <span><br />
+                {value}%
+            </span>
+        </Flex>
     </Button>
 }

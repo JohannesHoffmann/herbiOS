@@ -9,6 +9,7 @@
     "@types/rebass__forms": "^4.0.4",
     "@types/use-double-click": "^1.0.0",
     "axios": "^0.20.0",
+    "date-fns": "^2.23.0",
     "emotion-theming": "^10.0.27",
     "immer": "^9.0.3",
     "leaflet": "^1.7.1",
@@ -39,18 +40,11 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
   "devDependencies": {
     "@rebass/preset": "^4.0.5",
     "@reduxjs/toolkit": "^1.4.0",

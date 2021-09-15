@@ -4,7 +4,7 @@ import Temperature from "../climate/Temperature";
 import Battery from "../power/Battery";
 import Cellular from "../networking/Cellular";
 import GeoIndicator from "../geo/GeoIndicator";
-import { Flex, Box, Text } from "rebass";
+import { Flex, Box } from "rebass";
 import {TabsProvider} from "../ui/tabs/TabsContext";
 import TabContent from "../ui/tabs/TabContent";
 import Settings from "./Settings";
@@ -39,7 +39,7 @@ export default function AtTheVan() {
             active="settings"
             sections={[{tabId: "settings", title: "control"}, {tabId: "dashboard", title: "inform"}]}
         >
-        <Flex flexDirection="column" p={20} pt={0}>
+        <Flex flexDirection="column" p={20} pt={[35, 0]}>
 
             <TabletMenu />
             <MobileHeader />
