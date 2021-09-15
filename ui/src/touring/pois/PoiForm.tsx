@@ -12,6 +12,7 @@ import IconCalendar from "../../ui/icons/IconCalendar";
 import { MapContainer } from "react-leaflet";
 import TilesVector from "../../geo/map/TilesVector";
 import MapLayerPois from "./MapLayerPois";
+import PoiIcon from "./PoiIcon";
 
 type Props = {
     poiId?: number;
@@ -67,11 +68,18 @@ export default function PoiForm(props: Props) {
     return <>
         <Box mb={4}>
 
-            {poi && poi.name && <SingleLineEdit
-                value={poi.name}
-                Wrapper={<Heading fontSize={5} />}
-                onChange={(name: string) => changePoi({name})}
-            />}
+        {poi && poi.name && poi.typeId && <Flex alignItems="center" mb={3}>
+                <Box mr={3}>
+                    <PoiIcon typeId={poi.typeId} color="primary" secondary="darkGrey" height={30} />
+                </Box>
+                <Box flexGrow={1}>
+                    <SingleLineEdit
+                        value={poi.name}
+                        Wrapper={<Heading fontSize={5} mb={0} />}
+                        onChange={(name: string) => changePoi({name})}
+                    />
+                </Box>
+            </Flex>}
 
 
 

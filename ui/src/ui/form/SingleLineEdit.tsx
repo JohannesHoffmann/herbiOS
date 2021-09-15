@@ -51,10 +51,10 @@ export default function SingleLineEdit (props: Props) {
         {{
             ...Wrapper,
             props: {
+                mb: 3,
                 ...Wrapper.props,
                 children: value,
                 onClick: onClick,
-                mb: 3,
             }
         }}
     </>;
