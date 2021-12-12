@@ -22,9 +22,14 @@ class TouringService {
     }
 
     public async init() {
-        this._socket = SocketService.getInstance().getNamespace("touring")
-        const runningTours = await TourModel.findAll({where: {endTime: null}});
-        this._runningTour = runningTours[runningTours.length - 1];
+        console.log("Init Touring Service");
+        this._socket = SocketService.getInstance().getNamespace("touring");
+        try {
+            const runningTours = await TourModel.findAll({where: {endTime: null}});
+            this._runningTour = runningTours[runningTours.length - 1];
+        } catch (e) {
+            console.log("Failed loading running tour", e);
+        }
     }
 
 
