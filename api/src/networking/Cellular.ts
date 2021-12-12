@@ -92,7 +92,7 @@ class Cellular {
         // const statistics = modem.
 
         return {
-            maxSignal: status["maxsignal"],
+            maxSignal: status["SignalIcon"],
             connectionStatus,
             currentNetworkType: networkType,
         }

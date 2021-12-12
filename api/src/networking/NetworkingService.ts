@@ -67,10 +67,16 @@ class NetworkingService {
      */
     async status() {
         // Cellular status
-        this._cellular.status();
-
+        const cellularStatus =  await this._cellular.status();
+        console.log("Cellular status", cellularStatus);
         // WIFI Stauts
         this._wifi.status();
+
+        // set config
+        this._config.set({
+            cellularStatus,
+        });
+        this._update();
     }
 
     public getConfig(): INetworkingConfig {
