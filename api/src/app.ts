@@ -21,9 +21,9 @@ const start = async () => {
     ClimateService.getInstance();
     AppService.getInstance();
     LightsService.getInstance();
+    await TouringService.getInstance().init();
     await GeoService.getInstance().init();
     await PoiService.getInstance().init();
-    await TouringService.getInstance().init();
     AroundMeService.getInstance();
 }
 
