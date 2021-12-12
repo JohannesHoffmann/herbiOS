@@ -37,4 +37,8 @@ export interface IClimateConfig {
         hysteresisMax: number;
         hysteresisMin: number
     }
+    ventilations: Array<{
+        id: string;
+        strength: number;
+    }>
 }

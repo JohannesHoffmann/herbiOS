@@ -28,7 +28,13 @@ type ActionSetFan= {
     strength?: number;
 }
 
-type Actions = ActionSetConfig | ActionSetHeater | ActionModeConfig | ActionSetFan;
+type ActionSetVentilation = {
+    type: "VENTILATION";
+    id: string;
+    strength: number;
+}
+
+type Actions = ActionSetConfig | ActionSetHeater | ActionModeConfig | ActionSetFan | ActionSetVentilation;
 
 export interface IClimateState extends IClimateConfig {
 
@@ -50,7 +56,8 @@ let climateState: IClimateState = {
         temperature: 15,
         hysteresisMax: 3,
         hysteresisMin: 5,
-    }
+    },
+    ventilations: [],
 }
 
 const reducer = (state: IClimateState , action: Actions) => {
@@ -80,6 +87,15 @@ const reducer = (state: IClimateState , action: Actions) => {
                     strength: action.strength !== undefined ? action.strength : state.fan.strength,
                 }
                 break;
+
+            case "VENTILATION":
+                const ventIndex = draftState.ventilations.findIndex(v => v.id === action.id);
+                if (!ventIndex) {
+                    break;
+                }
+
+                draftState.ventilations[ventIndex].strength = action.strength;
+                break;
         }
     
         return draftState;
@@ -89,7 +105,8 @@ const reducer = (state: IClimateState , action: Actions) => {
 
 type AsyncActionHeater = { type: 'HEATER'; id: string };
 type AsyncActionFan = { type: 'FAN'; id: string };
-type AsyncAction =  AsyncActionHeater | AsyncActionFan;
+type AsyncActionVentilation = { type: 'VENTILATION'; id: string; strength: number };
+type AsyncAction =  AsyncActionHeater | AsyncActionFan | AsyncActionVentilation;
 
 
 
@@ -101,6 +118,7 @@ export const {
     const [statusMsg, requestStatus] = useWebSocket("status", "/climate");
     const [, emitHeaterChange] = useWebSocket("heater:change", "/climate");
     const [, emitFanChange] = useWebSocket("fan:change", "/climate");
+    const [, emitVentilationChange] = useWebSocket("ventilation:change", "/climate");
     const requestedStatus = React.useRef(false);
 
     const asyncActionHandlers: AsyncActionHandlers<
@@ -113,6 +131,10 @@ export const {
         },
         FAN: ({ dispatch }) => async (action) => {
             emitFanChange(action);
+            dispatch(action);
+        },
+        VENTILATION: ({ dispatch }) => async (action) => {
+            emitVentilationChange(action);
             dispatch(action);
         },
     }
