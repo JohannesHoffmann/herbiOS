@@ -31,7 +31,7 @@ class TourModel extends Model<ITour, Omit<ITour, "id">>{
 }
 
 const initTourModel = async () => {
-    TourModel.init({
+    await TourModel.init({
         id: {
             type: DataTypes.INTEGER.UNSIGNED,
             autoIncrement: true,
