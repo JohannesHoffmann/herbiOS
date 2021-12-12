@@ -20,7 +20,7 @@ class PoiModel extends Model<IPoi, Omit<IPoi, "id">>{
 }
 
 const initPoiModels = async () => {
-    PoiModel.init({
+    await PoiModel.init({
         id: {
             type: DataTypes.INTEGER.UNSIGNED,
             autoIncrement: true,
