@@ -1,6 +1,7 @@
 import ClimateConfig, { ClimateMode, IClimateConfig } from "./ClimateConfig";
 import Fan, { FanMode } from "./Fan";
 import Heater, { HeaterMode, HeaterStrength } from "./Heater";
+import Ventilation from "./Ventilation";
 
 class ClimateService {
 
@@ -9,6 +10,7 @@ class ClimateService {
     private _heater: Heater;
     private _fan: Fan;
     private _config: ClimateConfig;
+    private _ventilations: Array<Ventilation> = [];
 
     public static getInstance(): ClimateService {
         if (!ClimateService.instance) {
@@ -23,6 +25,12 @@ class ClimateService {
         this._config = new ClimateConfig();
 
         this._setHeater(this._config.get().heater.mode, this._config.get().heater.strength);
+
+        this._config.get().ventilations.forEach(vent => {
+            const newVentilation = new Ventilation(vent.id);
+            newVentilation.setStrength(vent.strength);
+            this._ventilations.push(newVentilation);
+        })
     }
 
 
@@ -100,6 +108,31 @@ class ClimateService {
         }
 
         console.log(`Fan can not be set manually because the current mode of climate control is ${this.getMode()}` );
+    }
+ 
+    /**
+     * Set the ventilation from outside but only on manual mode
+     *
+     * @param {id} id
+     * @param {FanStrength} [strength]
+     * @memberof ClimateService
+     */
+    public setVentilationManual(args: {id: string, strength: number}) {
+        const {id, strength} = args;
+        
+        const ventilationIndex = this._ventilations.findIndex(ventis => ventis.id === id);
+
+        if (ventilationIndex) {
+            this._ventilations[ventilationIndex].setStrength(strength);
+            let ventilationConfiguration = this._config.get().ventilations;
+            ventilationConfiguration[ventilationIndex].id = id;
+            ventilationConfiguration[ventilationIndex].strength = strength;
+
+            this._config.set({
+                ventilations: ventilationConfiguration,
+            });
+            this._config.save();
+        }
     }
 
     /**

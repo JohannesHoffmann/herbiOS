@@ -25,6 +25,10 @@ export interface IClimateConfig {
         mode: FanMode;
         strength: number;
     },
+    ventilations: Array<{
+        id: string;
+        strength: number;
+    }>,
     // setFan -fan fan1 -level 255 <-- cabin
     // setFan -fan fan2 -level 255 <-- electric
 }
@@ -50,6 +54,7 @@ export default class ClimateConfig extends JsonConfig<IClimateConfig> {
                 mode: FanMode.off,
                 strength: 0,
             },
+            ventilations: [],
         }
 
         this.load();

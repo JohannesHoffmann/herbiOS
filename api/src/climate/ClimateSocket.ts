@@ -9,6 +9,7 @@ import { FanMode } from "./Fan";
      ["status"]: () => void,
      ["heater:change"]: (set: {mode?: HeaterMode, strength?: HeaterStrength }) => void,
      ["fan:change"]: (set: {mode?: FanMode, strength?: number }) => void,
+     ["ventilation:change"]: (set: {id: string, strength: number }) => void,
     }
     
     type  ClimateEventsEmit = {
@@ -55,6 +56,13 @@ export default class ClimateSocket extends NamespaceSocket {
                 ...config.fan,
                 ...message,
             };
+            this._ws.emit("status", config);
+        });
+
+        // Request ventilation change
+        socket.on("ventilation:change", (message) => {
+            ClimateService.getInstance().setVentilationManual(message);
+            let config: IClimateConfig = ClimateService.getInstance().getConfig();
             this._ws.emit("status", config);
         });
     }
