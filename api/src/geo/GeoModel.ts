@@ -14,7 +14,7 @@ class GeoLog extends Model<{
 }
 
 const initGeoModel = async () => {
-    GeoLog.init({
+    await GeoLog.init({
         lon: {
             type: DataTypes.FLOAT,
             allowNull: false
