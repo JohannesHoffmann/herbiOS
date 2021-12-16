@@ -24,7 +24,7 @@ class NetworkingService {
         this._config = new NetworkingConfig();
         this._socket = SocketService.getInstance().getNamespace("networking");
         this._wifi = new Wifi();
-        this._cellular = new Cellular();
+        // this._cellular = new Cellular();
 
     }
 
@@ -50,33 +50,33 @@ class NetworkingService {
         this._config.set({cellular: true});
         this._config.save();
         this._update();
-        const result =  await this._cellular.connect();
-        return result;
+        // const result =  await this._cellular.connect();
+        // return result;
     }
 
     async cellularDisconnect() {
         this._config.set({cellular: false});
         this._config.save();
         this._update();
-        const result = await this._cellular.disconnect();
-        return result;
+        // const result = await this._cellular.disconnect();
+        // return result;
     }
 
     /**
      * requests system status of the networking interfaces
      */
     async status() {
-        // Cellular status
-        const cellularStatus =  await this._cellular.status();
-        console.log("Cellular status", cellularStatus);
-        // WIFI Stauts
-        this._wifi.status();
+        // // Cellular status
+        // const cellularStatus =  await this._cellular.status();
+        // console.log("Cellular status", cellularStatus);
+        // // WIFI Stauts
+        // this._wifi.status();
 
-        // set config
-        this._config.set({
-            cellularStatus,
-        });
-        this._update();
+        // // set config
+        // this._config.set({
+        //     cellularStatus,
+        // });
+        // this._update();
     }
 
     public getConfig(): INetworkingConfig {
