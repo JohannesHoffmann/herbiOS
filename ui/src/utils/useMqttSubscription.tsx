@@ -19,7 +19,6 @@ export function useMqttSubscription(topic: string | Array<string>) {
     useEffect(() => {
         if (!subscribed) {
             setSubscribed(() => {
-                console.log("Subscribe to", topic);
                 subscribe({topic});
                 return true;
             })
@@ -27,7 +26,6 @@ export function useMqttSubscription(topic: string | Array<string>) {
     })
 
     useEffect(() => {
-        console.log("Message", mqttMessage);
         if (!mqttMessage || !mqttMessage?.topic) {
             return;
         }
