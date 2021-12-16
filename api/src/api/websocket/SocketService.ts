@@ -2,7 +2,6 @@ import { Server } from "socket.io";
 import * as http from 'http';
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import DefaultNamespace from "./namespaces/DefaultNamespace";
-import LightsSocket from "../../lights/LightsSocket";
 import ClimateSocket from "../../climate/ClimateSocket";
 import AudioSocket from "../../audio/AudioSocket";
 import GeoSocket from "../../geo/GeoSocket";
@@ -12,6 +11,7 @@ import AroundMeSocket from "../../aroundMe/AroundMeSocket";
 import SwitchesSocket from "../../switches/SwitchesSocket";
 import TouringSocket from "../../touring/TouringSocket";
 import PoiSocket from "../../poi/PoiSocket";
+import MqttSocket from "../mqtt/MqttSocket";
 
 export interface IUser  {name: string, type: string, iat: number, exp: number,};
 
@@ -24,7 +24,6 @@ declare module 'socket.io' {
 
 interface INamespaces {
     default: DefaultNamespace;
-    lights: LightsSocket;
     climate: ClimateSocket;
     audio: AudioSocket;
     geo: GeoSocket;
@@ -34,6 +33,7 @@ interface INamespaces {
     switches: SwitchesSocket;
     touring: TouringSocket;
     pois: PoiSocket;
+    mqtt: MqttSocket;
 }
 
 /**
@@ -73,7 +73,6 @@ class SocketService {
 
         this._namespaces = {
             default: new DefaultNamespace(this._io),
-            lights: new LightsSocket(this._io),
             climate: new ClimateSocket(this._io),
             audio: new AudioSocket(this._io),
             geo: new GeoSocket(this._io),
@@ -83,6 +82,7 @@ class SocketService {
             switches: new SwitchesSocket(this._io),
             touring: new TouringSocket(this._io),
             pois: new PoiSocket(this._io),
+            mqtt: new MqttSocket(this._io),
         };
     }
 

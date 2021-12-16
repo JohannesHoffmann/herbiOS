@@ -10,17 +10,19 @@ import SocketService from "./api/websocket/SocketService";
 import AroundMeService from "./aroundMe/AroundMeService";
 import TouringService from "./touring/TouringService";
 import PoiService from "./poi/PoiService";
+import MqttService from "./api/mqtt/MqttService";
 
 const start = async () => {
     ConfigService.getInstance();
     await DatabaseService.getInstance().init();
     RestService.getInstance().start();
+    MqttService.getInstance().init();
     SocketService.getInstance().init(RestService.getInstance().getServer());
 
     AudioService.getInstance();
     ClimateService.getInstance();
     AppService.getInstance();
-    LightsService.getInstance();
+    LightsService.getInstance().init();
     await TouringService.getInstance().init();
     await GeoService.getInstance().init();
     await PoiService.getInstance().init();
