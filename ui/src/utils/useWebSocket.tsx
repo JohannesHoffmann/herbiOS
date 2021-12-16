@@ -36,7 +36,7 @@ export function useWebSocket<T, M = T>(type: string, namespace?: string): [T | u
             namespaces[namespace] = io(Config.host + namespace);
             namespaces[namespace].on("connect_error", (err: Error) => {
                 if (err.message === "not authenticated") {
-                    // userDispatch({type: "LOGOUT"});
+                    userDispatch({type: "LOGOUT"});
                 }
             });
             namespaces[namespace].on("unauthenticated", () => {
@@ -50,12 +50,10 @@ export function useWebSocket<T, M = T>(type: string, namespace?: string): [T | u
      // act on authToken change caused by login or logout
      useEffect(() => {
         // Login from System
-        
-        if (userState.authToken && !socket.connected && (!socket.auth || !socket.auth.hasOwnProperty("token"))) {
+        if (userState.authToken && !socket.connected) {
             socket.auth = {
                 token: userState.authToken,
             };
-        
             socket.connect();
         }
 

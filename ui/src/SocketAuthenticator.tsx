@@ -37,7 +37,7 @@ export default function SocketAuthenticator(props: {children: React.ReactElement
       }, [setPassword, authenticate]);
 
 
-      // Auto reconnect attemt
+      // Auto reconnect attempt
       React.useEffect(() => {
           if (password && !authToken) {
             authenticate(password as string);
@@ -89,8 +89,8 @@ export default function SocketAuthenticator(props: {children: React.ReactElement
         </Box>}
 
 
-        {password && authToken && <>
+        {password && authToken && <div key={new Date().getTime()}>
             {props.children}
-        </>}
+        </div>}
     </>;
 }

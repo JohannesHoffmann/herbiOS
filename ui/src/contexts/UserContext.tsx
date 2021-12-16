@@ -46,13 +46,13 @@ const reducer = (state: IUsersState , action: Actions) => {
 
     switch (action.type) {
         case "LOGIN":
-            newState.authToken = action.authToken;
             localStorage.setItem(localStorageKeyAuth, action.authToken);
+            newState.authToken = action.authToken;
             break;
 
         case "LOGOUT":
-            newState.authToken = "";
             localStorage.removeItem(localStorageKeyAuth);
+            newState.authToken = "";
             break;
     }
 
