@@ -8,6 +8,12 @@ export interface IConfig {
     airPlay: string;
     database: string;
     configurationDirectory: string;
+    mqtt: {
+        host: string;
+        port?: number;
+        username?: string;
+        password?: string;
+    }
     serial: {
         path: string;
         baud: number;
@@ -53,6 +59,10 @@ class ConfigService {
         serial: {
             path: "/dev/ttyACM0",
             baud: 115200,
+        },
+        mqtt: {
+            host: "localhost",
+            port: 1883
         },
         rest: {
             port: 5555,

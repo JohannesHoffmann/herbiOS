@@ -1,4 +1,5 @@
 import MQTT from "mqtt";
+import ConfigService from "../../ConfigService";
 
 /**
  * Service to manage mqtt subscriptions
@@ -11,6 +12,7 @@ class MqttService {
 
     private _client: MQTT.MqttClient;
     private _subscriptionsBeforeConnected: Array<string> = [];
+    private _config = ConfigService.getInstance().getConfig();
 
 
     public static getInstance(): MqttService {
@@ -29,12 +31,16 @@ class MqttService {
      * @memberof MqttService
      */
     public async init () {
-        this._client = MQTT.connect('mqtt://localhost:1883');
+        const port = this._config.mqtt.port ? this._config.mqtt.port : 1883;
+        this._client = MQTT.connect(`mqtt://${this._config.mqtt.host}:${port}`, {
+            username: this._config.mqtt.username,
+            password: this._config.mqtt.password,
+        });
 
         this._client.on('connect', () => {
             for (const subscribe of this._subscriptionsBeforeConnected) {
                 this.subscribe(subscribe);
-            }    
+            }
         });
     }
 
