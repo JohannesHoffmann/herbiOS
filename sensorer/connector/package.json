@@ -1,0 +1,26 @@
+{
+  "name": "herbiOs-sensorer-connector",
+  "version": "1.0.0",
+  "description": "Middelware to connect the herbiOS Arduino harware solution to the mqtt broker",
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "nodemon -e ts --watch 'src/**/*.ts' --exec 'ts-node' src/app.ts",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://git.juhujuhu.de/herbi/api.git"
+  },
+  "author": "Johannes Hoffmann",
+  "license": "custom",
+  "dependencies": {
+    "mqtt": "^4.2.8",
+    "serialport": "^9.0.6"
+  },
+  "devDependencies": {
+    "@types/serialport": "^8.0.1",
+    "tslint": "^6.1.3",
+    "typescript": "^4.0.2"
+  }
+}

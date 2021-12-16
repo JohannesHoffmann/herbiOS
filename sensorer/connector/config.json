@@ -1,0 +1,25 @@
+{
+    "env": "development",
+    "homeAssistantIntegration": true,
+    "serial": {
+        "path": "/dev/cu.usbmodem14201",
+        "baud": 115200
+    },
+    "lights": [
+        {
+            "name": "Küche",
+            "brightness": true,
+            "sensorerId": "light1"
+        },
+        {
+            "name": "Vorne",
+            "brightness": true,
+            "sensorerId": "light2"
+        },
+        {
+            "name": "Hinten",
+            "brightness": true,
+            "sensorerId": "light3"
+        }
+    ]
+}
