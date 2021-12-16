@@ -58,6 +58,8 @@ npm start
 
 A browser window should open with the ip: [http://localhost:3000](http://localhost:3000)
 
+When a password prompt appears use the default password to get authentication: **hMA3x994QvC46YZKnlBnnhZy4QAsQJus**
+
 
 ## Configure herbiOs
 
