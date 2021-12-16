@@ -42,7 +42,7 @@ export default function LightsControl(props: Props) {
             if (lightId === activeLight.unique_id) {
                 setActiveLight({
                     ...activeLight,
-                    brightness: state.brightness ? Math.round(100 / 255 * state.brightness) : 0,
+                    brightness: state.state === "ON" && state.brightness ? Math.round(100 / 255 * state.brightness) : 0,
                 });
             }
 
@@ -50,7 +50,7 @@ export default function LightsControl(props: Props) {
             const lightsIndex = lights.findIndex(light => light.unique_id === lightId);
             if (lightsIndex >= 0) {
                 const newLights = [...[], ...lights];
-                newLights[lightsIndex].brightness = state.brightness ? Math.round(100 / 255 * state.brightness) : 0;
+                newLights[lightsIndex].brightness = state.state === "ON" && state.brightness ? Math.round(100 / 255 * state.brightness) : 0;
                 setLights(newLights);
             }
         }
