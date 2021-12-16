@@ -1,0 +1,4 @@
+
+herbiOs-development/*
+!herbiOs-development/docker-compose.yml
+!herbiOs-development/mosquitto.conf
