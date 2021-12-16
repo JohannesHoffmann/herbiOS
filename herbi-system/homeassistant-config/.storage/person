@@ -1,0 +1,17 @@
+{
+    "version": 2,
+    "minor_version": 1,
+    "key": "person",
+    "data": {
+        "items": [
+            {
+                "name": "Herb",
+                "user_id": "43c2d0128755472eb5eb60e283f39a50",
+                "device_trackers": [
+                    "device_tracker.iphone_von_johannes_hoffmann"
+                ],
+                "id": "herb"
+            }
+        ]
+    }
+}

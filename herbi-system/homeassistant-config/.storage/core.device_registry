@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "minor_version": 2,
+    "key": "core.device_registry",
+    "data": {
+        "devices": [
+            {
+                "config_entries": [
+                    "db18d3c32a0f4063003563d47861cbad"
+                ],
+                "connections": [],
+                "identifiers": [
+                    [
+                        "met"
+                    ]
+                ],
+                "manufacturer": "Met.no",
+                "model": "Forecast",
+                "name": "Forecast",
+                "sw_version": null,
+                "entry_type": "service",
+                "id": "30e66cd8a6beb69091b6f61658622f96",
+                "via_device_id": null,
+                "area_id": null,
+                "name_by_user": null,
+                "disabled_by": null,
+                "configuration_url": "https://www.met.no/en"
+            },
+            {
+                "config_entries": [
+                    "7ba1602ac6ba0bc566857543fe326801"
+                ],
+                "connections": [],
+                "identifiers": [
+                    [
+                        "mobile_app",
+                        "977A9E25-F527-4E25-B162-C826E9ED5277"
+                    ]
+                ],
+                "manufacturer": "Apple",
+                "model": "iPhone13,3",
+                "name": "iPhone von Johannes Hoffmann",
+                "sw_version": "14.8.1",
+                "entry_type": null,
+                "id": "3035967717f4dab857196bebd81edfe4",
+                "via_device_id": null,
+                "area_id": null,
+                "name_by_user": null,
+                "disabled_by": null,
+                "configuration_url": null
+            }
+        ],
+        "deleted_devices": []
+    }
+}

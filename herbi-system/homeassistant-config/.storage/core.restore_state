@@ -1,0 +1,576 @@
+{
+    "version": 1,
+    "minor_version": 1,
+    "key": "core.restore_state",
+    "data": [
+        {
+            "state": {
+                "entity_id": "person.herb",
+                "state": "home",
+                "attributes": {
+                    "editable": false,
+                    "id": "herb",
+                    "latitude": 48.35791015625,
+                    "longitude": 10.898661979675344,
+                    "gps_accuracy": 65,
+                    "source": "device_tracker.iphone_von_johannes_hoffmann",
+                    "user_id": "43c2d0128755472eb5eb60e283f39a50",
+                    "friendly_name": "Herb"
+                },
+                "last_changed": "2021-12-14T12:23:51.387516+00:00",
+                "last_updated": "2021-12-14T12:23:51.387516+00:00",
+                "context": {
+                    "id": "e12e835c36a1b4ef81edff03d0975890",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-16T10:22:17.162072+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "sensor.iphone_von_johannes_hoffmann_battery_level",
+                "state": "57",
+                "attributes": {
+                    "unit_of_measurement": "%",
+                    "device_class": "battery",
+                    "icon": "mdi:battery-50",
+                    "friendly_name": "iPhone von Johannes Hoffmann Battery Level"
+                },
+                "last_changed": "2021-12-14T15:32:25.749690+00:00",
+                "last_updated": "2021-12-14T15:32:25.749690+00:00",
+                "context": {
+                    "id": "f4c05997c73ca431a1e93d4d693c3647",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-16T10:22:17.162072+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "sensor.iphone_von_johannes_hoffmann_battery_state",
+                "state": "Not Charging",
+                "attributes": {
+                    "Low Power Mode": false,
+                    "icon": "mdi:battery-50",
+                    "friendly_name": "iPhone von Johannes Hoffmann Battery State"
+                },
+                "last_changed": "2021-12-14T12:09:01.086769+00:00",
+                "last_updated": "2021-12-14T15:32:25.749810+00:00",
+                "context": {
+                    "id": "be9da0b74842d96f7ad22d415a678125",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-16T10:22:17.162072+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "sensor.iphone_von_johannes_hoffmann_storage",
+                "state": "49.11",
+                "attributes": {
+                    "Available": "114,85 GB",
+                    "Available (Important)": "126,95 GB",
+                    "Available (Opportunistic)": "125,66 GB",
+                    "Total": "255,88 GB",
+                    "unit_of_measurement": "% available",
+                    "icon": "mdi:database",
+                    "friendly_name": "iPhone von Johannes Hoffmann Storage"
+                },
+                "last_changed": "2021-12-14T15:32:25.749927+00:00",
+                "last_updated": "2021-12-14T15:32:25.749927+00:00",
+                "context": {
+                    "id": "df9f97471856de858667ef63db49a60d",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-16T10:22:17.162072+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "sensor.iphone_von_johannes_hoffmann_ssid",
+                "state": "HH",
+                "attributes": {
+                    "icon": "mdi:wifi",
+                    "friendly_name": "iPhone von Johannes Hoffmann SSID"
+                },
+                "last_changed": "2021-12-14T12:09:01.086961+00:00",
+                "last_updated": "2021-12-14T12:09:01.086961+00:00",
+                "context": {
+                    "id": "fffc5dc917749c660aa2136a7d790f9f",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-16T10:22:17.162072+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "sensor.iphone_von_johannes_hoffmann_bssid",
+                "state": "e0:28:6d:6a:12:c7",
+                "attributes": {
+                    "icon": "mdi:wifi-star",
+                    "friendly_name": "iPhone von Johannes Hoffmann BSSID"
+                },
+                "last_changed": "2021-12-14T12:09:01.087112+00:00",
+                "last_updated": "2021-12-14T12:09:01.087112+00:00",
+                "context": {
+                    "id": "3b996e9674c1bdf7fa9bcd814da87a46",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-16T10:22:17.162072+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "sensor.iphone_von_johannes_hoffmann_connection_type",
+                "state": "Wi-Fi",
+                "attributes": {
+                    "icon": "mdi:wifi",
+                    "friendly_name": "iPhone von Johannes Hoffmann Connection Type"
+                },
+                "last_changed": "2021-12-14T12:09:01.087211+00:00",
+                "last_updated": "2021-12-14T12:09:01.087211+00:00",
+                "context": {
+                    "id": "df98e7529585bc1a1f61a7420a2d4459",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-16T10:22:17.162072+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "sensor.iphone_von_johannes_hoffmann_sim_2",
+                "state": "N/A",
+                "attributes": {
+                    "Allows VoIP": true,
+                    "Carrier ID": "0000000100000002",
+                    "Carrier Name": "N/A",
+                    "ISO Country Code": "N/A",
+                    "Mobile Country Code": "N/A",
+                    "Mobile Network Code": "N/A",
+                    "icon": "mdi:sim",
+                    "friendly_name": "iPhone von Johannes Hoffmann SIM 2"
+                },
+                "last_changed": "2021-12-14T12:09:01.087311+00:00",
+                "last_updated": "2021-12-14T12:09:01.087311+00:00",
+                "context": {
+                    "id": "b34493394ae418fe77ca486a9168271b",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-16T10:22:17.162072+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "sensor.iphone_von_johannes_hoffmann_sim_1",
+                "state": "o2-de",
+                "attributes": {
+                    "Allows VoIP": true,
+                    "Carrier ID": "0000000100000001",
+                    "Carrier Name": "o2-de",
+                    "Current Radio Technology": "Long-Term Evolution (LTE)",
+                    "ISO Country Code": "de",
+                    "Mobile Country Code": "262",
+                    "Mobile Network Code": "03",
+                    "icon": "mdi:sim",
+                    "friendly_name": "iPhone von Johannes Hoffmann SIM 1"
+                },
+                "last_changed": "2021-12-14T12:09:01.087404+00:00",
+                "last_updated": "2021-12-14T12:23:51.443093+00:00",
+                "context": {
+                    "id": "4d8b865064bb4f3c568f0a91518dad65",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-16T10:22:17.162072+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "sensor.iphone_von_johannes_hoffmann_geocoded_location",
+                "state": "Singerstra\u00dfe 13\n86159 Augsburg\nDeutschland",
+                "attributes": {
+                    "Administrative Area": "Bayern",
+                    "Areas Of Interest": "N/A",
+                    "Country": "Deutschland",
+                    "Inland Water": "N/A",
+                    "ISO Country Code": "DE",
+                    "Locality": "Augsburg",
+                    "Location": [
+                        48.35791015625,
+                        10.898661979675344
+                    ],
+                    "Name": "Singerstra\u00dfe 13",
+                    "Ocean": "N/A",
+                    "Postal Code": "86159",
+                    "Sub Administrative Area": "Augsburg",
+                    "Sub Locality": "Zentrum",
+                    "Sub Thoroughfare": "13",
+                    "Thoroughfare": "Singerstra\u00dfe",
+                    "Time Zone": "Europe/Berlin",
+                    "Zones": [
+                        "Herbi"
+                    ],
+                    "icon": "mdi:map",
+                    "friendly_name": "iPhone von Johannes Hoffmann Geocoded Location"
+                },
+                "last_changed": "2021-12-14T12:23:51.532597+00:00",
+                "last_updated": "2021-12-14T12:23:51.532597+00:00",
+                "context": {
+                    "id": "128e5e85304d9402a9e80eb3dd36be66",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-16T10:22:17.162072+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "sensor.iphone_von_johannes_hoffmann_last_update_trigger",
+                "state": "Launch",
+                "attributes": {
+                    "icon": "mdi:cellphone-wireless",
+                    "friendly_name": "iPhone von Johannes Hoffmann Last Update Trigger"
+                },
+                "last_changed": "2021-12-14T12:25:35.397848+00:00",
+                "last_updated": "2021-12-14T12:25:35.397848+00:00",
+                "context": {
+                    "id": "422e7fbc4d7fefaf02574fb85371e195",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-16T10:22:17.162072+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "sensor.iphone_von_johannes_hoffmann_activity",
+                "state": "Unknown",
+                "attributes": {
+                    "Confidence": "High",
+                    "Types": [
+                        "Unknown"
+                    ],
+                    "icon": "mdi:help-circle",
+                    "friendly_name": "iPhone von Johannes Hoffmann Activity"
+                },
+                "last_changed": "2021-12-14T15:32:25.749241+00:00",
+                "last_updated": "2021-12-14T15:32:25.749241+00:00",
+                "context": {
+                    "id": "f5bce746fbfc4d2ad75a05c9edd9c76d",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-16T10:22:17.162072+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "sensor.iphone_von_johannes_hoffmann_steps",
+                "state": "2595",
+                "attributes": {
+                    "unit_of_measurement": "steps",
+                    "icon": "mdi:walk",
+                    "friendly_name": "iPhone von Johannes Hoffmann Steps"
+                },
+                "last_changed": "2021-12-14T15:32:25.749589+00:00",
+                "last_updated": "2021-12-14T15:32:25.749589+00:00",
+                "context": {
+                    "id": "9e63aa87aa83f019bcf62ce2f66d31c3",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-16T10:22:17.162072+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "sensor.iphone_von_johannes_hoffmann_average_active_pace",
+                "state": "1",
+                "attributes": {
+                    "unit_of_measurement": "m/s",
+                    "icon": "mdi:speedometer",
+                    "friendly_name": "iPhone von Johannes Hoffmann Average Active Pace"
+                },
+                "last_changed": "2021-12-14T12:09:01.087862+00:00",
+                "last_updated": "2021-12-14T12:09:01.087862+00:00",
+                "context": {
+                    "id": "010f4b289bccb4619bb84c7061816e65",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-16T10:22:17.162072+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "sensor.iphone_von_johannes_hoffmann_distance",
+                "state": "2197",
+                "attributes": {
+                    "unit_of_measurement": "m",
+                    "icon": "mdi:hiking",
+                    "friendly_name": "iPhone von Johannes Hoffmann Distance"
+                },
+                "last_changed": "2021-12-14T15:32:25.749406+00:00",
+                "last_updated": "2021-12-14T15:32:25.749406+00:00",
+                "context": {
+                    "id": "ddcc4c3d0e21ca0746f5be463e1e07da",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-16T10:22:17.162072+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "sensor.iphone_von_johannes_hoffmann_floors_ascended",
+                "state": "1",
+                "attributes": {
+                    "unit_of_measurement": "floors",
+                    "icon": "mdi:stairs-up",
+                    "friendly_name": "iPhone von Johannes Hoffmann Floors Ascended"
+                },
+                "last_changed": "2021-12-14T12:23:51.442371+00:00",
+                "last_updated": "2021-12-14T12:23:51.442371+00:00",
+                "context": {
+                    "id": "8cdf8cffc5e8c8bcbe5293413149fa45",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-16T10:22:17.162072+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "sensor.iphone_von_johannes_hoffmann_floors_descended",
+                "state": "1",
+                "attributes": {
+                    "unit_of_measurement": "floors",
+                    "icon": "mdi:stairs-down",
+                    "friendly_name": "iPhone von Johannes Hoffmann Floors Descended"
+                },
+                "last_changed": "2021-12-14T12:23:51.442543+00:00",
+                "last_updated": "2021-12-14T12:23:51.442543+00:00",
+                "context": {
+                    "id": "20d5bb6384d038c3a26bf403f2763a90",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-16T10:22:17.162072+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "device_tracker.iphone_von_johannes_hoffmann",
+                "state": "home",
+                "attributes": {
+                    "source_type": "gps",
+                    "battery_level": 73,
+                    "latitude": 48.35791015625,
+                    "longitude": 10.898661979675344,
+                    "gps_accuracy": 65,
+                    "altitude": 492.13514709472656,
+                    "vertical_accuracy": 23,
+                    "friendly_name": "iPhone von Johannes Hoffmann"
+                },
+                "last_changed": "2021-12-14T12:23:51.386279+00:00",
+                "last_updated": "2021-12-14T12:23:51.386279+00:00",
+                "context": {
+                    "id": "12e7dcbf46090809c51c15af49b7a959",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-16T10:22:17.162072+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "light.main_light",
+                "state": "on",
+                "attributes": {
+                    "supported_color_modes": [
+                        "brightness"
+                    ],
+                    "color_mode": "brightness",
+                    "brightness": 181,
+                    "friendly_name": "K\u00fcche",
+                    "supported_features": 41
+                },
+                "last_changed": "2021-12-16T08:05:47.858624+00:00",
+                "last_updated": "2021-12-16T10:19:30.339689+00:00",
+                "context": {
+                    "id": "e0facd2d49a490a080f97f519dec5dc8",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-16T10:22:17.162072+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "light.vorne",
+                "state": "on",
+                "attributes": {
+                    "supported_color_modes": [
+                        "brightness"
+                    ],
+                    "color_mode": "brightness",
+                    "brightness": 204,
+                    "friendly_name": "Vorne",
+                    "supported_features": 41
+                },
+                "last_changed": "2021-12-16T08:05:58.934675+00:00",
+                "last_updated": "2021-12-16T09:59:46.422705+00:00",
+                "context": {
+                    "id": "f76668c90960009c9de5124a08d1e72a",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-16T10:22:17.162072+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "light.hinten",
+                "state": "on",
+                "attributes": {
+                    "supported_color_modes": [
+                        "brightness"
+                    ],
+                    "color_mode": "brightness",
+                    "brightness": 199,
+                    "friendly_name": "Hinten",
+                    "supported_features": 41
+                },
+                "last_changed": "2021-12-16T09:51:55.005360+00:00",
+                "last_updated": "2021-12-16T10:19:34.664210+00:00",
+                "context": {
+                    "id": "f64c9e8995550b30dc06761d21be7ea7",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-16T10:22:17.162072+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "light.light_1",
+                "state": "on",
+                "attributes": {
+                    "supported_color_modes": [
+                        "brightness"
+                    ],
+                    "color_mode": "brightness",
+                    "brightness": 255,
+                    "friendly_name": "Light 1",
+                    "supported_features": 41
+                },
+                "last_changed": "2021-12-14T09:34:47.584260+00:00",
+                "last_updated": "2021-12-14T09:58:43.614061+00:00",
+                "context": {
+                    "id": "37d0c7847feca77bff9eba7fcf6a524a",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-14T12:08:53.063639+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "light.light_2",
+                "state": "on",
+                "attributes": {
+                    "supported_color_modes": [
+                        "brightness"
+                    ],
+                    "color_mode": "brightness",
+                    "brightness": 176,
+                    "friendly_name": "Light 2",
+                    "supported_features": 41
+                },
+                "last_changed": "2021-12-14T12:06:32.301641+00:00",
+                "last_updated": "2021-12-14T12:06:32.301641+00:00",
+                "context": {
+                    "id": "2bc643bf852f00182becd3d475ac388c",
+                    "parent_id": null,
+                    "user_id": "43c2d0128755472eb5eb60e283f39a50"
+                }
+            },
+            "last_seen": "2021-12-14T12:08:53.063639+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "light.light_3",
+                "state": "on",
+                "attributes": {
+                    "supported_color_modes": [
+                        "brightness"
+                    ],
+                    "color_mode": "brightness",
+                    "brightness": 217,
+                    "friendly_name": "Light 3",
+                    "supported_features": 41
+                },
+                "last_changed": "2021-12-14T10:08:41.368227+00:00",
+                "last_updated": "2021-12-14T10:08:41.368227+00:00",
+                "context": {
+                    "id": "300e3cfb8093defa72e99ba099ac20ae",
+                    "parent_id": null,
+                    "user_id": "43c2d0128755472eb5eb60e283f39a50"
+                }
+            },
+            "last_seen": "2021-12-14T12:08:53.063639+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "light.kitchen",
+                "state": "off",
+                "attributes": {
+                    "supported_color_modes": [
+                        "brightness"
+                    ],
+                    "friendly_name": "Kitchen",
+                    "supported_features": 41
+                },
+                "last_changed": "2021-12-14T09:17:42.596242+00:00",
+                "last_updated": "2021-12-14T09:17:42.596242+00:00",
+                "context": {
+                    "id": "a39b6b9a3046b29abed0363e239568ec",
+                    "parent_id": null,
+                    "user_id": null
+                }
+            },
+            "last_seen": "2021-12-14T12:08:53.063639+00:00"
+        },
+        {
+            "state": {
+                "entity_id": "light.herbios_lights_light1",
+                "state": "on",
+                "attributes": {
+                    "supported_color_modes": [
+                        "brightness"
+                    ],
+                    "color_mode": "brightness",
+                    "brightness": 66,
+                    "friendly_name": "herbiOs_lights_light1",
+                    "supported_features": 41
+                },
+                "last_changed": "2021-12-14T09:12:14.548873+00:00",
+                "last_updated": "2021-12-14T09:12:29.953702+00:00",
+                "context": {
+                    "id": "f3036c957ac34cefc85b255c7e37079e",
+                    "parent_id": null,
+                    "user_id": "43c2d0128755472eb5eb60e283f39a50"
+                }
+            },
+            "last_seen": "2021-12-14T09:13:02.674664+00:00"
+        }
+    ]
+}
