@@ -19,23 +19,24 @@ export default function LightsLoader() {
                 !config.name
             ) return;
             // check if configuration already exists
-            const index = configuration.findIndex(item => item.unique_id === config.unique_id);
+            setConfiguration((oldConfig) => {
+                const index = oldConfig.findIndex(item => item.unique_id === config.unique_id);
 
-            // Add new config
-            if (index === -1) {
-                setConfiguration([
-                    ...configuration,
-                    config,
-                ]);
-                return;
-            }
+                // Add new config
+                if (index === -1) {
+                    return [
+                        ...oldConfig,
+                        config,
+                    ];
+                }
 
-            // Alter existing config
-            let newConfig = [...configuration];
-            newConfig[index] = config;
-            setConfiguration(newConfig);
+                // Alter existing config
+                let newConfig = [...oldConfig];
+                newConfig[index] = config;
+                return newConfig;
+            });
         }
-    }, [message]);
+    }, [message, setConfiguration]);
 
     if (configuration.length === 0) {
         return <>No Lights configured</>;

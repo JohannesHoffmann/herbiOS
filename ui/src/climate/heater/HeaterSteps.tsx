@@ -40,7 +40,7 @@ function HeaterStepButton() {
         const newXPosition =  (strengthInValue) / max * sliderMax;
         setSliderX(newXPosition);
         dragValueStart.current = newXPosition;
-    }, [strength, setSliderX, mode]);
+    }, [strength, sliderX, setSliderX, mode]);
 
     const bind = useDrag(({ movement: [mx], first, last, direction }) => {
         if (first) {

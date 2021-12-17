@@ -42,43 +42,53 @@ export default function LightsControl(props: Props) {
     // Stuff to do when a new mqtt message arrives
     useEffect(() => {
         if (message?.message) {
-            // Resolve the light by matching the topic path
-            const foundLight = lights.find(item => {
-                // Find either by custom set state_topic
-                if (item.state_topic && message.topic === item.state_topic) {
-                    return true;
-                }
-                // or by default topic path
-                if (message.topic === `${Topic.namespace}/${SubTopic.light}/${item.unique_id}/${Topic.state}`) {
-                    return true;
-                }
-                return false;
-            });
-
-            // no light at all so skip processing
-            if (!foundLight) {
-                return;
-            }
-
             const state = JSON.parse(message.message.toString());
 
-            // Updates the active light id
-            if (foundLight.unique_id === activeLight.unique_id) {
-                setActiveLight({
-                    ...activeLight,
-                    brightness: state.state === "ON" && state.brightness ? Math.round(100 / 255 * state.brightness) : 0, // Set brightness only when state is ON
+            setLights((allLights) => {
+                // Resolve the light by matching the topic path
+                const foundLight = allLights.find(item => {
+                    // Find either by custom set state_topic
+                    if (item.state_topic && message.topic === item.state_topic) {
+                        return true;
+                    }
+                    // or by default topic path
+                    if (message.topic === `${Topic.namespace}/${SubTopic.light}/${item.unique_id}/${Topic.state}`) {
+                        return true;
+                    }
+                    return false;
                 });
-            }
 
-            // Updates the lights array
-            const lightsIndex = lights.findIndex(light => light.unique_id === foundLight.unique_id);
-            if (lightsIndex >= 0) {
-                const newLights = [...[], ...lights];
-                newLights[lightsIndex].brightness = state.state === "ON" && state.brightness ? Math.round(100 / 255 * state.brightness) : 0; // Set brightness only when state is ON
-                setLights(newLights);
-            }
+                // no light at all so skip processing
+                if (!foundLight) {
+                    return allLights;
+                }
+
+                // Updates the active light id
+                setActiveLight((active) => {
+                    if (foundLight.unique_id === active.unique_id) {
+                        return {
+                            ...active,
+                            brightness: state.state === "ON" && state.brightness ? Math.round(100 / 255 * state.brightness) : 0, // Set brightness only when state is ON
+                        }
+                    }
+
+                    return active;
+                });
+
+                // Updates the lights array
+                const lightsIndex = allLights.findIndex(light => light.unique_id === foundLight.unique_id);
+                if (lightsIndex >= 0) {
+                    const newLights = [...[], ...allLights];
+                    newLights[lightsIndex].brightness = state.state === "ON" && state.brightness ? Math.round(100 / 255 * state.brightness) : 0; // Set brightness only when state is ON
+                    return newLights;
+                }
+               
+
+                return allLights;
+            });
+            
         }
-    }, [message, setLights]);
+    }, [message, setLights, setActiveLight]);
 
     // Stuff to do when the value is changed by user input
     // @param value is in percent!

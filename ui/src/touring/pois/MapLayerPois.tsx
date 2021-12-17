@@ -1,11 +1,10 @@
-import { Marker, Popup, useMap } from "react-leaflet";
+import { Marker, useMap } from "react-leaflet";
 import React from "react";
 import { Icon } from "leaflet";
 import Config from "../../Config";
 import { IPoi } from "./IPoi";
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import IconOvernight from "../../ui/icons/IconOvernight";
-import Modal from "../../ui/modal/Modal";
 
 type PoiMarkerProps = {
     poi: IPoi;

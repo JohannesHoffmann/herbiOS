@@ -25,7 +25,7 @@ export function useMqttSubscription(topic: string | Array<string>) {
                 ...topicsToSubscribe,
             ]);
         }
-    }, [topic])
+    }, [topic, subscribe, setSubscribedTopics, subscribedTopics, topics])
 
     useEffect(() => {
         if (!mqttMessage || !mqttMessage?.topic) {
@@ -35,7 +35,7 @@ export function useMqttSubscription(topic: string | Array<string>) {
         if (topics.flat().some(rTopic => matches(rTopic, mqttMessage.topic))) {
             setMessage(mqttMessage);
         }
-    }, [mqttMessage]);
+    }, [mqttMessage, topics, setMessage]);
     
     return message;
 }

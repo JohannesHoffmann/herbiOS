@@ -1,6 +1,5 @@
 import React from "react";
 import SwitchToggle from "../../ui/SwitchToggle";
-import { useWebSocket } from "../../utils/useWebSocket";
 import { useClimateDispatch, useClimateState } from "../ClimateContext";
 
 type Props = {

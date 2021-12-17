@@ -20,7 +20,7 @@ type Props = {
 }
 
 export default function PoiForm(props: Props) {
-    const {poiId: poiId, onPoiClose} = props;
+    const { poiId } = props;
     const [poi, setPoi] = React.useState<IPoi>();
     const loaded = React.useRef(false);
     const {authToken} = useUserState();
