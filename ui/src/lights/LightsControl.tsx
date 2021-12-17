@@ -21,7 +21,7 @@ export default function LightsControl(props: Props) {
     const theme: any = useTheme();
 
     // MQTT AND LIGHT STATES
-    const [subscriptionTopics, setSubscriptionTopics] = useState<Array<string>>(['herbiOs/lights/+/state',]); // This holds topics to subscribe in a state
+    const [subscriptionTopics, setSubscriptionTopics] = useState<Array<string>>([`${Topic.namespace}/${SubTopic.light}/+/${Topic.state}`]); // This holds topics to subscribe in a state
     const [lights, setLights] = useState<Array<ILightState>>(configuration.map(item => ({...item, brightness: 0}))); // This holds all configurations found via mqtt config
     const [activeLight, setActiveLight] = React.useState<ILightState>(lights[0]); // this state is only for the active selected light of the widget
     const publish = useMqttPublish();
@@ -34,7 +34,7 @@ export default function LightsControl(props: Props) {
     useEffect(() => {
         setLights(configuration.map(item => ({...item, brightness: 0}))); // reset the available lights
         setSubscriptionTopics([ // Re-Subscribe mqtt topics
-            'herbiOs/lights/+/state', // default state topic of all herbiOs lights
+            `${Topic.namespace}/${SubTopic.light}/+/${Topic.state}`, // default state topic of all herbiOs lights
             ...configuration.filter(item => (item?.state_topic ? true : false)).map(item => item.state_topic as string), // filter all lights with custom state_topic paths and subscribe them as well.
         ]);
     }, [configuration]);
