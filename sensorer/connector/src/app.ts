@@ -1,6 +1,7 @@
 import MQTT from "mqtt";
 import ConfigService from "./ConfigService";
 import * as Lights from "./lights";
+import * as Switches from "./switches";
 import SerialService from "./SerialService";
 
 const config = ConfigService.getInstance();
@@ -11,19 +12,22 @@ const start = async () => {
 
     client.on('message', function (topic, message) {
         Lights.onMqttMessage(client, topic, message.toString());
-
+        Switches.onMqttMessage(client, topic, message.toString());
         // client.end()
     });
 
     client.on('connect', function () {
         Lights.onConnect(client);
+        Switches.onConnect(client);
 
         Lights.subscribe(client);
+        Switches.subscribe(client);
     });
 
     // Register listeners for Serial Port
     SerialService.onMessage((message) => {
         Lights.onSerialMessage(message);
+        Switches.onSerialMessage(message);
     })
 }
 

@@ -1,52 +1,46 @@
 import React from "react";
-import { useEffect } from "react";
-import { VscPlug } from "react-icons/vsc";
-import { Box, Flex } from "rebass";
-import SwitchToggle from "../ui/SwitchToggle";
-import { useWebSocket } from "../utils/useWebSocket";
+import { useEffect, useState } from "react";
+import { SubTopic, Topic } from "../utils/IMqtt";
+import { useMqttSubscription } from "../utils/useMqttSubscription";
+import { ISwitchConfiguration } from "./ISwitch";
+import SwitchControl from "./SwitchesControl";
 
-interface ISwitch {
-    name: string;
-    id: number;
-    isOn: boolean;
-}
-
-function Switches() {
-    const [switches, getSwitches] = useWebSocket<Array<ISwitch>, string>("switches", "/switches");
-    const [, setSwitchOn] = useWebSocket<null, {switchId: number}>("switch:on", "/switches");
-    const [, setSwitchOff] = useWebSocket<null, {switchId: number}>("switch:off", "/switches");
+export default function Switches() {
+    const [configuration, setConfiguration] = useState<Array<ISwitchConfiguration>>([]);
+    const message = useMqttSubscription([
+        `${Topic.namespace}/${SubTopic.switch}/+/${Topic.config}`,
+    ]);
 
     useEffect(() => {
-        getSwitches("get");
-    }, [getSwitches])
+        if (message && message.message) {
+            const config = JSON.parse(message.message) as ISwitchConfiguration;
+            if (
+                !config.unique_id ||
+                !config.name
+            ) return;
+            // check if configuration already exists
+            setConfiguration((oldConfig) => {
+                const index = oldConfig.findIndex(item => item.unique_id === config.unique_id);
 
-    if (!switches) {
-        return null;
+                // Add new config
+                if (index === -1) {
+                    return [
+                        ...oldConfig,
+                        config,
+                    ];
+                }
+
+                // Alter existing config
+                let newConfig = [...oldConfig];
+                newConfig[index] = config;
+                return newConfig;
+            });
+        }
+    }, [message, setConfiguration]);
+
+    if (configuration.length === 0) {
+        return <>No Switches configured</>;
     }
-    
-    return <Flex
-        flexWrap='wrap' 
-        alignItems="stretch" 
-    >
-        
-        {switches.map((item) => {
-            return <Box p={2} key={item.id} sx={{width: ["50%", "100%"]}}>
-                <SwitchToggle
-                    label={item.name}
-                    value={!item.isOn}
-                    onChange={() => { 
-                        if (item.isOn) {
-                            setSwitchOff({switchId: item.id}); 
-                        } else {
-                            setSwitchOn({switchId: item.id}); 
-                        }
-                    
-                    }}
-                    icon={<VscPlug />}
-                />
-            </Box>
-        })}
-    </Flex>;
-}
 
-export default Switches;
+    return <SwitchControl configuration={configuration} />;
+}

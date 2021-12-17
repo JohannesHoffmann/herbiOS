@@ -16,6 +16,12 @@ export interface IConfig {
         brightness: boolean;
         sensorerId: string;
     }>;
+    switches: Array<{
+        name: string;
+        setTopics?: Array<string>;
+        stateTopics?: Array<string>;
+        sensorerId: number;
+    }>;
 }
 
 class ConfigService {
@@ -36,11 +42,19 @@ class ConfigService {
             path: "/dev/ttyACM0",
             baud: 115200,
         },
-       lights: [{
-           name: "Main Light",
-           brightness: true,
-           sensorerId: "light1",
-       }],
+       lights: [
+           {
+            name: "Main Light",
+            brightness: true,
+            sensorerId: "light1",
+        }
+        ],
+       switches: [
+            {
+                name: "Power Switch",
+                sensorerId: 1,
+            }
+       ]
     };
 
     private constructor() {

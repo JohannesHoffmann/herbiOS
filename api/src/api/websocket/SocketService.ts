@@ -8,7 +8,6 @@ import GeoSocket from "../../geo/GeoSocket";
 import NetworkingSocket from "../../networking/NetworkingSocket";
 import PowerSocket from "../../power/PowerSocket";
 import AroundMeSocket from "../../aroundMe/AroundMeSocket";
-import SwitchesSocket from "../../switches/SwitchesSocket";
 import TouringSocket from "../../touring/TouringSocket";
 import PoiSocket from "../../poi/PoiSocket";
 import MqttSocket from "../mqtt/MqttSocket";
@@ -30,7 +29,6 @@ interface INamespaces {
     networking: NetworkingSocket;
     power: PowerSocket;
     aroundMe: AroundMeSocket;
-    switches: SwitchesSocket;
     touring: TouringSocket;
     pois: PoiSocket;
     mqtt: MqttSocket;
@@ -79,7 +77,6 @@ class SocketService {
             networking: new NetworkingSocket(this._io),
             power: new PowerSocket(this._io),
             aroundMe: new AroundMeSocket(this._io),
-            switches: new SwitchesSocket(this._io),
             touring: new TouringSocket(this._io),
             pois: new PoiSocket(this._io),
             mqtt: new MqttSocket(this._io),
