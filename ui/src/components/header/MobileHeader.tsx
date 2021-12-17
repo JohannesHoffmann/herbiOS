@@ -9,7 +9,7 @@ import MoreMenu from "../more/MoreMenu";
 export default function MobileHeader () {
     const tabsState = useTabsState();
     const [open, setOpen] = React.useState(false);
-    console.log("open mobile header", open);
+
     return <>
     <Flex
         display={["block", "none"]} 
@@ -33,7 +33,7 @@ export default function MobileHeader () {
             </Box>
         </Flex>
     </Flex>
-        <Slider open={open} onClose={() => {setOpen(false); console.log("Called onclose"); }} label="More">
+        <Slider open={open} onClose={() => {setOpen(false); }} label="More">
             <MoreMenu />
         </Slider>
     </>

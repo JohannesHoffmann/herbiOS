@@ -121,7 +121,7 @@ export default function Modal(props: Props) {
             height: "100vh",
            
         }} 
-        onClick={() => {console.log("Called on close"); onClose()}}
+        onClick={() => {onClose()}}
         />
 
         <animated.div style={{

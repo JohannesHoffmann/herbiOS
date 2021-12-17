@@ -172,7 +172,6 @@ export default function TourForm(props: Props) {
             >
                 Tour erstellen
             </Button>}
-            {console.log(tour)}
             {tourId && tour && !tour.tour.endTime && <Button
                     sx={{
                         backgroundColor: "grey",
