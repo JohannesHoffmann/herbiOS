@@ -1,6 +1,6 @@
 import * as Path from 'path';
 import * as Fs from 'fs';
-import { ILightConfigurationManual } from './lights/ILights';
+import { ILightConfiguration } from './lights/ILights';
 
 
 export interface IConfig {
@@ -36,7 +36,7 @@ export interface IConfig {
         secret: string;
         expiration: string;
     },
-    lights?: Array<ILightConfigurationManual>;
+    lights?: Array<ILightConfiguration>;
     openWeatherApiKey: string;
 }
 
