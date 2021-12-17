@@ -6,6 +6,7 @@ import useDoubleClick from 'use-double-click';
 import { useMqttSubscription } from "../utils/useMqttSubscription";
 import { useMqttPublish } from "../utils/useMqttPublish";
 import { ILightConfiguration, ILightState } from "./ILight";
+import { SubTopic, Topic } from "../utils/IMqtt";
 
 type Props = {
     configuration: Array<ILightConfiguration>;
@@ -13,89 +14,125 @@ type Props = {
 
 export default function LightsControl(props: Props) {
     const { configuration } = props;
+    // PROPERTIES FOR SVG
     const height: number = 271;
     const max: number = 100;
     const min: number = 0;
     const theme: any = useTheme();
-    const [lights, setLights] = useState<Array<ILightState>>(configuration.map(item => ({...item, brightness: 0})));
-    const [activeLight, setActiveLight] = React.useState<ILightState>(lights[0]);
 
+    // MQTT AND LIGHT STATES
+    const [subscriptionTopics, setSubscriptionTopics] = useState<Array<string>>(['herbiOs/lights/+/state',]); // This holds topics to subscribe in a state
+    const [lights, setLights] = useState<Array<ILightState>>(configuration.map(item => ({...item, brightness: 0}))); // This holds all configurations found via mqtt config
+    const [activeLight, setActiveLight] = React.useState<ILightState>(lights[0]); // this state is only for the active selected light of the widget
     const publish = useMqttPublish();
 
-    const message = useMqttSubscription([
-        'herbiOs/lights/+/state',
-      ]);
+    const message = useMqttSubscription(subscriptionTopics); // use the subscriptionTopics state
 
+    const dragValueStart = React.useRef(activeLight.brightness); // This handles the drag start position as mutable value
 
-    const dragValueStart = React.useRef(activeLight.brightness);
-
+    // Stuff to do when configuration values are updated from outside this component.
     useEffect(() => {
-        setLights(configuration.map(item => ({...item, brightness: 0})));
+        setLights(configuration.map(item => ({...item, brightness: 0}))); // reset the available lights
+        setSubscriptionTopics([ // Re-Subscribe mqtt topics
+            'herbiOs/lights/+/state', // default state topic of all herbiOs lights
+            ...configuration.filter(item => (item?.state_topic ? true : false)).map(item => item.state_topic as string), // filter all lights with custom state_topic paths and subscribe them as well.
+        ]);
     }, [configuration]);
 
+    // Stuff to do when a new mqtt message arrives
     useEffect(() => {
-        if (message?.topic.startsWith("herbiOs/lights/") && message?.message) {
-            const lightId = message.topic.split("/")[2];
+        if (message?.message) {
+            // Resolve the light by matching the topic path
+            const foundLight = lights.find(item => {
+                // Find either by custom set state_topic
+                if (item.state_topic && message.topic === item.state_topic) {
+                    return true;
+                }
+                // or by default topic path
+                if (message.topic === `${Topic.namespace}/${SubTopic.light}/${item.unique_id}/${Topic.state}`) {
+                    return true;
+                }
+                return false;
+            });
+
+            // no light at all so skip processing
+            if (!foundLight) {
+                return;
+            }
+
             const state = JSON.parse(message.message.toString());
 
             // Updates the active light id
-            if (lightId === activeLight.unique_id) {
+            if (foundLight.unique_id === activeLight.unique_id) {
                 setActiveLight({
                     ...activeLight,
-                    brightness: state.state === "ON" && state.brightness ? Math.round(100 / 255 * state.brightness) : 0,
+                    brightness: state.state === "ON" && state.brightness ? Math.round(100 / 255 * state.brightness) : 0, // Set brightness only when state is ON
                 });
             }
 
             // Updates the lights array
-            const lightsIndex = lights.findIndex(light => light.unique_id === lightId);
+            const lightsIndex = lights.findIndex(light => light.unique_id === foundLight.unique_id);
             if (lightsIndex >= 0) {
                 const newLights = [...[], ...lights];
-                newLights[lightsIndex].brightness = state.state === "ON" && state.brightness ? Math.round(100 / 255 * state.brightness) : 0;
+                newLights[lightsIndex].brightness = state.state === "ON" && state.brightness ? Math.round(100 / 255 * state.brightness) : 0; // Set brightness only when state is ON
                 setLights(newLights);
             }
         }
     }, [message, setLights]);
 
+    // Stuff to do when the value is changed by user input
+    // @param value is in percent!
     const changeValue = (light: ILightState, value: number) => {
-        publish(`herbiOs/lights/${light.unique_id}/set`, JSON.stringify({
+        // Prefer custom set command_top over default topic
+        const commandTopic = light.command_topic 
+                                                    ? light.command_topic 
+                                                    : `${Topic.namespace}/${SubTopic.light}/${light.unique_id}/${Topic.set}`
+
+        publish(commandTopic, JSON.stringify({
             state: value > 0 ? "ON" : "OFF",
-            brightness: Math.round(255 * value / 100),
+            brightness: Math.round(255 * value / 100), // Calculate form percentage to digit byte value
         }));
     };
 
+    // Drag handler stuff
     const bind = useDrag(({ event, movement: [, my], first, direction }) => {
-        event?.preventDefault();
+        event?.preventDefault(); // prevents on touch devices
         event?.stopPropagation();
 
+        // set start brightness value on first event frame.
         if (first) {
-            dragValueStart.current = activeLight.brightness;
+            dragValueStart.current = activeLight.brightness; 
         }
+
+        // Skip calculation on horizontal drag
         if (direction[0] > 0.5 || direction[0] < -0.5) {
             return;
         }
        
+        // Calculate new value
         const newVal = max / window.innerHeight * 2 * my * -1;
 
-        if (dragValueStart.current + newVal > max) {
+        if (dragValueStart.current + newVal > max) { // Stop on max value
             changeValue(activeLight, max);
-        } else if (dragValueStart.current + newVal < min) {
+        } else if (dragValueStart.current + newVal < min) { // Stop on min value
             changeValue(activeLight, min);
         } else {
-            changeValue(activeLight, Math.round(dragValueStart.current + newVal));
+            changeValue(activeLight, Math.round(dragValueStart.current + newVal)); // All values between
         }
     });
 
-
+    // Action when selecting a light via a light button
     const lightButtonClick = (light: ILightState) => {
         setActiveLight(light);
         changeValue(light, light.brightness);
     }
 
+    // Action when double clicking on a light button
     const lightButtonDoubleClick = (light: ILightState) => {
-            if (light.brightness > min) {
+            if (light.brightness > min) { // Turn light off when light is currently on 
                 changeValue(light, min);
             }
-            if (light.brightness === min) {
+            if (light.brightness === min) { // Turn on and to 80% brightness when light is currently off
                 changeValue(light, 80);
                 setActiveLight(light);
             }
@@ -116,6 +153,7 @@ export default function LightsControl(props: Props) {
                 }}
             >
                 <svg width="100%" viewBox="0 0 260 271" >
+                    {/* Grey sun shape in the background */}
                     <g id="neutrealSun">
                         <path d="M139.416,49.478c1.301,-1.626 5.284,-8.536 5.69,-8.942c0.407,-0.407 2.846,-6.504 5.284,-7.317c2.439,-0.813 2.439,3.388 1.626,6.097c-1.761,3.794 -6.015,11.95 -8.942,14.226c-3.658,2.846 -5.284,-2.032 -3.658,-4.064Z" style={{fill: theme.colors.grey}}/>
                         <path d="M19.802,134.592c-1.968,-0.68 -9.813,-2.116 -10.332,-2.362c-0.52,-0.247 -7.081,-0.5 -8.665,-2.525c-1.584,-2.025 2.373,-3.433 5.199,-3.576c4.164,0.387 13.275,1.659 16.401,3.653c3.907,2.492 -0.143,5.66 -2.603,4.81Z" style={{fill: theme.colors.grey}}/>
@@ -136,6 +174,7 @@ export default function LightsControl(props: Props) {
                     
                     <use href="#fill" clipPath={"url(#sun)"} />
 
+                    {/* Grab Handel*/}
                     <g transform={"translate(0 " + ((height - 32)/100 * activeLight.brightness - height + 32) * -1 + ")"}  id="dragHandle" >
                         <path d="M100.63,25c-4.82,0 -8.727,-3.907 -8.727,-8.727l0,-6.273c0,-5.523 4.478,-10 10,-10l20,0c5.523,0 10,4.477 10,10l0,7.326c0,4.238 -3.435,7.674 -7.673,7.674l-1.5,0c-2.168,0 -4.127,1.296 -4.976,3.292c-1.865,4.389 -8.086,4.389 -9.951,0c-0.849,-1.996 -2.808,-3.292 -4.976,-3.292l-2.197,0Z" style={{fill: "#febf54", fillRule: "nonzero"}}/>
                         <path d="M101.903,16.5c0,-1.38 1.121,-2.5 2.5,-2.5c1.38,0 2.5,1.12 2.5,2.5c0,1.38 -1.12,2.5 -2.5,2.5c-1.379,0 -2.5,-1.12 -2.5,-2.5Z" style={{fill: theme.colors.background}}/>
@@ -146,11 +185,14 @@ export default function LightsControl(props: Props) {
                         <path d="M117.903,8.5c0,-1.38 1.121,-2.5 2.5,-2.5c1.38,0 2.5,1.12 2.5,2.5c0,1.38 -1.12,2.5 -2.5,2.5c-1.379,0 -2.5,-1.12 -2.5,-2.5Z" style={{fill: theme.colors.background}}/>
                     </g>
                     
+                    {/* Brightness display in % */}
                     <text x="185.737px" y="162.389px" style={{fontFamily:"'Roboto-Regular', 'Roboto'", fontSize: "30.634px", fill: theme.colors.green}}>{activeLight.brightness}%</text>
 
                     <defs>
+                        {/* The sun fill shape behind the sun mask */}
                         <path transform={"translate(0 " + ((height - 32)/100 * activeLight.brightness - height + 32) * -1 + ")"} id="fill" d="M260,55.485c-102.606,-31.682 -190.023,-33.173 -260,-0l0,215.515l260,-0l0,-215.515Z" style={{fill: theme.colors.primary}} />
 
+                        {/* Shape of the sun, same as the grey sun to use as mask */}
                         <clipPath id="sun">
                             <path d="M139.416,49.478c1.301,-1.626 5.284,-8.536 5.69,-8.942c0.407,-0.407 2.846,-6.504 5.284,-7.317c2.439,-0.813 2.439,3.388 1.626,6.097c-1.761,3.794 -6.015,11.95 -8.942,14.226c-3.658,2.846 -5.284,-2.032 -3.658,-4.064Z" style={{fill: "#febf54"}}/>
                             <path d="M19.802,134.592c-1.968,-0.68 -9.813,-2.116 -10.332,-2.362c-0.52,-0.247 -7.081,-0.5 -8.665,-2.525c-1.584,-2.025 2.373,-3.433 5.199,-3.576c4.164,0.387 13.275,1.659 16.401,3.653c3.907,2.492 -0.143,5.66 -2.603,4.81Z" style={{fill: "#febf54", fillRule: "nonzero"}}/>
@@ -194,6 +236,9 @@ export default function LightsControl(props: Props) {
         
     </>
 }
+
+
+// CUSTOM COMPONENT FOR TABS
 
 type LightTabProps = {
     name: string;

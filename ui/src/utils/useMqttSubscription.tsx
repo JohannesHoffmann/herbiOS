@@ -12,18 +12,20 @@ interface IMqttMessage {
 export function useMqttSubscription(topic: string | Array<string>) {
     const topics = Array.isArray(topic) ? topic : [topic];
     const [message, setMessage] = useState<IMqttMessage>();
-    const [subscribed, setSubscribed] = useState<boolean>(false);
+    const [subscribedTopics, setSubscribedTopics] = useState<Array<string>>([]);
     const [mqttMessage] = useWebSocket<{topic: string, message: string}, null>("message", "/mqtt");
     const [, subscribe] = useWebSocket<null, {topic: string | Array<string>}>("subscribe", "/mqtt");
 
     useEffect(() => {
-        if (!subscribed) {
-            setSubscribed(() => {
-                subscribe({topic});
-                return true;
-            })
+        const topicsToSubscribe = topics.filter(item => subscribedTopics.includes(item) ? false : true);
+        if (topicsToSubscribe.length > 0) {
+            subscribe({topic: topicsToSubscribe});
+            setSubscribedTopics([
+                ...subscribedTopics,
+                ...topicsToSubscribe,
+            ]);
         }
-    })
+    }, [topic])
 
     useEffect(() => {
         if (!mqttMessage || !mqttMessage?.topic) {

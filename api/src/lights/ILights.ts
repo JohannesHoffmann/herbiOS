@@ -5,11 +5,11 @@ export interface ILightConfiguration {
 }
 
 export interface ILightConfigurationManual extends ILightConfiguration{
-    setTopics: Array<string>;
-    stateTopics: Array<string>;
+    command_topic?: string;
+    state_topic?: string;
 }
 
 export interface ILightConfigurationAuto extends ILightConfiguration{
-    setTopics: Array<string>;
-    stateTopics: Array<string>;
+    command_topic?: string;
+    stateTopics?: string;
 }

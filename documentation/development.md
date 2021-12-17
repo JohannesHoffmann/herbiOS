@@ -69,12 +69,12 @@ The API creates a **config.json** file with all default values under **api/data/
 
 ### Lights configuration
 
-HerbiOS has its own namespace where the lights controller is listening on. The Topics for set and status are:
+HerbiOS has its own namespace where the lights controller is listening on. The Topics for set and state are:
 
 **herbiOs/lights/{{unique_id}}/set**
 **herbiOs/lights/{{unique_id}}/status**
 
-There is no behavior to move the set value to the status value. This should be managed by yourself or you can use the sensor-connector.
+There is no behavior implemented to move the set value to the state value. This should be managed by yourself or you can use the sensor-connector.
 
 The Data-Schema of the value is
 
@@ -82,6 +82,17 @@ The Data-Schema of the value is
 {
     "state": "ON" | "OFF",
     "brightness": number
+}
+```
+
+Data-Schema of the configuration
+```ts
+{
+    "name": string, // Human readable name of the light
+    "unique_id": string, // machine readable name ot the light
+    "brightness": boolean, // light supports brightness or not. Default is true
+    "command_topic"?: string // OPTIONAL custom topic path to set the values
+    "state_topic"?: string // OPTIONAL custom topic path of the state
 }
 ```
 
@@ -94,7 +105,7 @@ Edit the **api/data/config.json** file to add lights manually. Add the following
     {
         "name": "Light name",
         "unique_id": "light1",
-        "brightness": true
+        "brightness": true,
     }
 ]
 ```
