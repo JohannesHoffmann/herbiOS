@@ -1,6 +1,6 @@
 import theme from "./theme";
 
-export default {
+const darkTheme = {
     ...theme,
     name: "dark",
     colors: {
@@ -12,6 +12,6 @@ export default {
         grey: '#090E23',
         backgroundLight: "#090E23",
     },
-    
-    
-  }
+};
+
+export default darkTheme;

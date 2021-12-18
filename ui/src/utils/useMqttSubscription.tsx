@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useWebSocket } from "./useWebSocket";
-//@ts-ignore
 import { matches } from 'mqtt-pattern';
 
 
@@ -10,7 +9,7 @@ interface IMqttMessage {
 }
 
 export function useMqttSubscription(topic: string | Array<string>) {
-    const topics = Array.isArray(topic) ? topic : [topic];
+    const topics = useMemo(() => Array.isArray(topic) ? topic : [topic], [topic]);
     const [message, setMessage] = useState<IMqttMessage>();
     const [subscribedTopics, setSubscribedTopics] = useState<Array<string>>([]);
     const [mqttMessage] = useWebSocket<{topic: string, message: string}, null>("message", "/mqtt");

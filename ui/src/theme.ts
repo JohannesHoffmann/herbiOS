@@ -1,5 +1,5 @@
 
-export default {
+const lightTheme = {
     name: "light",
     breakpoints: ['1024px'],
     fontSizes: [
@@ -69,3 +69,5 @@ export default {
 
     
   }
+
+  export default lightTheme;

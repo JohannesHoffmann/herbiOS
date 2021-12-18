@@ -5,5 +5,4 @@ export default function useThemeColor (color?: string) {
     return color ?
         theme.colors[color] ? theme.colors[color] : color
         : theme.colors.text;
-
 }
