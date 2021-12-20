@@ -40,7 +40,7 @@ class DatabaseService {
             }
 
             // Syncing table structure
-            // this._connection.sync();
+            this._connection.sync();
          } catch (e) {
             console.log("Database connection could not be established", e);
         }
