@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Heading, Flex, Text } from "rebass";
+import Fans from "../fans/Fans";
 import { IClimateState, useClimateDispatch, useClimateState } from "./ClimateContext";
 import Fan from "./fan/Fan";
 import HeaterStepButton from "./heater/HeaterSteps";
@@ -47,7 +48,7 @@ export default function Climate () {
             {climate.mode === ClimateMode.manual && <Box>
 
                 <HeaterStepButton />
-                <Fan />
+                <Fans inList={["overhead"]} />
 
             </Box>}
 

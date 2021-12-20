@@ -2,6 +2,7 @@ import * as Path from 'path';
 import * as Fs from 'fs';
 import { ILightConfiguration } from './lights/ILights';
 import { ISwitchConfiguration } from './switches/ISwitches';
+import { IFanConfiguration } from './fans/IFans';
 
 
 export interface IConfig {
@@ -37,9 +38,10 @@ export interface IConfig {
         secret: string;
         expiration: string;
     },
+    openWeatherApiKey: string;
     lights?: Array<ILightConfiguration>;
     switches?: Array<ISwitchConfiguration>;
-    openWeatherApiKey: string;
+    fans?: Array<IFanConfiguration>;
 }
 
 class ConfigService {

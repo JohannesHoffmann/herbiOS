@@ -22,6 +22,20 @@ export interface IConfig {
         stateTopics?: Array<string>;
         sensorerId: number;
     }>;
+    fans: Array<{
+        name: string;
+        sensorerId: string;
+        setTopics?: Array<string>;
+        stateTopics?: Array<string>;
+
+        preset_modes?: Array<string>;
+        preset_mode_command_topic?: Array<string>;
+        preset_mode_state_topic?: Array<string>;
+
+        speed?: boolean;
+        speed_state_topic?: Array<string>;
+        speed_command_topic?: Array<string>;
+    }>;
 }
 
 class ConfigService {
@@ -53,6 +67,12 @@ class ConfigService {
             {
                 name: "Power Switch",
                 sensorerId: 1,
+            }
+       ],
+       fans: [
+            {
+                name: "Cabin Fan",
+                sensorerId: "overhead",
             }
        ]
     };

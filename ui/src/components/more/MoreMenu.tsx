@@ -1,6 +1,7 @@
 import React from "react";
 import { Box } from "rebass";
 import VentilationButton from "../../climate/ventilation/VentilationButton";
+import Fans from "../../fans/Fans";
 import TripsMenu from "../../touring/TripsMenu";
 import List from "../../ui/list/List";
 import ListHeader from "../../ui/list/ListHeader";
@@ -25,10 +26,7 @@ export default function MoreMenu (props: Props) {
         <List>
             <ListHeader>Belüftung</ListHeader>
             <ListItem>
-                <VentilationButton label="Lüftung Elektrik" id="fan2"  />
-            </ListItem>
-            <ListItem>
-                <VentilationButton label="Lüftung Kabine" id="fan1" />
+                <Fans />
             </ListItem>
         </List>
         <List>

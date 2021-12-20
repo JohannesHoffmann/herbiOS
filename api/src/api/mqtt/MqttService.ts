@@ -60,7 +60,7 @@ class MqttService {
 
         this._client.subscribe(topic, function (err) {
             if (err) {
-                console.log(`Error to subscribe`, err);
+                console.log(`Error to subscribe ${topic}`, err);
             }
         });
     }
@@ -72,7 +72,7 @@ class MqttService {
     public unsubscribe(topic: string | Array<string>) {
         this._client.unsubscribe(topic, function (err) {
             if (err) {
-                console.log(`Error to subscribe`, err);
+                console.log(`Error to subscribe ${topic}`, err);
             }
         });
     }

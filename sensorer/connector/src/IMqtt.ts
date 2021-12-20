@@ -9,4 +9,5 @@ export enum Topic {
 export enum SubTopic {
     light = "lights",
     switch = "switches",
+    fan = "fans",
 }
