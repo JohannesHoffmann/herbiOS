@@ -255,6 +255,9 @@ let fans: {
     [key: string]: FanState
 } = {};
 
+let inOutInterval: NodeJS.Timeout;
+let inOutCurrentState: "in" | "out";
+
 function setFan<K extends keyof FanState>(id: string, key: K, value: FanState[K] ) {
     if (!fans[id]) {
         fans[id] = {
@@ -271,7 +274,31 @@ function setFan<K extends keyof FanState>(id: string, key: K, value: FanState[K]
         SerialService.sendFastCommand(`setFan -fan ${id} -direction off -level 0`);
         return;
     }
-    SerialService.sendFastCommand(`setFan -fan ${id} -direction ${fans[id].direction} -level ${Math.round(255 / 100 * fans[id].speed)} `);
+
+    if (inOutInterval) clearInterval(inOutInterval);
+    
+    switch (fans[id].direction) {
+        case "in":
+        case "out":
+            SerialService.sendFastCommand(`setFan -fan ${id} -direction ${fans[id].direction} -level ${Math.round(255 / 100 * fans[id].speed)} `);
+            break;
+            
+        case "inOut":
+            inOutCurrentState = "in";    
+            SerialService.sendFastCommand(`setFan -fan ${id} -direction ${inOutCurrentState} -level ${Math.round(255 / 100 * fans[id].speed)} `);
+
+            inOutInterval = setInterval(() => {
+                if (inOutCurrentState === "in") {
+                    inOutCurrentState = "out";
+                } else {
+                    inOutCurrentState = "in";
+                }
+                SerialService.sendFastCommand(`setFan -fan ${id} -direction ${inOutCurrentState} -level ${Math.round(255 / 100 * fans[id].speed)} `);
+            }, 1000 * 60 * 4);
+
+    }
+
+
 }
 
 function onSerialMessage (message: string) {
