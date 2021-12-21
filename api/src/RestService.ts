@@ -207,9 +207,9 @@ class RestService {
 
 
         // HEATER
-        this.server.get("/heater", async function (request, response) {
-            response.status(200).send(ClimateService.getInstance().getHeater());
-        });
+        // this.server.get("/heater", async function (request, response) {
+        //     response.status(200).send(ClimateService.getInstance().getHeater());
+        // });
 
         // HEARTBEAT
         this.server.get("/heartbeat", async function (request, response) {

@@ -1,6 +1,5 @@
 import React from "react";
 import { Box } from "rebass";
-import VentilationButton from "../../climate/ventilation/VentilationButton";
 import Fans from "../../fans/Fans";
 import TripsMenu from "../../touring/TripsMenu";
 import List from "../../ui/list/List";

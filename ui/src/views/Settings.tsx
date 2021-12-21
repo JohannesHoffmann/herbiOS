@@ -2,8 +2,8 @@ import React from "react";
 import { Box, Flex } from "rebass";
 import Lights from "../lights/Lights";
 import Audio from "../audio/Audio";
-import Climate from "../climate/Climate";
 import Switches from "../switches/Switches";
+import Climates from "../climate/Climates";
 
 export default function Settings () {
 
@@ -32,7 +32,7 @@ export default function Settings () {
             }} 
         >
             <Audio />
-            <Climate />
+            <Climates />
         </Box>
 
     <Flex

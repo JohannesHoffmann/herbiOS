@@ -36,6 +36,30 @@ export interface IConfig {
         speed_state_topic?: Array<string>;
         speed_command_topic?: Array<string>;
     }>;
+    climates: Array<{
+        name: string;
+        sensorerId: string;
+
+        modes?: Array<string>;
+        mode_command_topic?: Array<string>;
+        mode_state_topic?: Array<string>;
+
+        preset_modes?: Array<string>;
+        preset_mode_command_topic?: Array<string>;
+        preset_mode_state_topic?: Array<string>;
+
+        fan_modes?: boolean;
+        fan_mode_state_topic?: Array<string>;
+        fan_mode_command_topic?: Array<string>;
+
+        temperature_initial?: number;
+        temperature_command_topic?: Array<string>;
+        temperature_state_topic?: Array<string>;
+        temperature_current_topic?: Array<string>;
+        
+        availability_topic?: Array<string>;
+
+    }>;
 }
 
 class ConfigService {
@@ -74,6 +98,12 @@ class ConfigService {
                 name: "Cabin Fan",
                 sensorerId: "overhead",
             }
+       ], 
+       climates: [
+           {
+               name: "Heater",
+               sensorerId: "heater",
+           }
        ]
     };
 

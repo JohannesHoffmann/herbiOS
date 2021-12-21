@@ -15,7 +15,6 @@ import SocketAuthenticator from "./SocketAuthenticator";
 import { useThemeDetector } from "./utils/useThemeDetector";
 import { Box } from "rebass";
 import { UserProvider } from "./contexts/UserContext";
-import { ClimateProvider } from "./climate/ClimateContext";
 import { AudioProvider } from "./audio/AudioContext";
 import { GeoProvider } from "./geo/GeoContext";
 import { NetworkingProvider } from "./networking/NetworkingContext";
@@ -39,7 +38,6 @@ function App() {
                 
                     {atTheVan && 
                     <SocketAuthenticator>
-                        <ClimateProvider>
                         <AudioProvider>
                         <GeoProvider>
                         <NetworkingProvider>
@@ -51,7 +49,6 @@ function App() {
                         </NetworkingProvider>
                         </GeoProvider>
                         </AudioProvider>
-                        </ClimateProvider>
                     </SocketAuthenticator>}
 
 

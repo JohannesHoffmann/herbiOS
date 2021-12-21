@@ -3,6 +3,7 @@ import ConfigService from "./ConfigService";
 import * as Lights from "./lights";
 import * as Switches from "./switches";
 import * as Fans from "./fans";
+import * as Climates from "./climates";
 import SerialService from "./SerialService";
 
 const config = ConfigService.getInstance();
@@ -15,6 +16,7 @@ const start = async () => {
         Lights.onMqttMessage(client, topic, message.toString());
         Switches.onMqttMessage(client, topic, message.toString());
         Fans.onMqttMessage(client, topic, message.toString());
+        Climates.onMqttMessage(client, topic, message.toString());
         // client.end()
     });
 
@@ -22,16 +24,23 @@ const start = async () => {
         Lights.onConnect(client);
         Switches.onConnect(client);
         Fans.onConnect(client);
+        Climates.onConnect(client);
 
         Lights.subscribe(client);
         Switches.subscribe(client);
         Fans.subscribe(client);
+        Climates.subscribe(client);
+
+        // Fake temperature serial output
+        Climates.onSerialMessage("temp:18", client);
     });
 
     // Register listeners for Serial Port
     SerialService.onMessage((message) => {
         Lights.onSerialMessage(message);
         Switches.onSerialMessage(message);
+        Fans.onSerialMessage(message);
+        Climates.onSerialMessage(message, client);
     })
 }
 

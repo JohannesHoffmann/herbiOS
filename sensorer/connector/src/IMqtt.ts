@@ -10,4 +10,5 @@ export enum SubTopic {
     light = "lights",
     switch = "switches",
     fan = "fans",
+    climate = "climates",
 }

@@ -1,12 +1,3 @@
-export interface IClimateState {
-    name: string;
-    unique_id: string;
-    mode: "heat" | "off" | "fan_only";
-    preset: "manual" | "automatic";
-    fanMode: string;
-    temperature: number;
-}
-
 export interface IClimateConfiguration {
     name: string;
     unique_id: string;
@@ -29,12 +20,4 @@ export interface IClimateConfiguration {
     temperature_current_topic?: string;
     
     availability_topic?: string;
-}
-
-export enum ClimateTopics {
-    currentTemp = "currentTemp",
-    targetTemp = "targetTemp",
-    fanMode = "fan_mode",
-    preset = "preset",
-    mode = "mode",
 }

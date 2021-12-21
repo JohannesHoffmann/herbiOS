@@ -2,11 +2,9 @@ import { Server } from "socket.io";
 import * as http from 'http';
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import DefaultNamespace from "./namespaces/DefaultNamespace";
-import ClimateSocket from "../../climate/ClimateSocket";
 import AudioSocket from "../../audio/AudioSocket";
 import GeoSocket from "../../geo/GeoSocket";
 import NetworkingSocket from "../../networking/NetworkingSocket";
-import PowerSocket from "../../power/PowerSocket";
 import AroundMeSocket from "../../aroundMe/AroundMeSocket";
 import TouringSocket from "../../touring/TouringSocket";
 import PoiSocket from "../../poi/PoiSocket";
@@ -23,11 +21,9 @@ declare module 'socket.io' {
 
 interface INamespaces {
     default: DefaultNamespace;
-    climate: ClimateSocket;
     audio: AudioSocket;
     geo: GeoSocket;
     networking: NetworkingSocket;
-    power: PowerSocket;
     aroundMe: AroundMeSocket;
     touring: TouringSocket;
     pois: PoiSocket;
@@ -71,11 +67,9 @@ class SocketService {
 
         this._namespaces = {
             default: new DefaultNamespace(this._io),
-            climate: new ClimateSocket(this._io),
             audio: new AudioSocket(this._io),
             geo: new GeoSocket(this._io),
             networking: new NetworkingSocket(this._io),
-            power: new PowerSocket(this._io),
             aroundMe: new AroundMeSocket(this._io),
             touring: new TouringSocket(this._io),
             pois: new PoiSocket(this._io),

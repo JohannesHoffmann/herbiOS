@@ -1,56 +1,66 @@
-import React from "react";
-import { useClimateDispatch, useClimateState } from "../ClimateContext";
+import React, { useMemo } from "react";
 import { Box } from "rebass";
 import { useDrag } from "react-use-gesture";
 import theme from "../../theme";
-import { HeaterMode } from "../IClimate";
 import { useEffect } from "react";
+import { IClimateConfiguration, IClimateState } from "../IClimate";
 
+type Props = {
+    steps: Array<string>;
+    state: string;
+    onChange: (newState: string) => void;
+}
 
-function HeaterStepButton() {
-    const {strength, mode} = useClimateState().heater;
-    const dispatch = useClimateDispatch();
-    
-    const sliderMax: number = 200;
+function HeaterStepButton(props: Props) {
+    const {state, steps, onChange} = props;
+    const strength = steps.findIndex(step => step === state)  >= 0 ? steps.findIndex(step => step === state) : 0;
+    const max: number = steps.length;
+
+    // DnD stuff
+    const sliderMax: number = 195;
     const sliderMin: number = 0;
-    const [sliderX, setSliderX]= React.useState<number>(strength);
+    const [sliderX, setSliderX]= React.useState<number>(0);
     const dragValueStart = React.useRef(sliderX);
+    const dragging = React.useRef(false);
 
-    const max: number = 10;
-    const [value, setValue]= React.useState<number>(strength);
+    const [value, setValue]= React.useState<number>(0);
 
     // update sliderX when strength gets update from server
     useEffect(() => {
-        if (mode === "off") {
-            setSliderX(0);
-            dragValueStart.current = 0;
-            setValue(0);
+        if (dragging.current) {
             return;
-        }   
-        const strengthInValue = strength + 1;
-        const posOfStrengthMin = sliderMax / max * strengthInValue;
-        const posOfStrengthMax =  sliderMax / max - 1 * (strengthInValue + 1);
+        }
+        const strengthInValue = strength;
+        const posOfStrengthMin = Math.floor(sliderMax / max * strengthInValue);
+        const posOfStrengthMax =  Math.ceil(sliderMax / max * (strengthInValue + 1));
 
         setValue(strengthInValue);
 
-        if (sliderX >= posOfStrengthMin && sliderX <= posOfStrengthMax) {
-            return;
-        }
+        setSliderX(sliderX => {
+            if (sliderX >= posOfStrengthMin && sliderX <= posOfStrengthMax) {
+                return sliderX;
+            }
 
-        const newXPosition =  (strengthInValue) / max * sliderMax;
-        setSliderX(newXPosition);
-        dragValueStart.current = newXPosition;
-    }, [strength, sliderX, setSliderX, mode]);
+            const newXPosition =  Math.round(sliderMax / max * strengthInValue + (sliderMax / max / 2));
+            dragValueStart.current = newXPosition;
+            return newXPosition;
+        });
+    }, [setSliderX, strength]);
 
     const bind = useDrag(({ movement: [mx], first, last, direction }) => {
         if (first) {
             dragValueStart.current = sliderX;
+            dragging.current = true;
         }
         if (direction[1] > 0.5 || direction[1] < -0.5) {
             return;
         }
        
         const newVal = sliderMax / window.innerWidth * 3 * mx;
+
+        if (last) {
+            dragging.current = false;
+        }
 
         if (dragValueStart.current + newVal > sliderMax) {
              changeValue(sliderMax);
@@ -59,34 +69,17 @@ function HeaterStepButton() {
         } else {
             changeValue(Math.round(dragValueStart.current + newVal));
         }
+        
 
-        if (last) {
-            setHeater();
-        }
     });
 
     const changeValue = React.useCallback((newSliderX: number) => {
         setSliderX(newSliderX);
-        const heaterValue = Math.round(newSliderX / sliderMax * max)
-        setValue(heaterValue);
+        const shouldSetValue = Math.floor((max)/ sliderMax * newSliderX);
+        const valueToSet = shouldSetValue > (max - 1)? max - 1 : shouldSetValue;
+        setValue(valueToSet);
+        onChange(steps[valueToSet]);
     }, [setSliderX]);
-
-    const setHeater = () => {
-        console.log("Set Heater", strength, value - 1, mode);
-        if (value === 0 && mode !== HeaterMode.off) {
-            console.log("Dispatch off");
-            dispatch({type: "HEATER", mode: "off"});
-            return;
-        }
-        if (value > 0  && mode === HeaterMode.off) {
-            console.log("Dispatch heat");
-            dispatch({type: "HEATER", mode: "heat"})
-        }
-        if (value > 0 && strength !== value - 1) {
-            console.log("Dispatch strength", value - 1);
-            dispatch({type: "HEATER", strength: value - 1});
-        }
-    }
 
     return <Box {...bind()} mr={-3} ml={-3} mt={2}>
         <svg
@@ -106,7 +99,7 @@ function HeaterStepButton() {
             fill={theme.colors.background}
             d="M18.851 29.625a2.412 2.412 0 014.821 0 2.412 2.412 0 01-4.821 0zM26.565 29.625a2.412 2.412 0 114.82.001 2.412 2.412 0 01-4.82-.001zM34.28 29.625a2.412 2.412 0 014.821 0 2.412 2.412 0 01-4.821 0zM18.851 21.911a2.412 2.412 0 014.821 0 2.411 2.411 0 01-4.821 0zM26.565 21.911a2.412 2.412 0 112.411 2.41 2.412 2.412 0 01-2.411-2.41zM34.28 21.911a2.412 2.412 0 014.821 0 2.411 2.411 0 01-4.821 0z"
           ></path>
-          <text fill={theme.colors.background} x="28.324px" y="44.995px" fontSize="11.057px" textAnchor="middle">{value === 0 ? "Aus" : value}</text>
+          <text fill={theme.colors.background} x="28.324px" y="44.995px" fontSize="11.057px" textAnchor="middle">{steps[value] === "off" ? "Aus" : steps[value]}</text>
         </g>
 
         <use href="#bg" clipPath="url(#line)"/>
