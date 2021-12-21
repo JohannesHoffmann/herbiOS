@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import Config from "../Config";
@@ -29,6 +29,7 @@ export function useWebSocket<T, M = T>(type: string, namespace?: string): [T | u
     const userState = useUserState();
     const userDispatch = useUserDispatch();
     const [message, setMessage] = useState<T>();
+    const mounted = useRef(true);
 
     let socket = namespaces["/"];
     if (namespace) {
@@ -66,12 +67,17 @@ export function useWebSocket<T, M = T>(type: string, namespace?: string): [T | u
 
 
     useEffect(() => {
-        const listener = (data: T) => {
+        mounted.current = true;
+        function listener(data: T) {
+            if (mounted.current === false) {
+                return;
+            }
             setMessage(data);
         };
         socket.on(type, listener);
 
         return () => {
+            mounted.current = false;
             socket.off(type, listener);
         }
     })
