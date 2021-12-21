@@ -1,13 +1,7 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { VscPlug } from "react-icons/vsc";
+import React from "react";
 import { Box, Flex } from "rebass";
-
-import { SubTopic, Topic } from "../utils/IMqtt";
-import { useMqttPublish } from "../utils/useMqttPublish";
-import { useMqttSubscription } from "../utils/useMqttSubscription";
 import Fan from "./Fan";
-import { IFanConfiguration, IFanState } from "./IFans";
+import { IFanConfiguration } from "./IFans";
 
 
 type Props = {

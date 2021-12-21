@@ -48,7 +48,7 @@ function Fan(props: Props) {
 
                 // Changes the main state
                 if (
-                    configuration.state_topic && message.topic === configuration.state_topic
+                    (configuration.state_topic && message.topic === configuration.state_topic)
                     || message.topic === `${Topic.namespace}/${SubTopic.fan}/${configuration.unique_id}/${Topic.state}`
                     ) {
                     newState.state = state as "ON" | "OFF";
@@ -56,7 +56,7 @@ function Fan(props: Props) {
                 
                 // Changes the speed state
                 if (
-                    configuration.speed_state_topic && message.topic === configuration.speed_state_topic
+                    (configuration.speed_state_topic && message.topic === configuration.speed_state_topic)
                     || message.topic === `${Topic.namespace}/${SubTopic.fan}/${configuration.unique_id}/${FanTopics.speed}/${Topic.state}`
                     ) {
                     newState.speed = Number(state);
@@ -64,7 +64,7 @@ function Fan(props: Props) {
                 
                 // Changes the preset_mode state
                 if (
-                    configuration.preset_mode_state_topic && message.topic === configuration.preset_mode_state_topic
+                    (configuration.preset_mode_state_topic && message.topic === configuration.preset_mode_state_topic)
                     || message.topic === `${Topic.namespace}/${SubTopic.fan}/${configuration.unique_id}/${FanTopics.preset}/${Topic.state}`
                     ) {
                     newState.preset_mode= state;
@@ -74,7 +74,7 @@ function Fan(props: Props) {
             });
             
         }
-    }, [message, setFan]);
+    }, [message, setFan, configuration]);
 
     // Stuff to do when the value is changed by user input
     const changeValueMain = (sw: IFanState) => {
