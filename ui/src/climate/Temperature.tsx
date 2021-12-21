@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text } from 'rebass';
-import { useClimateState } from './ClimateContext';
+import { SubTopic, Topic } from '../utils/IMqtt';
+import { useMqttSubscription } from '../utils/useMqttSubscription';
+import { IClimateConfiguration } from './IClimate';
 
 export default function Temperature() {
-    const {temperature} = useClimateState();
+    const temperature = 20;
 
     return <Text paddingX={2}>
         {temperature}°C
