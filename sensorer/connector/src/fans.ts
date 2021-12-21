@@ -271,7 +271,7 @@ function setFan<K extends keyof FanState>(id: string, key: K, value: FanState[K]
 
     // Set fan via serial to hardware
     if (!fans[id].on) {
-        SerialService.sendFastCommand(`setFan -fan ${id} -direction off -level 0`);
+        SerialService.getInstance().sendFastCommand(`setFan -fan ${id} -direction off -level 0`);
         return;
     }
 
@@ -280,12 +280,12 @@ function setFan<K extends keyof FanState>(id: string, key: K, value: FanState[K]
     switch (fans[id].direction) {
         case "in":
         case "out":
-            SerialService.sendFastCommand(`setFan -fan ${id} -direction ${fans[id].direction} -level ${Math.round(255 / 100 * fans[id].speed)} `);
+            SerialService.getInstance().sendFastCommand(`setFan -fan ${id} -direction ${fans[id].direction} -level ${Math.round(255 / 100 * fans[id].speed)} `);
             break;
             
         case "inOut":
             inOutCurrentState = "in";    
-            SerialService.sendFastCommand(`setFan -fan ${id} -direction ${inOutCurrentState} -level ${Math.round(255 / 100 * fans[id].speed)} `);
+            SerialService.getInstance().sendFastCommand(`setFan -fan ${id} -direction ${inOutCurrentState} -level ${Math.round(255 / 100 * fans[id].speed)} `);
 
             inOutInterval = setInterval(() => {
                 if (inOutCurrentState === "in") {
@@ -293,7 +293,7 @@ function setFan<K extends keyof FanState>(id: string, key: K, value: FanState[K]
                 } else {
                     inOutCurrentState = "in";
                 }
-                SerialService.sendFastCommand(`setFan -fan ${id} -direction ${inOutCurrentState} -level ${Math.round(255 / 100 * fans[id].speed)} `);
+                SerialService.getInstance().sendFastCommand(`setFan -fan ${id} -direction ${inOutCurrentState} -level ${Math.round(255 / 100 * fans[id].speed)} `);
             }, 1000 * 60 * 4);
 
     }

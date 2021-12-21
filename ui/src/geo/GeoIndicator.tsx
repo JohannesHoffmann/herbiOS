@@ -5,7 +5,7 @@ import { useGeoState } from './GeoContext';
 
 export default function GeoIndicator () {
 
-    const { satellites} = useGeoState().current;
+    const { satellites} = useGeoState();
 
 
     return <Text paddingX={2}>

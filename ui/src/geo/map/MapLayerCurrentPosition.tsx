@@ -26,7 +26,7 @@ const VanMarker = (props: {lat: number; lon: number;}) => {
 }
 
 export default function MapLayerCurrentPosition() {
-    const { lat, lon } = useGeoState().current;
+    const { lat, lon } = useGeoState();
 
     return <VanMarker lat={lat} lon={lon} />
 }

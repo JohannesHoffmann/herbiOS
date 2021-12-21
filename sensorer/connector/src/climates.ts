@@ -1,7 +1,7 @@
 import MQTT from "mqtt";
 import ConfigService from "./ConfigService";
 import { SubTopic, Topic } from "./IMqtt";
-import SerialService from "./SerialService";
+import SerialService, { SerialStuff } from "./SerialService";
 
 enum ClimateTopics {
     currentTemp = "currentTemp",
@@ -373,7 +373,7 @@ function setClimate<K extends keyof ClimateState>(id: string, key: K, value: Cli
 
     // HEATER OFF
     if (climate.mode === "off") {
-        SerialService.sendFastCommand(`heater -do stop`);
+        SerialService.getInstance().sendFastCommand(`heater -do stop`);
         return;
     }
 
@@ -383,10 +383,10 @@ function setClimate<K extends keyof ClimateState>(id: string, key: K, value: Cli
         if (strength!== NaN && strength >= 0 && strength <= 10) {
 
             if (climate.mode === "heat") {
-                SerialService.sendFastCommand(`heater -do heat${strength}`);
+                SerialService.getInstance().sendFastCommand(`heater -do heat${strength}`);
             }
             if (climate.mode === "fan_only") {
-                SerialService.sendFastCommand(`heater -do fan${strength}`);
+                SerialService.getInstance().sendFastCommand(`heater -do fan${strength}`);
             }
         }
         return;
@@ -401,7 +401,7 @@ function setClimate<K extends keyof ClimateState>(id: string, key: K, value: Cli
 
 function onSerialMessage (message: string, mqttClient: MQTT.MqttClient) {
     const { climates } = ConfigService.getInstance().getConfig();
-    const [type, value] = message.toString().split(":");
+    const [type, value] = message.toString().split(SerialStuff.delimiter);
 
     if (type === "temp") {
         for (const climate of climates) {

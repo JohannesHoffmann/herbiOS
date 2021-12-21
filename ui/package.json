@@ -5,7 +5,7 @@
   "dependencies": {
     "@rebass/forms": "^4.0.6",
     "@types/lodash": "^4.14.169",
-    "@types/mapbox-gl": "^2.6.0",
+    "@types/mapbox-gl": "^1.5.0",
     "@types/rebass__forms": "^4.0.4",
     "@types/use-double-click": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^5.7.0",
@@ -16,8 +16,8 @@
     "immer": "^9.0.3",
     "leaflet": "^1.7.1",
     "lodash": "^4.17.21",
-    "mapbox-gl": "^2.6.1",
-    "mapbox-gl-leaflet": "^0.0.15",
+    "mapbox-gl": "^1.5.0",
+    "mapbox-gl-leaflet": "^0.0.14",
     "mqtt-pattern": "^1.2.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
@@ -62,9 +62,5 @@
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
     "@types/rebass": "^4.0.6"
-  },
-  "resolutions": {
-    "**/@typescript-eslint/eslint-plugin": "^4.1.1",
-    "**/@typescript-eslint/parser": "^4.1.1"
   }
 }

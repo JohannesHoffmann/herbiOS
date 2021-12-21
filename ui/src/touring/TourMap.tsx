@@ -21,7 +21,7 @@ export type TourMapProps = {
 
 export default function TourMap (props: TourMapProps) {
     const { route, showCurrentPosition, pois } = props;
-    const { lat, lon } = useGeoState().current;
+    const { lat, lon } = useGeoState();
     const [editId, setEditId] = React.useState<number>();
     const variant = props.variant ? props.variant : "modal";
 

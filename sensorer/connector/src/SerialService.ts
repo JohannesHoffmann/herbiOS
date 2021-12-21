@@ -3,6 +3,13 @@ import ConfigService from './ConfigService';
 import Readline from  '@serialport/parser-readline';
 import MockBinding from '@serialport/binding-mock';
 
+type CommandSend = {command: string; resolve: (data: string) => void; reject: (data: string) => void; read: boolean};
+
+export enum SerialStuff {
+    delimiter = ":::",
+}
+
+
 if (ConfigService.getInstance().getConfig().env === "development") {
     SerialPort.Binding = MockBinding
     // Create a port and enable the echo and recording.
@@ -12,22 +19,31 @@ if (ConfigService.getInstance().getConfig().env === "development") {
 const readMock = (command: string): string => {
     if (command === "getPosition") {
         const positions = [
-            "3,		2021-02-26 21:02:28.000,	483582770, 108990260,	,		218,	44820,	4,		1481,	0,		66063,",
-            "3,		2021-02-26 21:02:28.000,	483684420, 108724120,	,		218,	44820,	12,		1481,	0,		66063,",
-            "3,		2021-02-26 21:02:28.000,	483863360, 108806800,	,		218,	44820,	10,		1481,	0,		66063,",
-            "3,		2021-02-26 21:02:28.000,	483876810, 109214500,	,		218,	44820,	9,		1481,	0,		66063,",
-            "3,		2021-02-26 21:02:28.000,	482366220, 109228300,	,		218,	44820,	13,		1481,	0,		66063,",
-            "3,		2021-02-26 21:02:28.000,	482653900, 109398100,	,		218,	44820,	12,		1481,	0,		66063,",
+            `3,		2021-02-26 21:02:28.000,	483582770, 108990260,	,		218,	44820,	4,		1481,	0,		66063,`,
+            `3,		2021-02-26 21:02:28.000,	483684420, 108724120,	,		218,	44820,	12,		1481,	0,		66063,`,
+            `3,		2021-02-26 21:02:28.000,	483863360, 108806800,	,		218,	44820,	10,		1481,	0,		66063,`,
+            `3,		2021-02-26 21:02:28.000,	483876810, 109214500,	,		218,	44820,	9,		1481,	0,		66063,`,
+            `3,		2021-02-26 21:02:28.000,	482366220, 109228300,	,		218,	44820,	13,		1481,	0,		66063,`,
+            `3,		2021-02-26 21:02:28.000,	482653900, 109398100,	,		218,	44820,	12,		1481,	0,		66063,`,
         ];
-        const randIndex = Math.round(positions.length * Math.random());
+        const randIndex = Math.floor(positions.length * Math.random());
         return positions[randIndex];
     }
     return "";
 }
 
-type CommandSend = {command: string; resolve: (data: string) => void; reject: (data: string) => void; read: boolean};
+
 
 class SerialService {
+
+    private static instance: SerialService;
+
+    public static getInstance(): SerialService {
+        if (!SerialService.instance) {
+            SerialService.instance = new SerialService();
+        }
+        return SerialService.instance;
+    }
 
     path: string;
     baud: number;
@@ -47,7 +63,7 @@ class SerialService {
     private _messageListener: Array<(message: string) => void> = [];
 
 
-    constructor() {
+    private constructor() {
         this.path = ConfigService.getInstance().getConfig().serial.path;
         this.baud = ConfigService.getInstance().getConfig().serial.baud;
         console.log(`Working with Sensorer on ${this.path} with baudrate ${this.baud}`);
@@ -69,7 +85,38 @@ class SerialService {
             for (const listener of this._messageListener) {
                 listener(data);
             }
-          })
+          });
+
+        if (ConfigService.getInstance().getConfig().env === "development") {
+            this.port.on("open", () => {
+                this._development();
+            });
+        }
+    }
+
+    /**
+     * Developer Device Simulator
+     */
+    private _development() {
+        setInterval(async () => {
+
+            function delay(delayInms) {
+                return new Promise(resolve => {
+                  setTimeout(() => {
+                    resolve(2);
+                  }, delayInms);
+                });
+              }
+            
+            // @ts-ignore
+            await this.port.binding.emitData(Buffer.from(`geoPosition${SerialStuff.delimiter}${readMock("getPosition")}\n`));
+
+            await delay(1000);
+
+            // @ts-ignore
+            await this.port.binding.emitData(`temp${SerialStuff.delimiter}${15 + Math.round(15 * Math.random())}\n`);
+            
+        }, 1000 * 60);
     }
 
     public onMessage(callback: (message: string) => void) {
@@ -178,4 +225,4 @@ class SerialService {
 
 }
 
-export default new SerialService();
+export default SerialService;

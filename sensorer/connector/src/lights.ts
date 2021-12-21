@@ -106,10 +106,10 @@ function onMqttMessage (mqttClient: MQTT.MqttClient, topic: string, message: str
 
                 // Set light leven via serial to hardware
                 if (newState.state === "OFF") {
-                    SerialService.sendFastCommand(`setLight -light ${light.sensorerId} -level 0`);
+                    SerialService.getInstance().sendFastCommand(`setLight -light ${light.sensorerId} -level 0`);
                     continue;
                 }
-                SerialService.sendFastCommand(`setLight -light ${light.sensorerId} -level ${newState.brightness}`);
+                SerialService.getInstance().sendFastCommand(`setLight -light ${light.sensorerId} -level ${newState.brightness}`);
             }
         }
 

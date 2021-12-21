@@ -58,8 +58,10 @@ export interface IConfig {
         temperature_current_topic?: Array<string>;
         
         availability_topic?: Array<string>;
-
     }>;
+    geoPosition: {
+        state_topics?: Array<string>;
+    }
 }
 
 class ConfigService {
@@ -104,7 +106,10 @@ class ConfigService {
                name: "Heater",
                sensorerId: "heater",
            }
-       ]
+       ],
+       geoPosition: {
+           state_topics: [],
+       }
     };
 
     private constructor() {

@@ -4,6 +4,7 @@ import * as Lights from "./lights";
 import * as Switches from "./switches";
 import * as Fans from "./fans";
 import * as Climates from "./climates";
+import * as GeoPosition from "./geoPosition";
 import SerialService from "./SerialService";
 
 const config = ConfigService.getInstance();
@@ -25,22 +26,22 @@ const start = async () => {
         Switches.onConnect(client);
         Fans.onConnect(client);
         Climates.onConnect(client);
+        GeoPosition.onConnect(client);
 
         Lights.subscribe(client);
         Switches.subscribe(client);
         Fans.subscribe(client);
         Climates.subscribe(client);
-
-        // Fake temperature serial output
-        Climates.onSerialMessage("temp:18", client);
+        GeoPosition.subscribe(client);
     });
 
     // Register listeners for Serial Port
-    SerialService.onMessage((message) => {
+    SerialService.getInstance().onMessage((message) => {
         Lights.onSerialMessage(message);
         Switches.onSerialMessage(message);
         Fans.onSerialMessage(message);
         Climates.onSerialMessage(message, client);
+        GeoPosition.onSerialMessage(message, client);
     })
 }
 

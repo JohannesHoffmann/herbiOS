@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import ConfigService from './ConfigService';
-import { IGeo } from './geo/GeoConfig';
+import { IGeo } from './geo/IGeo';
 import GeoService from './geo/GeoService';
 import NetworkingService from './networking/NetworkingService';
 import RestService from './RestService';

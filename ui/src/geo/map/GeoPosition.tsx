@@ -14,7 +14,7 @@ import Modal from '../../ui/modal/Modal';
 import PoiForm from '../../touring/pois/PoiForm';
 
 export default function GeoPosition () {
-    const { lat, lon } = useGeoState().current;
+    const { lat, lon } = useGeoState();
     const [pois, setPois] = React.useState<Array<IPoi>>([]);
     const loaded = React.useRef(false);
     const {authToken} = useUserState();
