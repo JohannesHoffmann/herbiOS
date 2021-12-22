@@ -4,7 +4,7 @@ You can add unlimited heaters to the ui. The UI currently supports automatic and
 
 ## Configuration
 
-This section shows two ways to configure a heater. To add a Fan to the heater's panel add a fan configuration with the **unique_id: "overhead** described in [how to configure a Fan](./Fans)
+This section shows two ways to configure a heater. To add a Fan to the heater's panel add a fan configuration with the **unique_id: "overhead** described in [how to configure a Fan](./Fans.md)
 
 ### Auto-Discovery
 

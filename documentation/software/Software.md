@@ -1,4 +1,4 @@
-# Parts of the Software
+# The Software
 
 This software is split into different parts with different purposes:
 
@@ -10,11 +10,11 @@ There is only the setup of the development environment documented. [Use this gui
 
 Once the system is running you can add the following Entities:
 
-- [Add Lights](configure/Lights)
-- [Add Heaters](configure/Climate)
-- [Add Fans](configure/Fans)
-- [Add Switches](configure/Switches)
-- [Provide Geo Location](configure/GeoPosition)
+- [Add Lights](configure/Lights.md)
+- [Add Heaters](configure/Climate.md)
+- [Add Fans](configure/Fans.md)
+- [Add Switches](configure/Switches.md)
+- [Provide Geo Location](configure/GeoPosition.md)
 
 ## Parts of the Software
 
