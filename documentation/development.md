@@ -65,7 +65,7 @@ When a password prompt appears use the default password to get authentication: *
 
 ### General configuraiton
 
-The API creates a **config.json** file with all default values under **api/data/config.json**.
+The API creates a **config.json** file with all default values under **api/data/config.json**. An overview of all configurations is [here](software/Software.md).
 
 ### Lights configuration
 
