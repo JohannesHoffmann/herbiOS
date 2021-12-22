@@ -1,6 +1,7 @@
 import React from "react";
 import { Box } from "rebass";
 import Fans from "../../fans/Fans";
+import Sensors from "../../sensors/Sensors";
 import TripsMenu from "../../touring/TripsMenu";
 import List from "../../ui/list/List";
 import ListHeader from "../../ui/list/ListHeader";
@@ -26,6 +27,13 @@ export default function MoreMenu (props: Props) {
             <ListHeader>Belüftung</ListHeader>
             <ListItem>
                 <Fans />
+            </ListItem>
+        </List>
+
+        <List>
+            <ListHeader>Information</ListHeader>
+            <ListItem>
+                <Sensors />
             </ListItem>
         </List>
         <List>

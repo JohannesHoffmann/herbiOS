@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Text } from "rebass";
+import { Box, Flex, Text } from "rebass";
 import { Switch } from '@rebass/forms'
 
 type Props = {
@@ -34,12 +34,14 @@ export default function SwitchToggle(props: Props) {
             height="100%"
             style={{touchAction: "manipulation"}}
         >
+            <Box pr={1}>
+                {icon}
+            </Box>
             <Text 
                 fontSize={[3, 3,]} 
                 flexGrow={1}
             >
                 {label}
-                {icon}
             </Text>
             <Switch checked={value} />
         </Flex>

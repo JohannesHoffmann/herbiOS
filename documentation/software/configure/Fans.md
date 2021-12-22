@@ -38,7 +38,7 @@ Edit the **api/data/config.json** file to add fans manually. Add the following p
     {
         "name": "Shower",
         "unique_id": "shower"
-    },
+    }
 ]
 ```
 

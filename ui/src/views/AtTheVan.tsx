@@ -1,7 +1,5 @@
 import React from "react";
 import Wifi from "../networking/Wifi";
-import Temperature from "../climate/Temperature";
-import Battery from "../power/Battery";
 import Cellular from "../networking/Cellular";
 import GeoIndicator from "../geo/GeoIndicator";
 import { Flex, Box } from "rebass";
@@ -12,6 +10,7 @@ import Dashboard from "./Dashboard";
 import TabletMenu from "../components/menus/TabletMenu";
 import MobileHeader from "../components/header/MobileHeader";
 import MobileMenu from "../components/menus/MobileMenu";
+import Sensors from "../sensors/Sensors";
 
 export default function AtTheVan() {
 
@@ -25,9 +24,8 @@ export default function AtTheVan() {
                 </Box>
                 <Box p={2}>
                         <Flex >
+                            <Sensors inList={["temperature1", "battery1"]} variant="small" />
                             <GeoIndicator />
-                            <Temperature />
-                            <Battery />
                             <Wifi />
                             <Cellular />
                         </Flex>

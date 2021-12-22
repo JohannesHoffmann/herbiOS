@@ -3,6 +3,7 @@ import * as Fs from 'fs';
 import { ILightConfiguration } from './lights/ILights';
 import { ISwitchConfiguration } from './switches/ISwitches';
 import { IFanConfiguration } from './fans/IFans';
+import { ISensorConfiguration } from './sensors/ISensors';
 
 
 export interface IConfig {
@@ -42,6 +43,7 @@ export interface IConfig {
     lights?: Array<ILightConfiguration>;
     switches?: Array<ISwitchConfiguration>;
     fans?: Array<IFanConfiguration>;
+    sensors?: Array<ISensorConfiguration>;
 }
 
 class ConfigService {

@@ -11,6 +11,7 @@ import AroundMeService from "./aroundMe/AroundMeService";
 import TouringService from "./touring/TouringService";
 import PoiService from "./poi/PoiService";
 import MqttService from "./api/mqtt/MqttService";
+import SensorsService from "./sensors/SensorsService";
 
 const start = async () => {
     ConfigService.getInstance();
@@ -23,6 +24,7 @@ const start = async () => {
     ClimateService.getInstance();
     AppService.getInstance();
     LightsService.getInstance().init();
+    SensorsService.getInstance().init();
     await TouringService.getInstance().init();
     await GeoService.getInstance().init();
     await PoiService.getInstance().init();

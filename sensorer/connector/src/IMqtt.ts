@@ -9,6 +9,7 @@ export enum Topic {
 export enum SubTopic {
     light = "lights",
     switch = "switches",
+    sensor = "sensors",
     fan = "fans",
     climate = "climates",
     geoPosition ="geoPosition",

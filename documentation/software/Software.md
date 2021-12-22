@@ -14,6 +14,7 @@ Once the system is running you can add the following Entities:
 - [Add Heaters](configure/Climate.md)
 - [Add Fans](configure/Fans.md)
 - [Add Switches](configure/Switches.md)
+- [Add Sensors](configure/Sensors.md)
 - [Provide Geo Location](configure/GeoPosition.md)
 
 ## Parts of the Software

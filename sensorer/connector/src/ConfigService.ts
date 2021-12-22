@@ -16,6 +16,13 @@ export interface IConfig {
         brightness: boolean;
         sensorerId: string;
     }>;
+    sensors: Array<{
+        name: string;
+        sensorerId: string;
+        unit_of_measurement?: string;
+        icon?: "thermometer" | "battery";
+        stateTopics?: Array<string>;
+    }>;
     switches: Array<{
         name: string;
         setTopics?: Array<string>;
@@ -109,7 +116,14 @@ class ConfigService {
        ],
        geoPosition: {
            state_topics: [],
-       }
+       },
+       sensors: [
+           {
+               name: "Room temperature",
+               sensorerId: "temperature1",
+               icon: "thermometer"
+           }
+       ]
     };
 
     private constructor() {
