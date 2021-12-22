@@ -4,6 +4,8 @@ There are several things to do to get the development environment running.
 
 This guide assume that you installed nodejs, npm already.
 
+- [Guide to install Node 16 and NPM on a Raspberry PI](https://lindevs.com/install-node-js-and-npm-on-raspberry-pi/)
+
 ## Installing Third-Party Services
 
 To work properly we need:

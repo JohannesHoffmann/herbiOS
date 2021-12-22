@@ -23,8 +23,8 @@ Example configuration:
 {
     "status": number, // status: 1 = ?, 2 = ? , 3 = ok
     "dateTime": string, // Date formate: 2021-02-26T21:02:28.000
-    "lat": number, // latitude e.g. 483582770
-    "lon": number, // longitude e.g. 108990260
+    "lat": number, // latitude e.g. 48.3582770
+    "lon": number, // longitude e.g. 10.8990260
     "headingDeviation": string, // not in use yet
     "speed": number, // not in use yet
     "altitude": number, // in meters
