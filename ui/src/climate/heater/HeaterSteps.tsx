@@ -1,9 +1,8 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { Box } from "rebass";
 import { useDrag } from "react-use-gesture";
 import theme from "../../theme";
 import { useEffect } from "react";
-import { IClimateConfiguration, IClimateState } from "../IClimate";
 
 type Props = {
     steps: Array<string>;
@@ -45,7 +44,7 @@ function HeaterStepButton(props: Props) {
             dragValueStart.current = newXPosition;
             return newXPosition;
         });
-    }, [setSliderX, strength]);
+    }, [setSliderX, strength, max]);
 
     const bind = useDrag(({ movement: [mx], first, last, direction }) => {
         if (first) {
@@ -79,7 +78,7 @@ function HeaterStepButton(props: Props) {
         const valueToSet = shouldSetValue > (max - 1)? max - 1 : shouldSetValue;
         setValue(valueToSet);
         onChange(steps[valueToSet]);
-    }, [setSliderX]);
+    }, [setSliderX, onChange, steps, max]);
 
     return <Box {...bind()} mr={-3} ml={-3} mt={2}>
         <svg

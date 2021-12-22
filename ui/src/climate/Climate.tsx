@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Heading, Flex, Text } from "rebass";
 import Fans from "../fans/Fans";
-import LightsLoader from "../lights/Lights";
 import { SubTopic, Topic } from "../utils/IMqtt";
 import { useMqttPublish } from "../utils/useMqttPublish";
 import { useMqttSubscription } from "../utils/useMqttSubscription";

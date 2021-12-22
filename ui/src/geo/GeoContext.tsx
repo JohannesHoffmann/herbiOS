@@ -7,7 +7,7 @@ import { IGeo } from "./IGeo";
 export function useGeoState(): IGeo {
     const [geo, setGeo] = useState<IGeo>({
         status: 0,
-        dateTime: new Date,
+        dateTime: new Date(),
         lat: 0,
         lon: 0,
         headingDeviation: "",

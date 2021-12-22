@@ -44,7 +44,7 @@ export default function Climates(props: Props) {
                 return newConfig;
             });
         }
-    }, [message, setConfiguration]);
+    }, [message, setConfiguration, inList]);
 
     if (configuration.length === 0) {
         return <>No Climates configured</>;
