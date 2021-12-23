@@ -1,4 +1,5 @@
 import React from "react";
+import { Box } from "rebass";
 import { useTabsState } from "./TabsContext";
 
 type Props = {
@@ -10,11 +11,11 @@ export default function TabContent (props: Props) {
     const {children, tabId} = props;
     const {active} = useTabsState();
 
-    if (active !== tabId) {
-        return null;
-    }
-
-    return <div>
+    return <Box
+        sx={{
+            display: active !== tabId ? "none" : "block",
+        }}
+    >
         {children}
-    </div>
+    </Box>
 }

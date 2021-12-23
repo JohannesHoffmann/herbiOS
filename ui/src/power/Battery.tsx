@@ -1,13 +1,11 @@
 import React from 'react';
 import { FaBatteryEmpty, FaBatteryFull, FaBatteryHalf, FaBatteryQuarter, FaBatteryThreeQuarters } from 'react-icons/fa';
 import { Text } from 'rebass';
-import { usePowerState } from './PowerContext';
 
 export default function Battery() {
-    const { batteryVolt, settings} = usePowerState();
-
-    const maxVolt: number = settings.batteryVoltMax;
-    const minVolt: number = settings.batteryVoltMin;
+    const batteryVolt = 13.5;
+    const maxVolt: number = 14.2;
+    const minVolt: number = 10.2;
 
     const inPercent = (): number => {
         const maxPercent = maxVolt - minVolt;

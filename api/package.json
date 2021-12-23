@@ -22,7 +22,6 @@
     "fastify-jwt": "^2.4.0",
     "fastify-static": "^3.4.0",
     "geolib": "^3.3.1",
-    "hilink-modem": "JohannesHoffmann/hilink-modem#master",
     "mqtt": "^4.2.8",
     "mqtt-pattern": "^1.2.0",
     "openweathermap-ts": "^1.2.7",

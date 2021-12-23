@@ -1,41 +1,79 @@
 import Modem from 'hilink-modem';
-import { CellularConnectionStatus, ICellularStatus } from "./NetworkingConfig";
+import ConfigService from '../ConfigService';
 
-class Cellular {
+export enum CellularConnectionStatus {
+    connecting = "Connecting",
+    connected = "Connected",
+    disconnecting = "Disconnecting",
+    disconnected = "Disconnected",
+    failed = "Connection failed or disabled"
+}
+
+export interface ICellularStatus {
+    maxSignal: number;
+    connectionStatus: CellularConnectionStatus;
+    currentNetworkType: string;
+}
+
+class ModemHiLink {
+
+    private _modem: Modem;
+    private _env: string = "productive";
+
+    constructor(private _ip: string) {
+        const { env } = ConfigService.getInstance().getConfig();
+        this._env = env;
+
+        if (env !== "development") {
+            this._modem =  new Modem({
+                modemIp: this._ip,
+            });
+        }
+
+    }
+
+    
 
     isOn: boolean;
 
     public async connect() {
         this.isOn = true;
-        const modem = new Modem({
-            modemIp: "192.168.8.1",
-        });
-        const result = await modem.connect();
+        
+        if (this._env === "development") {
+            return;
+        } 
 
+        const result = await this._modem.connect();
         console.log("Connect to cellular", result);
         return result;
     }
 
     public async disconnect() {
         this.isOn = false;
-        const modem = new Modem({
-            modemIp: "192.168.8.1",
-        });
-        
-        const result = await modem.disconnect();
 
+        if (this._env === "development") {
+            return;
+        } 
+
+        const result = await this._modem.disconnect();
         console.log("Disconnect from cellular", result);
-
         return result;
     }
 
     public async status(): Promise<ICellularStatus> {
-        const modem = new Modem({
-            modemIp: "192.168.8.1",
-        });
+        
+
+        if (this._env === "development") {
+            return {
+                maxSignal: Math.round(5 * Math.random()),
+                currentNetworkType: "LTE",
+                connectionStatus: CellularConnectionStatus.connected,
+            }
+        } 
+
 
         try {
-            const status = await modem.status();
+            const status = await this._modem.status();
 
             let connectionStatus: CellularConnectionStatus = CellularConnectionStatus.disconnected;
             switch (status["ConnectionStatus"]) {
@@ -79,19 +117,6 @@ class Cellular {
                     networkType = "LTE";
             }
     
-    
-            console.log("Modem Status", status);
-            // status.CurrentConnectTime
-            // status.CurrentDownload
-            // status.CurrentDownloadRate
-            // status.CurrentUpload
-            // status.CurrentUploadRate
-            // status.TotalConnectTime
-            // status.TotalUpload
-            // status.showtraffic
-    
-            // const statistics = modem.
-    
             return {
                 maxSignal: status["SignalIcon"],
                 connectionStatus,
@@ -105,4 +130,4 @@ class Cellular {
 
 }
 
-export default Cellular;
+export default ModemHiLink;

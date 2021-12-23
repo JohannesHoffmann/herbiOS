@@ -4,6 +4,7 @@ import { ILightConfiguration } from './lights/ILights';
 import { ISwitchConfiguration } from './switches/ISwitches';
 import { IFanConfiguration } from './fans/IFans';
 import { ISensorConfiguration } from './sensors/ISensors';
+import { INetworkingInterface, INetworkingModem } from './networking/INetworking';
 
 
 export interface IConfig {
@@ -44,6 +45,10 @@ export interface IConfig {
     switches?: Array<ISwitchConfiguration>;
     fans?: Array<IFanConfiguration>;
     sensors?: Array<ISensorConfiguration>;
+    networking?: {
+        interfaces?: Array<INetworkingInterface>;
+        modems?: Array<INetworkingModem>;
+    }
 }
 
 class ConfigService {

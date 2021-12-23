@@ -16,8 +16,6 @@ import { useThemeDetector } from "./utils/useThemeDetector";
 import { Box } from "rebass";
 import { UserProvider } from "./contexts/UserContext";
 import { AudioProvider } from "./audio/AudioContext";
-import { NetworkingProvider } from "./networking/NetworkingContext";
-import { PowerProvider } from "./power/PowerContext";
 import { AroundMeProvider } from "./aroundMe/AroundMeContext";
 
 function App() {
@@ -38,13 +36,9 @@ function App() {
                     {atTheVan && 
                     <SocketAuthenticator>
                         <AudioProvider>
-                        <NetworkingProvider>
-                        <PowerProvider>
                         <AroundMeProvider>
                             <AtTheVan />
                         </AroundMeProvider>
-                        </PowerProvider>
-                        </NetworkingProvider>
                         </AudioProvider>
                     </SocketAuthenticator>}
 

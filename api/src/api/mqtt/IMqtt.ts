@@ -13,4 +13,5 @@ export enum SubTopic {
     climate = "climates",
     geoPosition = "geoPosition",
     sensor = "sensors",
+    networking = "networking",
 }

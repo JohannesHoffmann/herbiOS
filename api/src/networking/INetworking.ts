@@ -1,11 +1,3 @@
-export enum CellularConnectionStatus {
-    connecting = "Connecting",
-    connected = "Connected",
-    disconnecting = "Disconnecting",
-    disconnected = "Disconnected",
-    failed = "Connection failed or disabled"
-}
-
 export interface INetworkingInterface {
     name: string;
     unique_id: string;

@@ -1,89 +1,54 @@
-import SocketService from "../api/websocket/SocketService";
-import Cellular from "./Cellular";
-import NetworkingConfig, { INetworkingConfig } from "./NetworkingConfig";
-import NetworkingSocket from "./NetworkingSocket";
-import Wifi from "./Wifi";
+import { SubTopic, Topic } from "../api/mqtt/IMqtt";
+import MqttService from "../api/mqtt/MqttService";
+import ConfigService from "../ConfigService";
+import { NetworkingTopics } from "./INetworking";
 
 class NetworkingService {
 
     private static instance: NetworkingService;
+    private _config = ConfigService.getInstance().getConfig();
 
     public static getInstance(): NetworkingService {
         if (!NetworkingService.instance) {
-            NetworkingService.instance = new NetworkingService();
+         NetworkingService.instance = new NetworkingService();
         }
         return NetworkingService.instance;
     }
 
-    private _config: NetworkingConfig;
-    private _socket: NetworkingSocket;
-    private _wifi: Wifi;
-    private _cellular: Cellular;
-
     private constructor() {
-        this._config = new NetworkingConfig();
-        this._socket = SocketService.getInstance().getNamespace("networking");
-        this._wifi = new Wifi();
-        // this._cellular = new Cellular();
-
+        this.init();
     }
 
-    private _update() {
-        this._socket.updateStatus(this._config.get());
+    public async init() {
+
+        // Register manual configured lights to mqtt auto discovery
+        if (this._config.networking) {
+            
+            // Apply interfaces
+            if (this._config.networking.interfaces) {
+                const interfacesToRegister = this._config.networking.interfaces;
+                for (const inf of interfacesToRegister) {
+                    MqttService.getInstance().publish(
+                        `${Topic.namespace}/${SubTopic.networking}/${NetworkingTopics.interface}/${inf.unique_id}/${Topic.config}`,
+                        JSON.stringify(inf),
+                    )
+                }
+            }
+
+            // Apply modems
+            if (this._config.networking.modems) {
+                const modemsToRegister = this._config.networking.modems;
+                for (const modem of modemsToRegister) {
+                    MqttService.getInstance().publish(
+                        `${Topic.namespace}/${SubTopic.networking}/${NetworkingTopics.modem}/${modem.unique_id}/${Topic.config}`,
+                        JSON.stringify(modem),
+                    )
+                }
+            }
+
+
+        }
     }
-
-    wifiOn(on: boolean = true) {
-        this._wifi.on(on);
-        this._config.set({wifi: on});
-        this._config.save();
-        this._update();
-    }
-
-    wifiOff() {
-        this._wifi.off();
-        this._config.set({wifi: false});
-        this._config.save();
-        this._update();
-    }
-
-    async cellularConnect() {
-        this._config.set({cellular: true});
-        this._config.save();
-        this._update();
-        // const result =  await this._cellular.connect();
-        // return result;
-    }
-
-    async cellularDisconnect() {
-        this._config.set({cellular: false});
-        this._config.save();
-        this._update();
-        // const result = await this._cellular.disconnect();
-        // return result;
-    }
-
-    /**
-     * requests system status of the networking interfaces
-     */
-    async status() {
-        // // Cellular status
-        // const cellularStatus =  await this._cellular.status();
-        // console.log("Cellular status", cellularStatus);
-        // // WIFI Stauts
-        // this._wifi.status();
-
-        // // set config
-        // this._config.set({
-        //     cellularStatus,
-        // });
-        // this._update();
-    }
-
-    public getConfig(): INetworkingConfig {
-        return this._config.get();
-    }
-
-
 }
 
 export default NetworkingService;

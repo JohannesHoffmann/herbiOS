@@ -15,6 +15,7 @@
   "author": "Johannes Hoffmann",
   "license": "custom",
   "dependencies": {
+    "hilink-modem": "github:JohannesHoffmann/hilink-modem#master",
     "mqtt": "^4.2.8",
     "serialport": "^9.0.6"
   },

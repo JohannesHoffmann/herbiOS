@@ -10,7 +10,9 @@ import { INetworkingInterface, NetworkingTopics } from './INetworking';
 export default function Wifi () {
     const wifis = useConfiguration<INetworkingInterface>(`${Topic.namespace}/${SubTopic.networking}/${NetworkingTopics.interface}/+/${Topic.config}`);
 
-    return wifis.map(wifi => <WifiButton configuration={wifi} key={wifi.unique_id} />)
+    return <>
+        {wifis.map(wifi => <WifiButton configuration={wifi} key={wifi.unique_id} />)}
+    </>
 }
 
 function WifiButton(props: {configuration: INetworkingInterface}) {

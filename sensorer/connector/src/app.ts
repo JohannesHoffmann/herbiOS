@@ -50,7 +50,6 @@ const start = async () => {
         Climates.onSerialMessage(message, client);
         GeoPosition.onSerialMessage(message, client);
         Sensors.onSerialMessage(message, client);
-        Networking.onSerialMessage(message, client);
     })
 }
 

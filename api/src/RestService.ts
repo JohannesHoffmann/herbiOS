@@ -145,25 +145,25 @@ class RestService {
         // });
 
 
-        // WIFI
-        this.server.get("/wifi/start", function (req, res) {
-            NetworkingService.getInstance().wifiOn();
-            res.status(200).send({ok: true})
-        });
-        this.server.get("/wifi/stop", function (req, res) {
-            NetworkingService.getInstance().wifiOff();
-            res.status(200).send({ok: true})
-        });
+        // // WIFI
+        // this.server.get("/wifi/start", function (req, res) {
+        //     NetworkingService.getInstance().wifiOn();
+        //     res.status(200).send({ok: true})
+        // });
+        // this.server.get("/wifi/stop", function (req, res) {
+        //     NetworkingService.getInstance().wifiOff();
+        //     res.status(200).send({ok: true})
+        // });
 
-        // CELLULAR
-        this.server.get("/cellular/start", async function (request, response) {
-            const result = await NetworkingService.getInstance().cellularConnect();
-            response.status(200).send(result);
-        });
-        this.server.get("/cellular/stop", async function (request, response) {
-            const result = await NetworkingService.getInstance().cellularDisconnect();
-            response.status(200).send(result);
-        });
+        // // CELLULAR
+        // this.server.get("/cellular/start", async function (request, response) {
+        //     const result = await NetworkingService.getInstance().cellularConnect();
+        //     response.status(200).send(result);
+        // });
+        // this.server.get("/cellular/stop", async function (request, response) {
+        //     const result = await NetworkingService.getInstance().cellularDisconnect();
+        //     response.status(200).send(result);
+        // });
 
 
 
