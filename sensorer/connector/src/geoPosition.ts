@@ -24,6 +24,10 @@ function onConnect (mqttClient: MQTT.MqttClient) {
     
     // Add herbi default topics
     geoPosition.state_topics.push(`${Topic.namespace}/${SubTopic.geoPosition}/${Topic.state}`);
+
+    setInterval(() => {
+        SerialService.getInstance().sendFastCommand("getPosition");
+    }, 60 * 1000);
 }
 
 function subscribe (mqttClient: MQTT.MqttClient) {
