@@ -66,6 +66,27 @@ export interface IConfig {
         
         availability_topic?: Array<string>;
     }>;
+    networking: {
+        interfaces: Array<{
+            name: string;
+            interfaceName: string;
+
+            setTopics?: Array<string>;
+            stateTopics?: Array<string>;
+
+            signal_strength_state_topic?: Array<string>;
+        }>;
+        modems: Array<{
+            name: string;
+            interfaceName: string;
+            ip: string;
+            setTopics?: Array<string>;
+            stateTopics?: Array<string>;
+
+            signal_strength_state_topic?: Array<string>;
+            network_type_state_topic?: Array<string>;
+        }>;
+    };
     geoPosition: {
         state_topics?: Array<string>;
     }
@@ -123,7 +144,11 @@ class ConfigService {
                sensorerId: "temperature1",
                icon: "thermometer"
            }
-       ]
+       ],
+       networking: {
+           modems: [],
+           interfaces: [],
+       },
     };
 
     private constructor() {

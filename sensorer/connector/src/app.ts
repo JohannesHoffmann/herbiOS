@@ -6,6 +6,7 @@ import * as Fans from "./fans";
 import * as Climates from "./climates";
 import * as GeoPosition from "./geoPosition";
 import * as Sensors from "./sensors";
+import * as Networking from "./networking";
 import SerialService from "./SerialService";
 
 const config = ConfigService.getInstance();
@@ -20,7 +21,7 @@ const start = async () => {
         Fans.onMqttMessage(client, topic, message.toString());
         Climates.onMqttMessage(client, topic, message.toString());
         Sensors.onMqttMessage(client, topic, message.toString());
-        // client.end()
+        Networking.onMqttMessage(client, topic, message.toString());
     });
 
     client.on('connect', function () {
@@ -30,6 +31,7 @@ const start = async () => {
         Climates.onConnect(client);
         GeoPosition.onConnect(client);
         Sensors.onConnect(client);
+        Networking.onConnect(client);
 
         Lights.subscribe(client);
         Switches.subscribe(client);
@@ -37,6 +39,7 @@ const start = async () => {
         Climates.subscribe(client);
         GeoPosition.subscribe(client);
         Sensors.subscribe(client);
+        Networking.subscribe(client);
     });
 
     // Register listeners for Serial Port
@@ -47,6 +50,7 @@ const start = async () => {
         Climates.onSerialMessage(message, client);
         GeoPosition.onSerialMessage(message, client);
         Sensors.onSerialMessage(message, client);
+        Networking.onSerialMessage(message, client);
     })
 }
 

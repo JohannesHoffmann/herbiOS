@@ -13,4 +13,5 @@ export enum SubTopic {
     fan = "fans",
     climate = "climates",
     geoPosition ="geoPosition",
+    networking = "networking",
 }
