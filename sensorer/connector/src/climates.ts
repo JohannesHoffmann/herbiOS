@@ -228,14 +228,16 @@ function subscribe (mqttClient: MQTT.MqttClient) {
         // /TEMPERATURE TOPICS
 
         // INITIAL TEMPERATURE
-        for (const stateTopic of climate.temperature_state_topic) {
-            mqttClient.publish(
-                stateTopic,
-                climate.temperature_initial.toString(),
-                {
-                    retain: true,
-                }
-            );
+        if (climate.temperature_initial) {
+            for (const stateTopic of climate.temperature_state_topic) {
+                mqttClient.publish(
+                    stateTopic,
+                    climate.temperature_initial.toString(),
+                    {
+                        retain: true,
+                    }
+                );
+            }
         }
     }
 }
