@@ -26,7 +26,9 @@ class TouringService {
         this._socket = SocketService.getInstance().getNamespace("touring");
         try {
             const runningTours = await TourModel.findAll({where: {endTime: null}});
-            this._runningTour = runningTours[runningTours.length - 1];
+            if (runningTours && runningTours.length >= 1) {
+                this._runningTour = runningTours[runningTours.length - 1];
+            }
         } catch (e) {
             console.log("Failed loading running tour", e);
         }
