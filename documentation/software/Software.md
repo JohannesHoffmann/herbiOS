@@ -15,6 +15,7 @@ Once the system is running you can add the following Entities:
 - [Add Fans](configure/Fans.md)
 - [Add Switches](configure/Switches.md)
 - [Add Sensors](configure/Sensors.md)
+- [Add Networking](configure/Networking.md)
 - [Provide Geo Location](configure/GeoPosition.md)
 
 ## Parts of the Software
