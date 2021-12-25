@@ -389,6 +389,11 @@ function setClimate<K extends keyof ClimateState>(id: string, key: K, value: Cli
     // HEATER OFF
     if (climate.mode === "off") {
         SerialService.getInstance().sendFastCommand(`heater -do stop`);
+        
+        // Resend command after 2 seconds to go for sure it will go off
+        setTimeout(() => {
+            SerialService.getInstance().sendFastCommand(`heater -do stop`);
+        }, 2000)
         return;
     }
 
