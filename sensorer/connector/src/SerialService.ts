@@ -81,7 +81,7 @@ class SerialService {
           }, this._waitToBeReady);
 
           // Call all registered Listeners on data receive
-          this.port.on('data', (data) => {
+          this.parser.on('data', (data) => {
             for (const listener of this._messageListener) {
                 listener(data);
             }
