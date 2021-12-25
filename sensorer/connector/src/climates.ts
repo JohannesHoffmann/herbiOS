@@ -239,6 +239,19 @@ function subscribe (mqttClient: MQTT.MqttClient) {
                 );
             }
         }
+        
+        // AVAILABLE
+        if (climate.temperature_initial) {
+            for (const stateTopic of climate.availability_topic) {
+                mqttClient.publish(
+                    stateTopic,
+                    "online",
+                    {
+                        retain: true,
+                    }
+                );
+            }
+        }
     }
 }
 
