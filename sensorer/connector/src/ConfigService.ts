@@ -28,6 +28,7 @@ export interface IConfig {
         setTopics?: Array<string>;
         stateTopics?: Array<string>;
         sensorerId: number;
+        reverse?: boolean;
     }>;
     fans: Array<{
         name: string;
