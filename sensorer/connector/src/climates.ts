@@ -9,6 +9,7 @@ enum ClimateTopics {
     fanMode = "fan_mode",
     preset = "preset",
     mode = "mode",
+    availability = "availabilty",
 }
 
 function onConnect (mqttClient: MQTT.MqttClient) {
@@ -193,6 +194,9 @@ function subscribe (mqttClient: MQTT.MqttClient) {
         if (!climate.temperature_current_topic) {
             climate.temperature_current_topic = [];
         }
+        if (!climate.availability_topic) {
+            climate.availability_topic = [];
+        }
         
         // Add herbi default topics
         climate.temperature_command_topic.push(`${Topic.namespace}/${SubTopic.climate}/${climate.sensorerId}/${ClimateTopics.targetTemp}/${Topic.set}`);
@@ -204,6 +208,7 @@ function subscribe (mqttClient: MQTT.MqttClient) {
             climate.temperature_command_topic.push(`homeassistant/climate/${climate.sensorerId}/temperature/set`);
             climate.temperature_state_topic.push(`homeassistant/climate/${climate.sensorerId}/temperature/state`);
             climate.temperature_current_topic.push(`homeassistant/climate/${climate.sensorerId}/temp_current`);
+            climate.availability_topic.push(`homeassistant/climate/${climate.sensorerId}/availability`);
         }
 
         // state topics
