@@ -208,7 +208,7 @@ function subscribe (mqttClient: MQTT.MqttClient) {
             climate.temperature_command_topic.push(`homeassistant/climate/${climate.sensorerId}/temperature/set`);
             climate.temperature_state_topic.push(`homeassistant/climate/${climate.sensorerId}/temperature/state`);
             climate.temperature_current_topic.push(`homeassistant/climate/${climate.sensorerId}/temp_current`);
-            climate.availability_topic.push(`homeassistant/climate/${climate.sensorerId}/availability`);
+            climate.availability_topic.push(`homeassistant/climate/${climate.sensorerId}/available`);
         }
 
         // state topics
