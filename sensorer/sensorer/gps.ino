@@ -56,7 +56,7 @@ static void GPSsetup() {
 
 void gpsCallback(cmd* c) {
     Command cmd(c); // Create wrapper object
-
+    Serial.print("geoPosition:::");
     trace_all(Serial, gps, fix );
 }
 #endif
