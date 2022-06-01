@@ -89,6 +89,18 @@ class RestService {
                         altitude: { type: 'number' },
                         satellites: { type: 'number' },
                     },
+                    sensors: { 
+                        type: 'array', 
+                        require: true,
+                        items: {
+                            name: { type: 'string', require: true },
+                            unique_id: { type: 'string', require: true },
+                            icon: { type: 'string' },
+                            unit_of_measurement: { type: 'string'},
+                            value: { type: ['string', "number", "boolean"], require: true },
+                            changedAt: { type: 'string', require: true },
+                        }
+                    },
                 },
                 response: 200,
             },
