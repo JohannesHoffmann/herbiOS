@@ -28,7 +28,7 @@ void setup() {
   fanSetCommand.addArgument("direction");
   fanSetCommand.addArgument("level");
   
-  fanSetCommand = cli.addCommand("getFan", fanGetCallback);
+  fanGetCommand = cli.addCommand("getFan", fanGetCallback);
 
   #if debug
     Serial.println("Did boot");

@@ -35,11 +35,23 @@ static gps_fix  fix;
 
 Command gpsCommand;
 
+unsigned long previousGPSMillis = 0;
+const long gpsInterval = 60000;
+
 
 static void GPSloop()
 {
   while (gps.available( gpsPort )) {
     fix = gps.read();
+  }
+
+
+  // Send GPS Position
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousGPSMillis >= gpsInterval) {
+    previousGPSMillis = currentMillis;
+    Serial.print("geoPosition:::");
+    trace_all(Serial, gps, fix );    
   }
 } 
 

@@ -26,7 +26,7 @@ void fanSetup() {
   fanSetCommand.addArgument("direction", "blow");
   fanSetCommand.addArgument("level");
 
-  fanSetCommand = cli.addCommand("getFans", fanGetCallback);
+  fanGetCommand = cli.addCommand("getFans", fanGetCallback);
 
   overheadFanSerial.begin(9600);
 

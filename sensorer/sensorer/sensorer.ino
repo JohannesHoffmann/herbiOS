@@ -8,6 +8,7 @@
 #define useGps true
 #define useLights true
 #define useSwitches true
+#define useSensors true
 
 // Defining simple CLI Instance
 SimpleCLI cli;
@@ -37,6 +38,10 @@ void setup() {
   #if useFans
     fanSetup();
   #endif
+
+  #if useSensors
+    sensorsSetup();
+  #endif
 }
 
 void loop() {
@@ -65,5 +70,9 @@ void loop() {
 
     #if useFans
       FanLoop();
+    #endif
+    
+    #if useSensors
+      sensorsLoop();
     #endif
 }
