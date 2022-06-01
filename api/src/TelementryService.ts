@@ -3,9 +3,12 @@ import ConfigService from './ConfigService';
 import { IGeo } from './geo/IGeo';
 import GeoService from './geo/GeoService';
 import RestService from './RestService';
+import SensorsService from './sensors/SensorsService';
+import { ISensorData } from './sensors/ISensors';
 
 interface ITelemetryData {
     position: IGeo,
+    sensors: Array<ISensorData>,
 }
 
 class TelemetryService {
@@ -31,8 +34,9 @@ class TelemetryService {
         // DO TRANSMISSION STUFF
         let dataPackage: ITelemetryData = {
             position: GeoService.getInstance().getLastPosition(),
+            sensors: SensorsService.getInstance().getSensorData(),
         };
-
+        console.log("Telemetry data ", dataPackage);
         const token = RestService.getInstance().server.jwt.sign({type: "van", name: "herbi"});
 
         try {
