@@ -108,7 +108,7 @@ class ConfigService {
         env: "development",
        homeAssistantIntegration: true,
        serial: {
-            path: "/dev/ttyACM0",
+            path: "/dev/cu.usbmodem",
             baud: 115200,
         },
        lights: [
@@ -153,7 +153,7 @@ class ConfigService {
     };
 
     private constructor() {
-        const configPath = Path.join(__dirname, `..`, "config.json");
+        const configPath = Path.join(__dirname, `../data/`, "config.json");
         if (Fs.existsSync(configPath)) {
             const loadedConfig = Fs.readFileSync(configPath, {encoding: "utf-8"});
             this.config = {...{}, ...this.config, ...JSON.parse(loadedConfig)};

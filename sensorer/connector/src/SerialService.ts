@@ -118,19 +118,9 @@ class SerialService {
             await delay(1000);
 
             // @ts-ignore
-            await this.port.binding.emitData(`sensor${SerialStuff.delimiter}temperature1,${15 + Math.round(15 * Math.random())}\n`);
+            await this.port.binding.emitData(`sensors${SerialStuff.delimiter};temperature1=${15 + Math.round(15 * Math.random())};temperature2=${15 + Math.round(15 * Math.random())};humidity1=${15 + Math.round(15 * Math.random())};motionDetect=${Math.random() > 0.9 ? true : false}\n`);
             await delay(1000);
-            // @ts-ignore
-            await this.port.binding.emitData(`sensor${SerialStuff.delimiter}temperature2,${15 + Math.round(15 * Math.random())}\n`);
-            await delay(1000);
-
-            // @ts-ignore
-            await this.port.binding.emitData(`sensor${SerialStuff.delimiter}humidity1,${Math.round(100 * Math.random())}\n`);
-            await delay(1000);
-            
-            // @ts-ignore
-            await this.port.binding.emitData(`sensor${SerialStuff.delimiter}battery1,${Math.round(100 * Math.random())}\n`);
-            await delay(1000);
+          
         }, 1000 * 60);
     }
 

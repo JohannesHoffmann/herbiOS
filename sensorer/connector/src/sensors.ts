@@ -86,20 +86,23 @@ function onMqttMessage (mqttClient: MQTT.MqttClient, topic: string, message: str
 
 function onSerialMessage (message: string, mqttClient: MQTT.MqttClient) {
     const { sensors } = ConfigService.getInstance().getConfig();
-    const [type, sensor] = message.toString().split(SerialStuff.delimiter);
+    const [type, sensorData] = message.toString().split(SerialStuff.delimiter);
     
-    if (type === "sensor" && sensor) {
-        const [sensorId, value] = sensor.split(",");
-        for (const sensor of sensors) {
-            if (sensor.sensorerId === sensorId) {
-                for (const stateTopic of sensor.stateTopics) {
-                    mqttClient.publish(
-                        stateTopic,
-                        value,
-                        {
-                            retain: true,
-                        }
-                    );
+    if (type === "sensors" && sensorData) {
+        const sensor = sensorData.split(";");
+        for (const sensorSet of sensor) {
+            const [sensorId, value] = sensorSet.split("=");
+            for (const sensor of sensors) {
+                if (sensor.sensorerId === sensorId) {
+                    for (const stateTopic of sensor.stateTopics) {
+                        mqttClient.publish(
+                            stateTopic,
+                            value,
+                            {
+                                retain: true,
+                            }
+                        );
+                    }
                 }
             }
         }
