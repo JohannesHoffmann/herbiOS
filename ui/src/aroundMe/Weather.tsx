@@ -16,11 +16,10 @@ export default function Weather () {
     const sunset = new Date(currentWeather.sys.sunset * 1000);
 
     return <>
-     <Heading>Wetter</Heading>
+     <Heading>Wetter in {currentWeather.name}</Heading>
         <Box 
             p={3}
             fontSize={4}
-
         >
             <Box>
                 <Flex alignItems="center">
