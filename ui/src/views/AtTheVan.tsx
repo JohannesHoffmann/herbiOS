@@ -24,7 +24,7 @@ export default function AtTheVan() {
                 </Box>
                 <Box p={2}>
                         <Flex >
-                            <Sensors inList={["temperature1", "battery1"]} variant="small" />
+                            <Sensors inList={["temperature1", "humidity1", "battery1"]} variant="small" />
                             <GeoIndicator />
                             <Wifi />
                             <Cellular />

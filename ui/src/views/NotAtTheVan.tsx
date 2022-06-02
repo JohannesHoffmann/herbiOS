@@ -1,11 +1,27 @@
 import React from "react";
-import GeoPositionGroundControl, { ITelemetry } from "../geo/map/GeoPositionGroundControl";
-import { Flex, Box, Heading, Button } from "rebass";
+import GeoPositionGroundControl from "../geo/map/GeoPositionGroundControl";
+import { Flex, Box, Heading, Button, Text } from "rebass";
 import { MdRefresh } from "react-icons/md";
 import Axios, { CancelToken } from "axios";
 import Config from "../Config";
 import { useUserState } from "../contexts/UserContext";
+import { IGeo } from "../geo/IGeo";
+import {BsThermometerHalf, BsBatteryHalf } from "react-icons/bs";
 
+export interface ITelemetry {
+    dateTime: Date;
+    position: IGeo,
+    sensors: Array<ISensorData>,
+}
+
+export interface ISensorData {
+    name: string;
+    unique_id: string;
+    icon?: "thermometer" | "battery";
+    unit_of_measurement?: string;
+    value: string | number | boolean;
+    changedAt: Date;
+}
 
 export default function NotAtTheVan() {
     const [telemetries, setTelemetries] = React.useState<Array<ITelemetry>>([]);
@@ -20,8 +36,8 @@ export default function NotAtTheVan() {
         try {
             setRefreshing(true);
             setMessage("");
-            const data = await Axios.get(Config.groundControl + "/telemetry", {headers: {Authorization: "Bearer " + authToken}, cancelToken: options?.cancelToken});
-            setTelemetries(data.data as Array<ITelemetry>);
+            const data = await Axios.get<Array<ITelemetry>>(Config.groundControl + "/telemetry", {headers: {Authorization: "Bearer " + authToken}, cancelToken: options?.cancelToken});
+            setTelemetries(data.data);
 
             setRefreshing(false);
         } catch (e) {
@@ -65,7 +81,46 @@ export default function NotAtTheVan() {
 
             <Box>
 
+                <Box>
 
+                    {telemetries.length > 0 && telemetries[telemetries.length - 1].sensors && telemetries[telemetries.length - 1].sensors.map(sensor => {
+
+                            let icon = null;
+                            switch(sensor.icon) {
+                                case "battery":
+                                    icon = <BsBatteryHalf />
+                                    break;
+
+                                case "thermometer":
+                                    icon = <BsThermometerHalf />;
+                                    break;
+                            }
+
+                        return <Box>
+                        <Flex
+                            fontSize={4}
+                            height="100%"
+                        >
+                            {icon && <Box pr={1}>
+                                {icon}
+                            </Box>}
+                            <Text 
+                                fontSize={[3, 3,]} 
+                                flexGrow={1}
+                            >
+                                {sensor.name}
+                            </Text>
+                            <Text>
+                                {sensor.value}
+                                {sensor.unique_id.startsWith("motion") && <>{sensor.changedAt}</>}
+                                {sensor.unit_of_measurement}
+                            </Text>
+                        </Flex>
+                        
+                    </Box>
+                    })}
+
+                </Box>
 
                 <Flex flexWrap='wrap' alignItems="stretch">
                     <Box p={2} sx={{width: [ "100%", "100%"], borderRadius: 20, overflow: "hidden", "webkitMaskImage": "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);"}}>
