@@ -5,7 +5,7 @@ import Config from "../Config";
 import { useUserDispatch, useUserState } from "../contexts/UserContext";
 
 let namespaces: {[key: string]: Socket} = {
-    "/": io(Config.host),
+    "/": io(Config.socket),
 };
 
 export function socketSend<M>(type: string, namespace?: string): (message: M) => void {
@@ -34,7 +34,7 @@ export function useWebSocket<T, M = T>(type: string, namespace?: string): [T | u
     let socket = namespaces["/"];
     if (namespace) {
         if (!namespaces.hasOwnProperty(namespace)) {
-            namespaces[namespace] = io(Config.host + namespace);
+            namespaces[namespace] = io(Config.socket + namespace);
             namespaces[namespace].on("connect_error", (err: Error) => {
                 if (err.message === "not authenticated") {
                     userDispatch({type: "LOGOUT"});
