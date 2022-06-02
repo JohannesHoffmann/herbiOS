@@ -16,7 +16,6 @@ static void sensorsLoop() {
   unsigned long currentMillis = millis();
   if (currentMillis - previousSensorsMillis >= sensorsInterval) {
     previousSensorsMillis = currentMillis;
-    Serial.println("getSensorData auto-requested");
     sensorSerial.println("getSensorData");
   }
 
@@ -48,7 +47,6 @@ static void sensorsSetup() {
 
 void sensorGetCallback(cmd* c) {
   sensorSerial.println("getSensorData");
-  Serial.println("getSensorData requested");
 }
 
 #endif

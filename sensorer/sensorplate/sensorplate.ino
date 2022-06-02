@@ -3,7 +3,7 @@
 #define debug false
 #define DHTPIN 2 // Pin of the sensor output 
 #define MOTIONPIN 3
-#define DHTTYPE DHT22    // Sensor type
+#define DHTTYPE DHT11    // Sensor type
 
 DHT dht(DHTPIN, DHTTYPE);
 SimpleCLI cli;
@@ -47,7 +47,22 @@ void loop() {
   humidity = dht.readHumidity();                           
   temperature = dht.readTemperature();  
 
-  motionDetect = digitalRead(MOTIONPIN);    
+  motionDetect = digitalRead(MOTIONPIN); 
+
+  #if debug
+    Serial.print("temperature1=");
+  Serial.print(temperature);
+  Serial.print(";humidity1=");
+  Serial.print(humidity);
+  Serial.print(";motionDetect=");
+  if (motionDetect == HIGH) {
+    Serial.print("true");
+  } else {
+    Serial.print("false");
+  }
+  Serial.println("");
+  delay(3000);
+  #endif;   
 }
 
 void sensorGetCallback(cmd* c) {
