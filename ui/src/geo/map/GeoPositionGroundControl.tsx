@@ -2,12 +2,10 @@ import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline } from 'react-leaflet';
 import { Icon } from "leaflet";
 import Config from '../../Config';
-import { IGeo } from '../IGeo';
+import { Box } from 'rebass';
+import { ITelemetry } from '../../views/NotAtTheVan';
 
-export interface ITelemetry {
-    dateTime: Date;
-    position: IGeo,
-}
+
 
 const VanMarker = (props: {lat: number; lon: number;}) => {
     const {lat, lon} = props;
@@ -48,12 +46,14 @@ export default function GeoPositionGroundControl (props: Props) {
         }
     }, [setPosition, setTrack, telemetries]);
 
-    return <MapContainer style={{height: "70vh"}} center={[48,10]} zoom={15} scrollWheelZoom={true}>
-        <TileLayer
-        attribution={""}
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <Polyline pathOptions={limeOptions} positions={track} />
-        {position && <VanMarker lat={position[0]} lon={position[1]} />}
-  </MapContainer>
+    return <Box>
+            <MapContainer style={{height: "70vh"}} center={[48,10]} zoom={15} scrollWheelZoom={true}>
+                <TileLayer
+                attribution={""}
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <Polyline pathOptions={limeOptions} positions={track} />
+                {position && <VanMarker lat={position[0]} lon={position[1]} />}
+        </MapContainer>
+    </Box>
 }
