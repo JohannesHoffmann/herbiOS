@@ -45,11 +45,12 @@ class GeoService {
                     return;
                 }
 
-                const distance = getDistance({
-                    latitude: this._geo.lat, longitude: this._geo.lon},
-                    { latitude: this._geoBefore.lat, longitude: this._geoBefore.lon });
+                const distance = getDistance(
+                    { latitude: this._geo.lat, longitude: this._geo.lon},
+                    { latitude: this._geoBefore.lat, longitude: this._geoBefore.lon }
+                );
                 
-                console.log("Distnce", distance, "to", this._geoDistanceMin);
+                
                 if (distance > this._geoDistanceMin) {
                     this.saveGeo();
                 }

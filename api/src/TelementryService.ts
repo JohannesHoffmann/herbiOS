@@ -36,7 +36,7 @@ class TelemetryService {
             position: GeoService.getInstance().getLastPosition(),
             sensors: SensorsService.getInstance().getSensorData(),
         };
-        console.log("Telemetry data ", dataPackage);
+        
         const token = RestService.getInstance().server.jwt.sign({type: "van", name: "herbi"});
 
         try {
@@ -49,8 +49,9 @@ class TelemetryService {
                     }
                 }
             );
+            console.log("Sent telemetry data to ground control");
         } catch (e) {
-            console.log("Could not transmit telemetry data");
+            console.log("Could not transmit telemetry data", e);
         }
 
         // END OF DOING TRANSMISSION STUFF
