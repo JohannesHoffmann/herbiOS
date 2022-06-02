@@ -2,3 +2,7 @@
 herbiOs-development/*
 !herbiOs-development/docker-compose.yml
 !herbiOs-development/mosquitto.conf
+
+herbiOs-production/*
+!herbiOs-production/docker-compose.yml
+!herbiOs-production/mosquitto.conf

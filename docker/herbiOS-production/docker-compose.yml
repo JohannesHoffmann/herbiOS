@@ -1,0 +1,55 @@
+version: '3'
+services:
+  homeassistant:
+    hostname: homeassistant
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    volumes:
+      - ./homeassistant-config:/config
+#      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    privileged: true
+    ports:
+      - "8123:8123"
+  
+  mosquitto:
+    hostname: mosquitto
+    image: eclipse-mosquitto
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./mosquitto-data:/mosquitto/data
+      - ./mosquitto-logs:/mosquitto/log
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+
+  tileserver:
+    hostname: tileserver
+    image: maptiler/tileserver-gl
+    volumes:
+      - ./tileserver-data:/data
+      - ./tileserver-styles:/styles
+    ports:
+      - "8088:80"
+
+  api:
+    hostname: api
+    image: joehoppe/herbios-server:develop
+    volumes:
+      - ./herbios-server-data:/usr/src/app/data
+    ports:
+      - "5555:5555"
+
+  ui:
+    hostname: api
+    image: joehoppe/herbios-ui:develop
+    ports:
+      - "3000:3000"
+
+
+  connector:
+    hostname: connector
+    image: joehoppe/herbios-connector:develop
+    volumes:
+      - ./connector-data:/usr/src/app/data
+      - /tmp/shairport-sync-metadata:/tmp/shairport-sync-metadata
+      - /dev/cu.usbmodem14201:/dev/cu.usbmodem
