@@ -74,10 +74,15 @@ export const {
     useTrackedState: useAudioState,
     useUpdate: useAudioDispatch,
 } = createContainer<IAudioState, (...args: any[]) => any, {}>(() => {
-    const [statusMsg, requestStatus] = useWebSocket("status", "/audio");
     const requestedStatus = React.useRef(false);
-
     const [state, dispatch] = React.useReducer(reducer, audioState);
+    const disp = React.useCallback(dispatch, [dispatch]);
+
+    const [requestStatus] = useWebSocket((statusMsg) => {
+        if (statusMsg) {
+            disp({type: "SET", config: statusMsg as IAudioConfig});
+        }
+    }, "status", "/audio");
 
     React.useEffect(() => {
         if (!requestedStatus.current) {
@@ -85,14 +90,6 @@ export const {
             requestStatus("");
         }
     },[requestStatus]);
-
-    const disp = React.useCallback(dispatch, []);
-
-    React.useEffect(() => {
-        if (statusMsg) {
-            disp({type: "SET", config: statusMsg as IAudioConfig});
-        }
-    }, [statusMsg, disp]);
 
     return [state, dispatch];
 });

@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SubTopic, Topic } from "../utils/IMqtt";
 import { useMqttSubscription } from "../utils/useMqttSubscription";
 import { ILightConfiguration } from "./ILight";
@@ -7,11 +7,7 @@ import LightsControl from "./LightsControl";
 
 export default function LightsLoader() {
     const [configuration, setConfiguration] = useState<Array<ILightConfiguration>>([]);
-    const message = useMqttSubscription([
-        `${Topic.namespace}/${SubTopic.light}/+/${Topic.config}`,
-    ]);
-
-    useEffect(() => {
+    useMqttSubscription((message) => {
         if (message && message.message) {
             const config = JSON.parse(message.message) as ILightConfiguration;
             if (
@@ -36,7 +32,9 @@ export default function LightsLoader() {
                 return newConfig;
             });
         }
-    }, [message, setConfiguration]);
+    }, [
+        `${Topic.namespace}/${SubTopic.light}/+/${Topic.config}`,
+    ]);
 
     if (configuration.length === 0) {
         return <>No Lights configured</>;

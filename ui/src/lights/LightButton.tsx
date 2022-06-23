@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import LevelButton from "../ui/LevelButton";
 import { useWebSocket } from "../utils/useWebSocket";
 
@@ -10,8 +10,12 @@ type Props = {
 
 function LightButton(props: Props) {
     const { label, id} = props;
-    const [lights, getLights] = useWebSocket<{[keys: string]: {name: string, id: string, level: number}},string>("lights", "/lights");
-    const [, changeLight] = useWebSocket<null, {name: string, value: number}>("light:change", "/lights");
+    const [lights, setLights] = useState<{[key: string]: {name: string, id: string, level: number}}>();
+    
+    const [getLights] = useWebSocket<{[keys: string]: {name: string, id: string, level: number}},string>((lights) => {
+        setLights(lights);
+    }, "lights", "/lights");
+    const [changeLight] = useWebSocket<null, {name: string, value: number}>(() => {}, "light:change", "/lights");
     
     const value: number = lights && lights.hasOwnProperty(id) ? lights[id].level : 0;
 

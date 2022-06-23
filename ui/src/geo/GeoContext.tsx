@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SubTopic, Topic } from "../utils/IMqtt";
 import { useMqttSubscription } from "../utils/useMqttSubscription";
 import { IGeo } from "./IGeo";
@@ -16,17 +16,14 @@ export function useGeoState(): IGeo {
         satellites: 0,
     });
 
-    const message = useMqttSubscription([
-        `${Topic.namespace}/${SubTopic.geoPosition}/${Topic.state}`,
-    ]);
-
-    useEffect(() => {
+    useMqttSubscription((message) => {
         if (message && message.message) {
             const newGeo = JSON.parse(message.message) as IGeo;
             setGeo(newGeo);
         }
-    }, [message, setGeo])
-
+    }, [
+        `${Topic.namespace}/${SubTopic.geoPosition}/${Topic.state}`,
+    ]);
 
     return geo;
 }

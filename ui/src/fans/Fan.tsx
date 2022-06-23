@@ -1,7 +1,6 @@
 import { Slider } from "@rebass/forms";
 import { useTheme } from "emotion-theming";
 import React, { useState } from "react";
-import { useEffect } from "react";
 import { FaFan } from "react-icons/fa";
 import { Box, Button, Flex, SxStyleProp, Text } from "rebass";
 import IconArrowDouble from "../ui/icons/IconArrowDouble";
@@ -36,10 +35,8 @@ function Fan(props: Props) {
     if (configuration.speed && configuration.speed_state_topic) subscriptions.push(configuration.speed_state_topic);
     if (configuration.preset_modes) subscriptions.push(`${Topic.namespace}/${SubTopic.fan}/${configuration.unique_id}/${FanTopics.preset}/${Topic.state}`)
     if (configuration.preset_modes && configuration.preset_mode_state_topic) subscriptions.push(configuration.preset_mode_state_topic);
-    const message = useMqttSubscription(subscriptions); 
 
-    // Stuff to do when a new mqtt message arrives
-    useEffect(() => {
+    useMqttSubscription((message) => {
         if (message?.message) {
             const state = message.message.toString();
             
@@ -72,9 +69,8 @@ function Fan(props: Props) {
                 
                 return newState;
             });
-            
         }
-    }, [message, setFan, configuration]);
+    }, subscriptions); 
 
     // Stuff to do when the value is changed by user input
     const changeValueMain = (sw: IFanState) => {

@@ -54,7 +54,14 @@ const AppContextProvider = (props: any) => {
 
     React.useEffect(() => {
         const checkAtTheVan = () => {
-            Axios.get(Config.host + "/heartbeat", {timeout: 2000}).then(() => {
+            Axios.get(Config.host + "/heartbeat?t=" + new Date().toISOString(), {
+                timeout: 2000,
+                headers: {
+                    'Cache-Control': 'no-cache',
+                    'Pragma': 'no-cache',
+                    'Expires': '0',
+                }
+            }).then(() => {
                 if (!state.atTheVan) {
                     dispatch({type: "AT_THE_VAN"});
                 }

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {MdSignalCellularOff, MdSignalCellular4Bar, MdSignalCellular3Bar, MdSignalCellular2Bar, MdSignalCellular1Bar, MdSignalCellular0Bar} from "react-icons/md";
 import { Text } from 'rebass';
 import { SubTopic, Topic } from '../utils/IMqtt';
 import useConfiguration from '../utils/useConfiguration';
 import { useMqttPublish } from '../utils/useMqttPublish';
-import { useMqttSubscription } from '../utils/useMqttSubscription';
+import { IMqttMessage, useMqttSubscription } from '../utils/useMqttSubscription';
 import { INetworkingModem, NetworkingTopics } from './INetworking';
 
 export default function Cellular () {
@@ -18,21 +18,24 @@ export default function Cellular () {
 
 function ModemButton(props: {configuration: INetworkingModem}) {
     const { configuration } = props;
+    const [modemState, setModemState] = useState<IMqttMessage>();
+    const [signalState, setSignalState] = useState<IMqttMessage>();
+    const [networkTypeState, setNetworkTypeState] = useState<IMqttMessage>();
 
     // Subscribe to ON OFF state of modem
     let subscriptionsModemState: Array<string> = [`${Topic.namespace}/${SubTopic.networking}/${NetworkingTopics.modem}/${configuration.unique_id}/${Topic.state}`];
     if (configuration.state_topic) subscriptionsModemState.push(configuration.state_topic); // use the subscriptionTopics state
-    const modemState = useMqttSubscription(subscriptionsModemState); 
+    useMqttSubscription((state) => setModemState(state), subscriptionsModemState); 
 
     // Subscribe to signal strength
     let subscriptionsSignalStength: Array<string> = [`${Topic.namespace}/${SubTopic.networking}/${NetworkingTopics.modem}/${configuration.unique_id}/signal_strength`];
     if (configuration.state_topic) subscriptionsSignalStength.push(configuration.state_topic); // use the subscriptionTopics state
-    const signalState = useMqttSubscription(subscriptionsSignalStength); 
+    useMqttSubscription((state) => setSignalState(state), subscriptionsSignalStength); 
 
     // Subscribe to network service type
     let subscriptionsNetworkType: Array<string> = [`${Topic.namespace}/${SubTopic.networking}/${NetworkingTopics.modem}/${configuration.unique_id}/network_type`];
     if (configuration.state_topic) subscriptionsNetworkType.push(configuration.state_topic); // use the subscriptionTopics state
-    const networkTypeState = useMqttSubscription(subscriptionsNetworkType); 
+    useMqttSubscription((state) => setNetworkTypeState(state), subscriptionsNetworkType); 
 
     const publish = useMqttPublish();
 

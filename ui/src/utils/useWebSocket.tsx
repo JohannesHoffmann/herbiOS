@@ -1,5 +1,5 @@
 import { useCallback, useRef } from "react";
-import { useEffect, useState } from "react";
+import { useEffect  } from "react";
 import { io, Socket } from "socket.io-client";
 import Config from "../Config";
 import { useUserDispatch, useUserState } from "../contexts/UserContext";
@@ -25,10 +25,9 @@ export function socketSend<M>(type: string, namespace?: string): (message: M) =>
     }
 }
 
-export function useWebSocket<T, M = T>(type: string, namespace?: string): [T | undefined, (message: M) => void] {
+export function useWebSocket<T, M = T>(callback:(message: T) => void, type: string, namespace?: string): [(message: M) => void] {
     const userState = useUserState();
     const userDispatch = useUserDispatch();
-    const [message, setMessage] = useState<T>();
     const mounted = useRef(true);
 
     let socket = namespaces["/"];
@@ -72,7 +71,7 @@ export function useWebSocket<T, M = T>(type: string, namespace?: string): [T | u
             if (mounted.current === false) {
                 return;
             }
-            setMessage(data);
+            callback(data);
         };
         socket.on(type, listener);
 
@@ -85,8 +84,7 @@ export function useWebSocket<T, M = T>(type: string, namespace?: string): [T | u
     const defaultNamespace = namespaces[namespace ? namespace : "/"];
     const sendMessage = useCallback((message: M) => {
         defaultNamespace.emit(type, message);
-        // eslint-disable-next-line
-    }, [defaultNamespace , type, namespace]);
+    }, [defaultNamespace , type]);
 
-    return [message, sendMessage];
+    return [sendMessage];
 }

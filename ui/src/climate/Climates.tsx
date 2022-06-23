@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SubTopic, Topic } from "../utils/IMqtt";
 import { useMqttSubscription } from "../utils/useMqttSubscription";
 import ClimateList from "./ClimateList";
@@ -12,11 +12,7 @@ type Props = {
 export default function Climates(props: Props) {
     const { inList } = props;
     const [configuration, setConfiguration] = useState<Array<IClimateConfiguration>>([]);
-    const message = useMqttSubscription([
-        `${Topic.namespace}/${SubTopic.climate}/+/${Topic.config}`,
-    ]);
-
-    useEffect(() => {
+    useMqttSubscription((message) => {
         if (message && message.message) {
             const config = JSON.parse(message.message) as IClimateConfiguration;
             if (
@@ -44,7 +40,9 @@ export default function Climates(props: Props) {
                 return newConfig;
             });
         }
-    }, [message, setConfiguration, inList]);
+    }, [
+        `${Topic.namespace}/${SubTopic.climate}/+/${Topic.config}`,
+    ]);
 
     if (configuration.length === 0) {
         return <>No Climates configured</>;

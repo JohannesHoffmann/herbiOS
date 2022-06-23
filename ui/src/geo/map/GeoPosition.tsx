@@ -77,13 +77,15 @@ export default function GeoPosition () {
                 sx={{
                     width: [ "100%", "100%"], 
                     borderRadius: 20, 
-                    overflow: "hidden", "-webkit-mask-image": "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);"     
+                    overflow: "hidden", 
+                    "-webkit-mask-image": "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);",    
+                    position: "relative",
                 }}
             >
-                <MapContainer style={{height: "100%", minHeight: "300px"}} center={[lat, lon]} zoom={13} scrollWheelZoom={true} maxZoom={18}>
-                    <TilesVector />
+                <MapContainer style={{height: "100%", minHeight: "300px"}} center={[lat, lon]} zoom={10} scrollWheelZoom={true} maxZoom={18}>
                     <MapLayerCurrentPosition />
                     <MapLayerPois pois={pois} onMarkerSelect={(id) => setEditId(id)}  />
+                    <TilesVector />
                 </MapContainer>
             </Box>
         </Box>

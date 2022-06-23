@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Flex, Text } from "rebass";
 import IconBusStart from "../ui/icons/IconBusStart";
 import { useWebSocket } from "../utils/useWebSocket";
@@ -9,8 +9,11 @@ import Config from "../Config";
 import { useUserState } from "../contexts/UserContext";
 
 export default function TourButton() {
-    const [tour] = useWebSocket<ITour, string>("activeTour", "/touring");
+    const [tour, setTour] = useState<ITour>();
     const {authToken} = useUserState();
+    useWebSocket<ITour, string>((tour) => {
+        setTour(tour);
+    }, "activeTour", "/touring");
 
     const request = async () => {
         // Stop the tour

@@ -11,7 +11,10 @@ import IconBusStop from "../ui/icons/IconBusStop";
 
 export default function TourButtonMobile() {
     const [open, setOpen] = useState<boolean>(false);
-    const [tour] = useWebSocket<ITour,string>("activeTour", "/touring");
+    const [tour, setTour] = useState<ITour>();
+    useWebSocket<ITour,string>((tour) => {
+        setTour(tour);
+    }, "activeTour", "/touring");
 
     const toggle = () => {
         setOpen(open => !open);

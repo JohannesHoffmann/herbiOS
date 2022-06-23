@@ -22,8 +22,6 @@ function SwitchControl(props: Props) {
     const [switches, setSwitches] = useState<Array<ISwitchState>>(configuration.map(item => ({...item, state: "OFF"}))); // This holds all configurations found via mqtt config
     const publish = useMqttPublish();
 
-    const message = useMqttSubscription(subscriptionTopics); // use the subscriptionTopics state
-
     // Stuff to do when configuration values are updated from outside this component.
     useEffect(() => {
         setSwitches(configuration.map(item => ({...item, state: "OFF"}))); // reset the available switches
@@ -34,7 +32,7 @@ function SwitchControl(props: Props) {
     }, [configuration]);
 
     // Stuff to do when a new mqtt message arrives
-    useEffect(() => {
+    useMqttSubscription((message) => {
         if (message?.message) {
             const state = message.message.toString();
 
@@ -65,12 +63,10 @@ function SwitchControl(props: Props) {
                     return newSwitches;
                 }
                 
-
                 return allSwitches;
             });
-            
         }
-    }, [message, setSwitches]);
+    }, subscriptionTopics); // use the subscriptionTopics state
 
     // Stuff to do when the value is changed by user input
     // @param value is in percent!

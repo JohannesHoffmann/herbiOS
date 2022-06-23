@@ -26,10 +26,12 @@ function App() {
         <ThemeProvider theme={darkMode ? themeDark : theme}>
             <UserProvider>
                 <Box
-                    color='text'
-                    bg='background'
                     width="100%"
                     minHeight="100vh"
+                    sx={{
+                        bg: "background",
+                        color: "text",
+                    }}
                 >
 
                 

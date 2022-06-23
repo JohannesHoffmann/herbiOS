@@ -41,12 +41,22 @@ export default function GeoPositionGroundControl (props: Props) {
     React.useEffect(() => {
         if (telemetries.length > 0) {
             setTrack(telemetries.map(items => [items.position.lat, items.position.lon]));
-            const lastElement = telemetries[telemetries.length -1];
+            const lastElement = telemetries[0];
             setPosition([lastElement.position.lat, lastElement.position.lon]);
         }
     }, [setPosition, setTrack, telemetries]);
 
-    return <Box>
+    return <Box
+            mt={3}
+            p={0} 
+            sx={{
+                width: [ "100%", "100%"], 
+                borderRadius: 20, 
+                overflow: "hidden", 
+                "-webkit-mask-image": "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);",    
+                position: "relative",
+            }}
+        >
             <MapContainer style={{height: "70vh"}} center={[48,10]} zoom={15} scrollWheelZoom={true}>
                 <TileLayer
                 attribution={""}

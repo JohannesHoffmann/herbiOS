@@ -1,40 +1,41 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useWebSocket } from "./useWebSocket";
 import { matches } from 'mqtt-pattern';
 
 
-interface IMqttMessage {
+export interface IMqttMessage {
     topic: string;
     message?: string; 
 }
 
-export function useMqttSubscription(topic: string | Array<string>) {
+export function useMqttSubscription(callback: (message: IMqttMessage) => void, topic: string | Array<string>) {
     const topics = useMemo(() => Array.isArray(topic) ? topic : [topic], [topic]);
-    const [message, setMessage] = useState<IMqttMessage>();
-    const [subscribedTopics, setSubscribedTopics] = useState<Array<string>>([]);
-    const [mqttMessage] = useWebSocket<{topic: string, message: string}, null>("message", "/mqtt");
-    const [, subscribe] = useWebSocket<null, {topic: string | Array<string>}>("subscribe", "/mqtt");
+    const subscribedTopics = useRef<Array<string>>([]);
+    const [subscribe] = useWebSocket<null, {topic: string | Array<string>}>(() => {}, "subscribe", "/mqtt");
+    // const subscribe = socketSend("subscribe", "/mqtt");
 
-    useEffect(() => {
-        const topicsToSubscribe = topics.filter(item => subscribedTopics.includes(item) ? false : true);
-        if (topicsToSubscribe.length > 0) {
-            subscribe({topic: topicsToSubscribe});
-            setSubscribedTopics([
-                ...subscribedTopics,
-                ...topicsToSubscribe,
-            ]);
-        }
-    }, [topic, subscribe, setSubscribedTopics, subscribedTopics, topics])
 
-    useEffect(() => {
+    useWebSocket<{topic: string, message: string}, null>((mqttMessage) => {
         if (!mqttMessage || !mqttMessage?.topic) {
             return;
         }
+        if(mqttMessage.topic.startsWith("herbiOS/lights")) console.log("matched", mqttMessage);
         
         if (topics.flat().some(rTopic => matches(rTopic, mqttMessage.topic))) {
-            setMessage(mqttMessage);
+            callback(mqttMessage);
         }
-    }, [mqttMessage, topics, setMessage]);
-    
-    return message;
+    },"message", "/mqtt");
+
+    useEffect(() => {
+        const topicsToSubscribe = topics.filter(item => subscribedTopics.current.includes(item) ? false : true);
+        if (topicsToSubscribe.length > 0) {
+            
+            subscribe({topic: topicsToSubscribe});
+            subscribedTopics.current = [
+                ...subscribedTopics.current,
+                ...topicsToSubscribe,
+            ];
+        }
+    }, [subscribe, topics]);
+
 }

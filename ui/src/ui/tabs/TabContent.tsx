@@ -13,7 +13,10 @@ export default function TabContent (props: Props) {
 
     return <Box
         sx={{
-            display: active !== tabId ? "none" : "block",
+            transform: active !== tabId ? "translateX(-100vw)" : undefined,
+            position: active !== tabId ? "absolute" : "static",
+            height: active !== tabId ? "0px" : "auto",
+            overflow: active !== tabId ? "hidden" : "visible",
         }}
     >
         {children}

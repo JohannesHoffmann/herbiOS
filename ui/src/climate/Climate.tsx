@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, Heading, Flex, Text } from "rebass";
 import Fans from "../fans/Fans";
 import { SubTopic, Topic } from "../utils/IMqtt";
@@ -40,10 +40,7 @@ export default function Climate (props: Props) {
     if (configuration.temperature_state_topic) subscriptions.push(configuration.temperature_state_topic);
     if (configuration.temperature_current_topic) subscriptions.push(configuration.temperature_current_topic);
 
-    const message = useMqttSubscription(subscriptions); 
-
-    // Stuff to do when a new mqtt message arrives
-    useEffect(() => {
+    useMqttSubscription((message) => {
         if (message?.message) {
             const state = message.message.toString();
             
@@ -86,7 +83,7 @@ export default function Climate (props: Props) {
             });
             
         }
-    }, [message, setClimate, configuration]);
+    }, subscriptions); 
 
     const changeMode = (newState: IClimateState) => {
         // Prefer custom set command_topic over default topic

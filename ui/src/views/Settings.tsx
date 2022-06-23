@@ -15,25 +15,25 @@ export default function Settings () {
         gridRowGap: 3,
     }}>
 
-        <Box
-            p={2}
-            sx={{
-                gridColumn: ["1 / span 5", "1 / 3"], 
-                gridRow: ["1 / 1", "1 / span 3"],
-            }} >
-            <Lights />
-        </Box>
+    <Box
+        p={2}
+        sx={{
+            gridColumn: ["1 / span 5", "1 / 3"], 
+            gridRow: ["1 / 1", "1 / span 3"],
+        }} >
+        <Lights />
+    </Box>
 
-        <Box
-            p={2}
-            sx={{
-                gridColumn: ["1 / span 5", "3 / 5"], 
-                gridRow: ["2 / 3", "1 / span 3"],
-            }} 
-        >
-            <Audio />
-            <Climates />
-        </Box>
+    <Box
+        p={2}
+        sx={{
+            gridColumn: ["1 / span 5", "3 / 5"], 
+            gridRow: ["2 / 3", "1 / span 3"],
+        }} 
+    >
+        <Audio />
+        <Climates />
+    </Box>
 
     <Flex
         flexWrap='wrap' 

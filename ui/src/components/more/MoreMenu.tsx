@@ -39,7 +39,7 @@ export default function MoreMenu (props: Props) {
         <List>
             <ListHeader>herbiOS</ListHeader>
             <ListItem>
-                Version: 0.3.0
+                Version: 0.3.6
             </ListItem>
         </List>
     </Box>

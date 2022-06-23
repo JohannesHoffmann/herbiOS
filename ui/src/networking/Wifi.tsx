@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {BiWifi, BiWifiOff} from "react-icons/bi";
 import { Text } from 'rebass';
 import { SubTopic, Topic } from '../utils/IMqtt';
 import useConfiguration from '../utils/useConfiguration';
 import { useMqttPublish } from '../utils/useMqttPublish';
-import { useMqttSubscription } from '../utils/useMqttSubscription';
+import { IMqttMessage, useMqttSubscription } from '../utils/useMqttSubscription';
 import { INetworkingInterface, NetworkingTopics } from './INetworking';
 
 export default function Wifi () {
@@ -19,7 +19,10 @@ function WifiButton(props: {configuration: INetworkingInterface}) {
     const { configuration } = props;
     let subscriptions: Array<string> = [`${Topic.namespace}/${SubTopic.networking}/${NetworkingTopics.interface}/${configuration.unique_id}/${Topic.state}`];
     if (configuration.state_topic) subscriptions.push(configuration.state_topic); // use the subscriptionTopics state
-    const message = useMqttSubscription(subscriptions); 
+    const [message, setMessage] = useState<IMqttMessage>();
+    useMqttSubscription((m) => {
+        setMessage(m);
+    }, subscriptions); 
     const publish = useMqttPublish();
 
     const changeWifi= (on: boolean) => {
@@ -33,6 +36,6 @@ function WifiButton(props: {configuration: INetworkingInterface}) {
 
 return <Text paddingX={2}>
     {message?.message === "ON" && <BiWifi onClick={() => { changeWifi(false)}} />}
-    {!message?.message || message?.message === "OFF"  && <BiWifiOff  onClick={() => { changeWifi(true)}} />}
+    {(!message?.message || message?.message === "OFF")  && <BiWifiOff  onClick={() => { changeWifi(true)}} />}
 </ Text>
 }

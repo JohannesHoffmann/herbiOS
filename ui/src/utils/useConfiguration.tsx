@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMqttSubscription } from "../utils/useMqttSubscription";
 
 export default function useConfiguration<T extends {unique_id: string; name: string;}>(topic: string) {
     const [configuration, setConfiguration] = useState<Array<T>>([]);
-    const message = useMqttSubscription([topic]);
-
-    useEffect(() => {
+    useMqttSubscription((message) => {
         if (message && message.message) {
             const config = JSON.parse(message.message) as T;
             if (
@@ -31,7 +29,7 @@ export default function useConfiguration<T extends {unique_id: string; name: str
                 return newConfig;
             });
         }
-    }, [message, setConfiguration]);
+    }, [topic]);
 
     return configuration;
 }

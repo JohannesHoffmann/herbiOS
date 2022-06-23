@@ -40,10 +40,14 @@ export const {
     useTrackedState: useAroundMeState,
     useUpdate: useAroundMeDispatch,
 } = createContainer<IAroundMeState, (...args: any[]) => any, {}>(() => {
-    const [statusMsg, requestStatus] = useWebSocket("status", "/aroundMe");
-    const requestedStatus = React.useRef(false);
-
     const [state, dispatch] = React.useReducer(reducer, aroundMeState);
+    const disp = React.useCallback(dispatch, [dispatch]);
+    const [requestStatus] = useWebSocket<IAroundMeConfig, string>((s) => {
+        if (s) {
+            disp({type: "SET", config: s});
+        }
+    }, "status", "/aroundMe");
+    const requestedStatus = React.useRef(false);
 
     React.useEffect(() => {
         if (!requestedStatus.current) {
@@ -52,13 +56,8 @@ export const {
         }
     },[requestStatus]);
 
-    const disp = React.useCallback(dispatch, []);
+    
 
-    React.useEffect(() => {
-        if (statusMsg) {
-            disp({type: "SET", config: statusMsg as IAroundMeConfig});
-        }
-    }, [statusMsg, disp]);
 
     return [state, dispatch];
 });

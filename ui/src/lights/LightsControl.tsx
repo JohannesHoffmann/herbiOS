@@ -26,21 +26,7 @@ export default function LightsControl(props: Props) {
     const [activeLight, setActiveLight] = React.useState<ILightState>(lights[0]); // this state is only for the active selected light of the widget
     const publish = useMqttPublish();
 
-    const message = useMqttSubscription(subscriptionTopics); // use the subscriptionTopics state
-
-    const dragValueStart = React.useRef(activeLight.brightness); // This handles the drag start position as mutable value
-
-    // Stuff to do when configuration values are updated from outside this component.
-    useEffect(() => {
-        setLights(configuration.map(item => ({...item, brightness: 0}))); // reset the available lights
-        setSubscriptionTopics([ // Re-Subscribe mqtt topics
-            `${Topic.namespace}/${SubTopic.light}/+/${Topic.state}`, // default state topic of all herbiOs lights
-            ...configuration.filter(item => (item?.state_topic ? true : false)).map(item => item.state_topic as string), // filter all lights with custom state_topic paths and subscribe them as well.
-        ]);
-    }, [configuration]);
-
-    // Stuff to do when a new mqtt message arrives
-    useEffect(() => {
+    useMqttSubscription((message) => {
         if (message?.message) {
             const state = JSON.parse(message.message.toString());
 
@@ -88,7 +74,18 @@ export default function LightsControl(props: Props) {
             });
             
         }
-    }, [message, setLights, setActiveLight]);
+    },  subscriptionTopics); // use the subscriptionTopics state
+
+    const dragValueStart = React.useRef(activeLight.brightness); // This handles the drag start position as mutable value
+
+    // Stuff to do when configuration values are updated from outside this component.
+    useEffect(() => {
+        setLights(configuration.map(item => ({...item, brightness: 0}))); // reset the available lights
+        setSubscriptionTopics([ // Re-Subscribe mqtt topics
+            `${Topic.namespace}/${SubTopic.light}/+/${Topic.state}`, // default state topic of all herbiOs lights
+            ...configuration.filter(item => (item?.state_topic ? true : false)).map(item => item.state_topic as string), // filter all lights with custom state_topic paths and subscribe them as well.
+        ]);
+    }, [configuration]);
 
     // Stuff to do when the value is changed by user input
     // @param value is in percent!

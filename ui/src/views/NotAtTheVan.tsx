@@ -7,6 +7,8 @@ import Config from "../Config";
 import { useUserState } from "../contexts/UserContext";
 import { IGeo } from "../geo/IGeo";
 import {BsThermometerHalf, BsBatteryHalf } from "react-icons/bs";
+import {format}  from "date-fns";
+import { de } from 'date-fns/locale'
 
 export interface ITelemetry {
     dateTime: Date;
@@ -37,7 +39,7 @@ export default function NotAtTheVan() {
             setRefreshing(true);
             setMessage("");
             const data = await Axios.get<Array<ITelemetry>>(Config.groundControl + "/telemetry", {headers: {Authorization: "Bearer " + authToken}, cancelToken: options?.cancelToken});
-            setTelemetries(data.data);
+            setTelemetries(data.data.reverse());
 
             setRefreshing(false);
         } catch (e) {
@@ -57,6 +59,18 @@ export default function NotAtTheVan() {
         }
     });
 
+    let lastMotionDetect: ISensorData;
+    telemetries.find(log => {
+        const sensor = log.sensors.find(sensor => sensor.unique_id === "motionDetect");
+
+        if (!sensor) return false;
+        if (sensor.value.toString().startsWith("true")) {
+            lastMotionDetect = sensor;
+            return true;
+        }
+        return false;
+    });
+
     return <>
         <Flex flexDirection="column" p={20}>
 
@@ -65,6 +79,7 @@ export default function NotAtTheVan() {
         <Flex flexWrap='wrap' alignItems="stretch">
             <Box p={2} sx={{
                 flexGrow: 1,
+                mb: 4,
             }}>
                 <Heading fontSize={[ 5, 6, 7 ]} as="h1">Hi!</Heading>
                 <Heading fontSize={[ 3, 4, 5 ]} as="h2">Du bist nicht am Van</Heading>
@@ -83,7 +98,7 @@ export default function NotAtTheVan() {
 
                 <Box>
 
-                    {telemetries.length > 0 && telemetries[telemetries.length - 1].sensors && telemetries[telemetries.length - 1].sensors.map(sensor => {
+                    {telemetries.length > 0 && telemetries[0].sensors && telemetries[0].sensors.map(sensor => {
 
                             let icon = null;
                             switch(sensor.icon) {
@@ -96,7 +111,7 @@ export default function NotAtTheVan() {
                                     break;
                             }
 
-                        return <Box>
+                        return <Box mb={2}>
                         <Flex
                             fontSize={4}
                             height="100%"
@@ -105,18 +120,35 @@ export default function NotAtTheVan() {
                                 {icon}
                             </Box>}
                             <Text 
-                                fontSize={[3, 3,]} 
+                                fontSize={[3]} 
                                 flexGrow={1}
                             >
                                 {sensor.name}
                             </Text>
-                            <Text>
+                            <Text
+                                fontSize={[3]}
+                            >
                                 {sensor.value}
-                                {sensor.unique_id.startsWith("motion") && <>{sensor.changedAt}</>}
                                 {sensor.unit_of_measurement}
                             </Text>
                         </Flex>
                         
+
+                        {sensor.unique_id.startsWith("motion") && lastMotionDetect && <Flex>
+                            <Text 
+                                fontSize={[2]} 
+                                flexGrow={1}
+                            >
+                                 Letzte Bewegung: 
+                            </Text>
+                            <Text
+                                fontSize={[2]}
+                            >
+                                {format(new Date(lastMotionDetect.changedAt), "dd.MM.yyyy HH:mm", {locale: de})}
+                            </Text>
+                           
+                        </Flex>}
+
                     </Box>
                     })}
 

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useEffect } from "react";
 import { Box, Flex, Text } from "rebass";
 import { SubTopic, Topic } from "../utils/IMqtt";
 import { useMqttSubscription } from "../utils/useMqttSubscription";
@@ -24,10 +23,7 @@ function Sensor(props: Props) {
 
     let subscriptions: Array<string> = [`${Topic.namespace}/${SubTopic.sensor}/${configuration.unique_id}/${Topic.state}`] // default state topic of all herbiOs sensors
     if (configuration.state_topic) subscriptions.push(configuration.state_topic); // use the subscriptionTopics state
-    const message = useMqttSubscription(subscriptions); 
-
-    // Stuff to do when a new mqtt message arrives
-    useEffect(() => {
+    useMqttSubscription((message) => {
         if (message?.message) {
             const state = message.message.toString();
             
@@ -46,7 +42,7 @@ function Sensor(props: Props) {
             });
             
         }
-    }, [message, setSensor, configuration]);
+    }, subscriptions); 
 
     let icon = null;
     switch(configuration.icon) {

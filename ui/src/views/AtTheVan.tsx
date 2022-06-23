@@ -14,6 +14,7 @@ import Sensors from "../sensors/Sensors";
 
 export default function AtTheVan() {
 
+
     return <>
         <Box>
             <Flex flexWrap='wrap' alignItems="stretch">
